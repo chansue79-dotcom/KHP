@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>재직자 교육 관리</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#F3F5F8; --surface:#FFFFFF; --ink:#1C2540; --muted:#5E6678; --line:#DDE2EA; --soft:#EEF1F6; --hover:#F6F8FB;
+  --brand:#1C2540; --on-brand:#FFFFFF;
+  --c1:#3557C8; --c2:#2A9FB4; --c3:#3E9A5E; --c4:#B2468E; --c5:#C99A1C;
+  --ok:#2E7D4F; --warn:#9A6B00; --err:#C23B32;
+  --font:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;--bg:#0E131C;--surface:#171E2A;--ink:#E7EBF2;--muted:#9BA4B6;--line:#2A3242;--soft:#1F2735;--hover:#1B2230;
+    --brand:#E7EBF2;--on-brand:#141A26;--c1:#6F8DF0;--c2:#4CC2D6;--c3:#5FBF80;--c4:#D873B5;--c5:#E3BC4A;--ok:#5FBF80;--warn:#E3BC4A;--err:#F07167}
+}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0E131C;--surface:#171E2A;--ink:#E7EBF2;--muted:#9BA4B6;--line:#2A3242;--soft:#1F2735;--hover:#1B2230;
+  --brand:#E7EBF2;--on-brand:#141A26;--c1:#6F8DF0;--c2:#4CC2D6;--c3:#5FBF80;--c4:#D873B5;--c5:#E3BC4A;--ok:#5FBF80;--warn:#E3BC4A;--err:#F07167}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 14.5px/1.55 var(--font);-webkit-font-smoothing:antialiased}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--c1);outline-offset:2px;border-radius:5px}
+a{color:var(--c1)}
+.app{display:grid;grid-template-columns:232px 1fr;min-height:100%}
+
+/* 사이드바 */
+aside{background:var(--surface);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;overflow:auto;padding-bottom:20px}
+.bars{display:flex;height:4px}.bars i{flex:1}
+.bars i:nth-child(1){background:var(--c1)}.bars i:nth-child(2){background:var(--c2)}.bars i:nth-child(3){background:var(--c3)}.bars i:nth-child(4){background:var(--c4)}.bars i:nth-child(5){background:var(--c5)}
+.brand{padding:16px 18px 10px;font-weight:700;font-size:15px}
+.brand small{display:block;color:var(--muted);font-weight:500;font-size:12px}
+.grp{font-size:12px;color:var(--muted);font-weight:600;padding:14px 18px 4px}
+.nav{display:flex;align-items:center;gap:8px;width:100%;border:0;background:none;text-align:left;padding:8px 18px;cursor:pointer;border-left:3px solid transparent;font-size:14px}
+.nav:hover{background:var(--hover)}
+.nav[aria-current="page"]{background:var(--soft);border-left-color:var(--brand);font-weight:600}
+.nav .ic{width:20px;text-align:center}
+.nav .bd{margin-left:auto;font-size:11px;font-weight:700;background:var(--err);color:#fff;border-radius:99px;padding:0 6px;min-width:18px;text-align:center}
+
+/* 상단 */
+main{min-width:0}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 26px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.top h1{margin:0;font-size:18px;letter-spacing:-.01em}
+.top .r{display:flex;gap:14px;align-items:center;font-size:13px;color:var(--muted)}
+.content{padding:22px 26px 60px}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  aside{position:static;height:auto;border-right:0;border-bottom:1px solid var(--line);display:flex;overflow-x:auto;padding:0;align-items:stretch}
+  aside .bars,aside .brand,aside .grp{display:none}
+  .nav{flex:0 0 auto;width:auto;border-left:0;border-bottom:3px solid transparent;padding:10px 12px;white-space:nowrap}
+  .nav[aria-current="page"]{border-bottom-color:var(--brand)}
+  .top{position:static;padding:12px 16px}.content{padding:16px 14px 50px}
+}
+
+/* 공통 */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 18px}
+.card h2{font-size:15px;margin:0 0 10px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.card h2 button{font-size:13px;font-weight:600;color:var(--c1);background:none;border:0;cursor:pointer;padding:0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:1100px){.grid4{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:700px){.grid2{grid-template-columns:1fr}}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+@media (max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-align:left;cursor:pointer}
+.kpi:hover{border-color:var(--ink)}
+.kpi span{display:block;font-size:12.5px;color:var(--muted)}
+.kpi b{font-size:24px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kpi.alert b{color:var(--err)}
+.list{list-style:none;margin:0;padding:0}
+.list li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line);font-size:14px}
+.list li:last-child{border-bottom:0}
+.list small{color:var(--muted);display:block;font-size:12.5px}
+.none{color:var(--muted);padding:10px 0;font-size:14px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 9px;border-radius:99px;background:var(--soft);white-space:nowrap}
+.pill.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 14%,transparent)}
+.pill.no{color:var(--err);background:color-mix(in srgb,var(--err) 13%,transparent)}
+.pill.wait{color:var(--warn);background:color-mix(in srgb,var(--c5) 18%,transparent)}
+.pill.go{color:var(--c1);background:color-mix(in srgb,var(--c1) 13%,transparent)}
+.btn{border:1.5px solid var(--line);background:var(--surface);border-radius:8px;padding:7px 13px;font-weight:600;font-size:13.5px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--ink)}
+.btn.solid{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.btn.danger{color:var(--err)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.quick{display:flex;gap:8px;flex-wrap:wrap}
+.quick a{text-decoration:none}
+
+/* 표 */
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}
+.bar input[type=search]{flex:1 1 220px;padding:8px 12px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface)}
+.bar .count{font-size:13px;color:var(--muted);margin-right:auto}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--surface);border-radius:99px;padding:4px 11px;font-size:12.5px;cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--soft);font-weight:600}
+.tw{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:9px 11px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap;max-width:280px;overflow:hidden;text-overflow:ellipsis}
+th{font-size:12px;color:var(--muted);font-weight:600;background:var(--surface);position:sticky;top:0;cursor:pointer;user-select:none}
+th[aria-sort]::after{content:" ↕";opacity:.4}
+th[aria-sort="ascending"]::after{content:" ↑";opacity:1}
+th[aria-sort="descending"]::after{content:" ↓";opacity:1}
+tbody tr{cursor:pointer}
+tbody tr:hover td{background:var(--hover)}
+tbody tr:last-child td{border-bottom:0}
+td input[type=number]{width:62px;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+td select{padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+
+/* 편집 패널 */
+.scrim{position:fixed;inset:0;background:rgba(10,14,22,.35);z-index:20;display:none}
+.scrim.show{display:block}
+.panel{position:fixed;top:0;right:0;bottom:0;width:min(480px,100%);background:var(--surface);z-index:21;box-shadow:-8px 0 30px rgba(0,0,0,.15);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .2s}
+.panel.show{transform:none}
+.panel header{display:flex;justify-content:space-between;align-items:center;padding:calc(14px + env(safe-area-inset-top,0px)) 20px 14px;border-bottom:1px solid var(--line)}
+.panel header h2{margin:0;font-size:16px}
+.panel .body{flex:1;overflow:auto;padding:16px 20px}
+.panel footer{display:flex;gap:8px;padding:12px 20px calc(12px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.panel footer .sp{flex:1}
+.fld{margin-bottom:13px}
+.fld label{display:block;font-size:12.5px;font-weight:600;margin-bottom:4px}
+.fld label em{color:var(--err);font-style:normal}
+.fld input,.fld select,.fld textarea{width:100%;padding:8px 11px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface)}
+.fld textarea{min-height:84px;resize:vertical}
+.fld .ro{padding:8px 11px;background:var(--soft);border-radius:8px;color:var(--muted);min-height:36px}
+.fld .multi{display:flex;flex-wrap:wrap;gap:6px}
+.fld .multi label,.fld .ck{display:flex;gap:6px;align-items:center;font-weight:500;font-size:14px;border:1px solid var(--line);border-radius:7px;padding:4px 9px;margin:0}
+.fld .multi input,.fld .ck input{width:auto}
+
+/* 출석 */
+.att{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start}
+@media (max-width:1000px){.att{grid-template-columns:1fr}}
+.sess{display:block;width:100%;text-align:left;border:0;border-left:3px solid transparent;background:none;padding:10px 12px;cursor:pointer;border-bottom:1px solid var(--line)}
+.sess:hover{background:var(--hover)}
+.sess[aria-current="true"]{background:var(--soft);border-left-color:var(--brand)}
+.sess b{display:block;font-size:14px}
+.sess small{color:var(--muted);font-size:12px}
+.stats{display:flex;gap:18px;margin:4px 0 12px}
+.stats div b{display:block;font-size:20px;font-variant-numeric:tabular-nums}
+.stats div span{font-size:12px;color:var(--muted)}
+.saved{font-size:12px;color:var(--muted)}
+.saved.err{color:var(--err)}
+
+/* 로그인 */
+.login{position:fixed;inset:0;z-index:40;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:20px}
+.login .box{background:var(--surface);border:1px solid var(--line);border-radius:14px;width:min(380px,100%);padding:28px 26px}
+.login h1{font-size:19px;margin:6px 0 2px}.login p{margin:0 0 18px;color:var(--muted);font-size:13.5px}
+.login .fld input{font-size:16px;padding:10px 12px}
+.login .err{color:var(--err);font-size:13.5px;min-height:20px;margin:4px 0 8px}
+.login .demoacc{margin-top:16px;font-size:12.5px;color:var(--muted);background:var(--soft);border-radius:8px;padding:10px 12px}
+.top .who{display:flex;gap:10px;align-items:center}
+/* 하위 탭 */
+.subtabs{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 14px}
+.subtab{border:1.5px solid var(--line);background:var(--surface);border-radius:99px;padding:6px 14px;font-weight:600;font-size:13.5px;cursor:pointer}
+.subtab[aria-selected="true"]{background:var(--brand);color:var(--on-brand);border-color:var(--brand)}
+.hint{font-size:13px;color:var(--muted);margin:0 0 10px}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px}
+.mini div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.mini span{display:block;font-size:12px;color:var(--muted)}
+.mini b{font-size:20px;font-variant-numeric:tabular-nums}
+.mini .alert b{color:var(--err)}
+/* 성과 */
+.prog{height:8px;border-radius:4px;background:var(--soft);overflow:hidden;min-width:90px}
+.prog i{display:block;height:100%;border-radius:4px;background:var(--c3)}
+.prog i.warn{background:var(--c5)} .prog i.no{background:var(--err)}
+.big{display:flex;gap:28px;align-items:center;flex-wrap:wrap}
+.big .num{font-size:40px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.big .num small{font-size:16px;color:var(--muted);font-weight:500}
+.ins{margin:0;padding-left:18px}.ins li{margin:6px 0}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font:12px var(--font)}
+.chart .v{fill:var(--ink);font-weight:600}
+.yr{padding:7px 10px;border:1.5px solid var(--line);border-radius:8px;background:var(--surface);font-weight:600}
+.drop{border:2px dashed var(--line);border-radius:12px;padding:22px;text-align:center;color:var(--muted);margin-bottom:12px}
+.drop.on{border-color:var(--c1);color:var(--ink)}
+.prev{font-size:13px}
+.prev th,.prev td{padding:5px 8px}
+
+/* 매뉴얼 */
+.man h2{font-size:16px;margin:22px 0 8px}
+.man h2:first-child{margin-top:0}
+.man ol,.man ul{margin:0;padding-left:20px}
+.man li{margin:4px 0}
+.man .note{background:var(--soft);border-radius:8px;padding:10px 14px;margin-top:8px;font-size:14px}
+
+.toast{position:fixed;left:50%;bottom:calc(22px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--surface);padding:10px 16px;border-radius:8px;font-weight:500;opacity:0;transition:opacity .2s;pointer-events:none;z-index:30}
+.toast.show{opacity:1}
+.demo{display:none;background:var(--c5);color:#1b1400;text-align:center;font-size:13px;padding:5px}
+.demo.show{display:block}
+.loading{color:var(--muted);padding:30px 0}
+
+.dlb{height:30px !important;padding:0 10px !important;font-size:12.5px !important;color:var(--brand)}
+.filecell{display:flex;gap:8px;align-items:center;justify-content:space-between;background:var(--soft);border-radius:10px;padding:8px 10px}
+.filecell span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}
+.reveal{display:flex;gap:8px;align-items:center}.reveal .ro{flex:1;letter-spacing:.04em;font-variant-numeric:tabular-nums}
+.stampbar{display:flex;gap:12px;align-items:center;justify-content:space-between;background:var(--primary-soft, #EAF1FC);border-radius:12px;padding:12px 14px;margin-bottom:14px}
+.stampbar b{display:block;font-size:14px}.stampbar span{display:block;font-size:12.5px;color:var(--muted)}
+.sealbox{background:repeating-conic-gradient(#f1f3f6 0% 25%, #fff 0% 50%) 0 0/16px 16px;border-radius:12px;padding:16px;display:grid;place-items:center;min-height:160px}
+.sealbox img,.sealbox canvas{max-width:180px;max-height:180px}
+.stampm{position:fixed;inset:0;z-index:40;background:rgba(11,18,38,.6);display:flex;justify-content:center;align-items:flex-start;overflow:auto;padding:20px 12px}
+.stampbox{background:var(--surface);border-radius:20px;padding:18px;width:min(780px,100%)}
+.stamphead{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.stamphead .sp{flex:1}
+.stamphead .pg{display:flex;gap:6px;align-items:center;font-size:13px;color:var(--muted)}
+.stage{position:relative;background:var(--soft);border-radius:12px;overflow:hidden;display:flex;justify-content:center;min-height:200px}
+.stage canvas{display:block;background:#fff}
+.stage > div{position:relative}
+#sealImg{position:absolute;cursor:grab;touch-action:none;user-select:none;filter:drop-shadow(0 0 1px rgba(0,0,0,.25))}
+#sealImg:active{cursor:grabbing}
+.warnbar{background:color-mix(in srgb,var(--c5) 18%,transparent);border-radius:12px;padding:12px 16px;margin-bottom:14px;font-size:14px}
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:14px}
+.fcard{display:flex;flex-direction:column}.fcard.off{opacity:.6}
+.fc-h{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:4px}.fc-h b{font-size:14.5px}
+.fc-h .btn{height:28px;padding:0 10px;font-size:12px}
+.fc-n{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.link-b{background:none;border:0;color:var(--brand);font-weight:700;cursor:pointer;padding:8px 0 0;text-align:left;font-size:13.5px}
+.qres{padding:12px 0;border-bottom:1px solid var(--line)}.qres:last-child{border-bottom:0}
+.qt{font-weight:600;margin-bottom:8px}.qt small{display:block;color:var(--muted);font-weight:500;font-size:12px}
+.qs{display:flex;align-items:center;gap:10px}.qs b{font-size:22px;font-weight:800}.qs span{color:var(--muted)}.qs small{color:var(--muted)}
+.dist{flex:1;display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--soft);max-width:360px}.dist span{display:block}
+.qc{display:grid;grid-template-columns:minmax(120px,200px) 1fr 40px;gap:10px;align-items:center;font-size:13.5px;margin:4px 0}
+.hb{height:8px;background:var(--soft);border-radius:4px;overflow:hidden}.hb i{display:block;height:100%}
+.qtext{margin:0;padding-left:18px;font-size:13.5px}.qtext li{margin:3px 0}
+.fe-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 14px}
+.qe{display:grid;grid-template-columns:28px 150px 130px 1fr auto auto;gap:8px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.qe input,.qe select{height:36px;padding:0 10px;border:1.5px solid transparent;background:var(--soft);border-radius:8px}
+.qe input:focus,.qe select:focus{outline:none;border-color:var(--brand)}
+.qe .qn{font-weight:800;color:var(--muted);text-align:center}.qe .qe-opt{grid-column:2/-1}
+.qe-btn{display:flex;gap:4px}.qe-btn .btn{height:32px;padding:0 9px;font-size:12px}
+@media (max-width:1000px){.qe{grid-template-columns:28px 1fr 1fr}.qe .qe-text,.qe .qe-opt{grid-column:2/-1}}
+.rpwrap{display:grid;grid-template-columns:380px 1fr;gap:14px;align-items:start}
+@media (max-width:1100px){.rpwrap{grid-template-columns:1fr}}
+.rpform textarea{min-height:90px}
+.rpprev{background:var(--surface);border-radius:20px;padding:8px;position:sticky;top:80px}
+.rpprev iframe{width:100%;height:calc(100vh - 140px);min-height:600px;border:0;border-radius:14px;background:#fff}
+/* ══ 새 디자인 (홈페이지와 같은 디자인 언어) ══ */
+:root{
+  --bg:#F3F4F7; --surface:#FFFFFF; --ink:#0F1B3D; --muted:#5B6479; --line:#E3E6EE; --soft:#EEF1F6; --hover:#F6F7FA;
+  --brand:#2E4BFF; --on-brand:#FFFFFF; --primary-soft:rgba(46,75,255,.09);
+  --c1:#2E4BFF; --c2:#00A3B4; --c3:#22A06B; --c4:#C2409A; --c5:#E0A100; --ok:#1E8E5A; --warn:#9A6B00; --err:#D92D3A;
+  --font:"Pretendard Variable","Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){--bg:#0B1226;--surface:#121A33;--ink:#EEF1F8;--muted:#A3ACC2;--line:#24304F;--soft:#1A2342;--hover:#18213E;--brand:#7088FF;--on-brand:#0B1226;--primary-soft:rgba(112,136,255,.14);--c1:#7088FF;--c2:#3CC6D4;--c3:#4CC38A;--c4:#E07CC0;--c5:#F0C24B;--ok:#4CC38A;--warn:#F0C24B;--err:#FF6B76}
+}
+:root[data-theme="dark"]{--bg:#0B1226;--surface:#121A33;--ink:#EEF1F8;--muted:#A3ACC2;--line:#24304F;--soft:#1A2342;--hover:#18213E;--brand:#7088FF;--on-brand:#0B1226;--primary-soft:rgba(112,136,255,.14);--c1:#7088FF;--c2:#3CC6D4;--c3:#4CC38A;--c4:#E07CC0;--c5:#F0C24B;--ok:#4CC38A;--warn:#F0C24B;--err:#FF6B76}
+body{font-size:14.5px;letter-spacing:-.005em;word-break:keep-all}
+:focus-visible{outline:2.5px solid var(--brand);outline-offset:2px}
+.bars{display:none}
+aside{border-right:0;padding:8px 10px 24px}
+.brand{padding:18px 12px 14px;font-size:16px;font-weight:800;letter-spacing:-.03em}
+.brand small{font-size:12px;font-weight:500;margin-top:2px}
+.grp{padding:16px 12px 6px;font-size:12px;letter-spacing:-.01em;color:var(--muted)}
+.nav{border-left:0;border-radius:10px;padding:9px 12px;font-weight:600;color:var(--muted);margin:1px 0}
+.nav:hover{background:var(--soft);color:var(--ink)}
+.nav[aria-current="page"]{background:var(--primary-soft);color:var(--brand);font-weight:700}
+.nav .bd{background:var(--err);font-size:11px;padding:1px 7px}
+.top{background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:0;padding:18px 32px}
+.top h1{font-size:22px;font-weight:800;letter-spacing:-.04em}
+.content{padding:8px 32px 64px}
+@media (max-width:860px){aside{padding:0 8px}.nav{border-radius:999px;border-bottom:0}.nav[aria-current="page"]{border-bottom:0}.top{padding:14px 16px}.content{padding:8px 14px 50px}}
+.card{border:0;border-radius:20px;padding:20px 22px}
+.card h2{font-size:16px;font-weight:800;letter-spacing:-.03em;margin-bottom:12px}
+.card h2 button{color:var(--brand);font-weight:700}
+.kpi{border:0;border-radius:18px;padding:16px 18px;transition:box-shadow .15s}
+.kpi:hover{border-color:transparent;box-shadow:inset 0 0 0 1.5px var(--brand)}
+.kpi span{font-size:13px;font-weight:600}
+.kpi b{font-size:30px;font-weight:800;letter-spacing:-.04em;line-height:1.3}
+.mini div{border:0;border-radius:16px;padding:12px 14px}
+.card .mini div{background:var(--soft)}
+.mini b{font-weight:800;letter-spacing:-.03em}
+.list li{border-bottom-color:var(--line);padding:10px 0}
+.pill{font-weight:700;padding:3px 10px}
+.btn{border:0;background:var(--soft);border-radius:10px;height:38px;padding:0 14px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.btn:hover{border-color:transparent;background:color-mix(in srgb,var(--soft) 70%,var(--line))}
+.btn.solid{background:var(--brand);color:var(--on-brand)}
+.btn.solid:hover{background:color-mix(in srgb,var(--brand) 88%,var(--ink))}
+.btn.danger{color:var(--err)}
+.bar input[type=search]{border:1.5px solid transparent;background:var(--surface);border-radius:10px;height:40px}
+.bar input[type=search]:focus{outline:none;border-color:var(--brand)}
+.chip{border:0;background:var(--surface);font-weight:600;color:var(--muted);padding:6px 12px}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--surface);border-color:transparent}
+.tw{border:0;border-radius:18px}
+th{font-size:12.5px;padding:12px 12px;background:var(--surface)}
+td{padding:11px 12px}
+tbody tr:hover td{background:var(--hover)}
+td input[type=number],td select,td input[type=text]{border:1.5px solid transparent !important;background:var(--soft) !important;border-radius:8px !important;height:32px}
+td input:focus,td select:focus{outline:none;border-color:var(--brand) !important}
+.subtab{border:0;background:var(--surface);font-weight:700;color:var(--muted);padding:8px 16px}
+.subtab[aria-selected="true"]{background:var(--ink);color:var(--surface)}
+.panel{border-radius:24px 0 0 24px}
+.fld input,.fld select,.fld textarea{border:1.5px solid transparent;background:var(--soft);border-radius:10px;min-height:42px}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:none;border-color:var(--brand);background:var(--surface)}
+.fld .ro{background:var(--soft)}
+.prog i{background:var(--c3)}
+.yr{border:0;background:var(--surface);border-radius:10px;height:38px}
+.login .box{border:0;border-radius:24px;padding:36px 32px;box-shadow:0 1px 2px rgba(15,27,61,.06)}
+.login h1{font-size:24px;font-weight:800;letter-spacing:-.04em}
+.login .fld input{height:50px}
+#lgBtn{height:50px;font-size:16px;border-radius:12px}
+.login .demoacc{border-radius:12px}
+.demo{background:var(--ink);color:var(--surface)}
+.toast{border-radius:12px;font-weight:600}
+</style>
+</head>
+<body>
+<script>
+/* 안전장치: 화면 코드가 멈추면 빈 화면 대신 원인과 위치를 보여줍니다 */
+window.__adminStarted = false;
+function __showFail(msg, line){
+  if (window.__adminStarted) return;
+  var b = document.getElementById("bootFail"); if (!b) { window.__pendingFail = window.__pendingFail || [msg, line]; return; }
+  if (!b.hidden) return;   // 처음 난 오류(가장 정확한 원인)를 남겨 둡니다
+  b.hidden = false;
+  b.querySelector("code").textContent = msg + (line ? "  (admin.html 약 " + line + "번째 줄)" : "");
+}
+window.addEventListener("error", function(e){ __showFail(e.message || String(e), e.lineno); });
+setTimeout(function(){ if (!window.__adminStarted && window.__pendingFail) return __showFail(window.__pendingFail[0], window.__pendingFail[1]); if (!window.__adminStarted) __showFail("화면 코드가 시작되지 않았어요. admin.html이 끝까지 붙여넣어졌는지(마지막 줄 </html>) 확인하세요.", 0); }, 4000);
+</script>
+<script id="boot" type="application/json">{"schema":{"course":{"sheet":"과정","label":"과정 마스터","icon":"📚","prefix":"C","title":"name","cols":[["name","과정명","text",{"req":1,"list":1}],["biz","사업구분","select",{"list":1,"filter":1,"options":["재직자","KDT","공유개방","VR체험","기타"]}],["field","분야","select",{"list":1,"filter":1,"options":["생성형AI","360영상","드론","Virtual Studio","영상편집","기타"]}],["level","수준","select",{"list":1,"options":["입문","기본","심화"]}],["hours","교육시간(h)","number",{"list":1}],["passRate","수료기준(%)","number",{}],["capacity","기본 정원","number",{}],["status","운영상태","select",{"list":1,"filter":1,"options":["기획중","모집중","운영중","종료"]}],["year","연도","select",{"options":["2024","2025","2026","2027","2028","2029","2030"]}],["intro","과정소개","textarea",{}],["sessionCount","개설 회차 수","number",{"calc":1,"list":1}]]},"session":{"sheet":"교육일정","label":"교육 일정(회차)","icon":"📅","prefix":"S","title":"title","cols":[["title","회차명","text",{"req":1,"list":1}],["courseId","과정","ref",{"ref":"course","req":1,"list":1}],["round","회차","number",{}],["start","시작일","date",{"req":1,"list":1}],["end","종료일","date",{"list":1}],["time","요일·시간","text",{"list":1}],["place","장소","select",{"list":1,"options":["교육장","가상스튜디오","5층 편집실","외부(출강)","온라인"]}],["teacher","강사","text",{"list":1}],["capacity","정원","number",{"list":1}],["deadline","신청마감일","date",{}],["status","진행상태","select",{"list":1,"filter":1,"options":["모집예정","모집중","모집마감","운영중","종료","폐강"]}],["notified","사전안내 발송","check",{}],["reported","결과보고 완료","check",{}],["memo","메모","textarea",{}],["applied","신청인원","number",{"calc":1,"list":1}],["remaining","잔여석","number",{"calc":1,"list":1}],["satisfaction","평균 만족도","number",{"calc":1}]]},"student":{"sheet":"훈련생","label":"훈련생","icon":"👤","prefix":"P","title":"name","cols":[["name","이름","text",{"req":1,"list":1}],["birth","생년월일(주민번호 앞 6자리)","text",{"req":1,"list":1}],["phone","연락처","phone",{"req":1,"list":1}],["email","이메일","email",{"list":1}],["company","소속기업","text",{"list":1}],["job","직급·직무","text",{}],["kind","구분","select",{"list":1,"filter":1,"options":["재직자","프리랜서","구직자","대학생","기타"]}],["agree","개인정보 동의","check",{}],["marketing","마케팅 수신 동의","check",{}],["joinedAt","홈페이지 가입일","date",{"list":1}],["rrnAgreedAt","고유식별정보 동의일","date",{}],["rrnMasked","주민등록번호","text",{"calc":1,"list":1}],["agreement","협약서","text",{"calc":1,"list":1}],["lastLogin","최근 로그인","text",{}],["memo","메모","textarea",{}],["courses","수강 횟수","number",{"calc":1,"list":1}],["totalHours","누적 이수시간","number",{"calc":1,"list":1}]]},"enrollment":{"sheet":"수강신청","label":"수강신청","icon":"📝","prefix":"E","title":"studentName","cols":[["studentId","훈련생","ref",{"ref":"student","req":1}],["sessionId","회차","ref",{"ref":"session","req":1,"list":1}],["appliedAt","신청일","date",{"list":1}],["route","신청경로","select",{"options":["홈페이지","전화","기업단체","현장","기타"]}],["status","진행상태","select",{"list":1,"filter":1,"options":["신청","확정","대기","취소","수강중","수료","미수료"]}],["totalDays","총교육일수","number",{"list":1}],["attended","출석일수","number",{"list":1}],["hours","이수시간(h)","number",{}],["smsSent","확정문자 발송","check",{}],["memo","메모","textarea",{}],["studentName","이름","text",{"calc":1,"list":1}],["phone","연락처","phone",{"calc":1,"list":1}],["rate","출석률(%)","number",{"calc":1,"list":1}],["verdict","수료판정","text",{"calc":1,"list":1}]]},"cert":{"sheet":"수료증","label":"수료증 발급","icon":"🎖","prefix":"R","title":"no","cols":[["no","호수","text",{"list":1}],["enrollmentId","수강신청","ref",{"ref":"enrollment","req":1}],["issuedAt","발급일","date",{"list":1}],["status","발급상태","select",{"list":1,"filter":1,"options":["발급대기","온라인발급","발송완료","재발급","발급중지"]}],["url","외부 수료증 링크(선택)","url",{}],["printCount","온라인 조회·출력 횟수","number",{"list":1}],["emailed","이메일 발송","check",{"list":1}],["sentAt","발송일","date",{}],["memo","비고","textarea",{}],["studentName","이름","text",{"calc":1,"list":1}],["sessionTitle","과정","text",{"calc":1,"list":1}]]},"company":{"sheet":"기업협약","label":"기업·협약","icon":"🏢","prefix":"B","title":"name","cols":[["name","기업명","text",{"req":1,"list":1}],["bizNo","사업자등록번호","text",{"list":1}],["ceo","대표자","text",{}],["address","주소","text",{}],["industry","업종","select",{"list":1,"options":["미디어·콘텐츠","IT·SW","제조","공공기관","교육","기타"]}],["size","기업규모","select",{"options":["대기업","중견기업","중소기업","소상공인","공공"]}],["region","지역","select",{"options":["전주","전북(기타)","타지역"]}],["manager","담당자","text",{"list":1}],["managerPhone","담당자 연락처","phone",{"list":1}],["managerEmail","담당자 이메일","email",{}],["status","협약상태","select",{"list":1,"filter":1,"options":["미협약","협약진행중","협약완료","만료"]}],["signedAt","협약일","date",{}],["expiresAt","협약만료일","date",{"list":1}],["docUrl","협약서 링크","url",{}],["memo","메모","textarea",{}],["agreementStatus","협약서 제출","text",{"calc":1,"list":1}],["students","참여 훈련생 수","number",{"calc":1,"list":1}],["shares","공유개방 이용 건수","number",{"calc":1,"list":1}]]},"survey":{"sheet":"설문결과","label":"설문 결과","icon":"📊","prefix":"Q","title":"kind","cols":[["answeredAt","응답일","date",{"list":1}],["kind","설문유형","select",{"list":1,"filter":1,"options":["만족도조사","수요조사"]}],["sessionId","회차","ref",{"ref":"session","list":1}],["overall","전반 만족도","number",{}],["teacher","강사 만족도","number",{}],["content","내용 만족도","number",{}],["env","환경 만족도","number",{}],["recommend","추천의향","select",{"options":["적극 추천","추천","보통","비추천"]}],["hope","희망 분야","multi",{"list":1,"options":["생성형AI","360영상","드론","Virtual Studio","영상편집","기타"]}],["good","좋았던 점","textarea",{}],["improve","개선 의견","textarea",{"list":1}],["avg","평균점수","number",{"calc":1,"list":1}]]},"message":{"sheet":"발송이력","label":"문자·안내 발송 이력","icon":"💬","prefix":"M","title":"title","cols":[["sentAt","발송일시","date",{"list":1}],["title","발송제목","text",{"req":1,"list":1}],["kind","발송유형","select",{"list":1,"filter":1,"options":["모집홍보","신청확인","확정안내","사전안내","리마인드","수료안내","설문요청","기타"]}],["channel","채널","select",{"list":1,"options":["문자(알리고)","이메일","카카오톡","SNS"]}],["sessionId","회차","ref",{"ref":"session","list":1}],["count","발송인원","number",{"list":1}],["status","발송상태","select",{"list":1,"options":["작성중","발송예약","발송완료","실패"]}],["body","발송내용","textarea",{}],["cost","비용(원)","number",{}]]},"share":{"sheet":"공유개방","label":"장비·공유개방","icon":"🔧","prefix":"H","title":"org","cols":[["type","이용유형","select",{"list":1,"filter":1,"options":["장비대여","시설대관","기업견학","VR체험","VR버스"]}],["items","장비·시설","multi",{"list":1,"options":["가상스튜디오","편집PC","360카메라","촬영장비","드론","VR장비","기타"]}],["org","소속","text",{"list":1}],["name","신청자","text",{"req":1,"list":1}],["phone","연락처","phone",{"req":1,"list":1}],["email","이메일","email",{}],["start","시작일","date",{"list":1}],["end","종료일","date",{}],["people","인원","number",{"list":1}],["status","처리상태","select",{"list":1,"filter":1,"options":["접수","승인","이용중","반납완료","반려","취소"]}],["request","요청사항","textarea",{}],["returned","반납상태 점검","check",{}],["surveyed","만족도조사 완료","check",{}],["memo","비고","textarea",{}]]},"kdt":{"sheet":"KDT사전신청","label":"KDT 사전신청","icon":"🎓","prefix":"K","title":"name","cols":[["name","이름","text",{"req":1,"list":1}],["course","희망과정","select",{"list":1,"options":["KDT 3개월 과정","기타"]}],["birth","생년월일","text",{}],["phone","연락처","phone",{"req":1,"list":1}],["email","이메일","email",{}],["state","현재 상태","select",{"list":1,"options":["구직자","졸업예정자","대학생","재직자","기타"]}],["region","거주지역","select",{"options":["전주","전북(기타)","타지역"]}],["interests","관심분야","multi",{"options":["생성형AI","360영상","드론","Virtual Studio","영상편집","기타"]}],["motive","지원동기","textarea",{}],["status","처리상태","select",{"list":1,"filter":1,"options":["접수","상담예정","서류제출","선발","미선발","취소"]}],["memo","메모","textarea",{}]]},"contest":{"sheet":"공모전접수","label":"공모전 접수","icon":"🏆","prefix":"W","title":"title","cols":[["contest","공모전","select",{"list":1,"options":["VR 창작 공모전","기타"]}],["title","작품명","text",{"req":1,"list":1}],["teamType","참가구분","select",{"list":1,"options":["개인","팀"]}],["category","출품부문","select",{"list":1,"filter":1,"options":["VR콘텐츠","360영상","메타버스","기타"]}],["name","대표자","text",{"req":1,"list":1}],["phone","연락처","phone",{"req":1}],["email","이메일","email",{}],["org","소속","text",{}],["members","팀원","text",{}],["link","작품 링크","url",{"list":1}],["desc","작품 설명","textarea",{}],["status","접수상태","select",{"list":1,"filter":1,"options":["접수","서류확인","보완요청","심사중","수상","미수상","취소"]}],["memo","메모","textarea",{}]]},"equipment":{"sheet":"장비","label":"장비 현황","icon":"🛠","prefix":"Z","title":"name","roles":["admin"],"cols":[["code","장비코드","text",{"list":1}],["name","장비명","text",{"req":1,"list":1}],["category","분류","select",{"list":1,"filter":1,"options":["촬영장비","360카메라","드론","VR장비","편집PC","조명·음향","시설","기타"]}],["model","모델명","text",{"list":1}],["maker","제조사","text",{}],["serial","시리얼번호","text",{}],["qty","수량","number",{"list":1}],["acquiredAt","취득일","date",{}],["price","취득금액(원)","number",{}],["location","보관위치","text",{"list":1}],["status","상태","select",{"list":1,"filter":1,"options":["사용가능","대여중","점검필요","수리중","불용"]}],["rentable","대여가능","check",{"list":1}],["public","홈페이지 공개","check",{}],["desc","설명(홈페이지 표시)","textarea",{}],["photo","사진 링크","url",{}],["memo","메모","textarea",{}],["borrower","현재 대여자","text",{"calc":1,"list":1}],["rentCount","누적 대여","number",{"calc":1,"list":1}],["lastCheck","최근 점검일","date",{"calc":1,"list":1}]]},"rental":{"sheet":"대여반납","label":"대여·반납","icon":"🔁","prefix":"L","title":"borrower","roles":["admin"],"cols":[["equipmentId","장비","ref",{"ref":"equipment","req":1,"list":1}],["shareId","신청 건","ref",{"ref":"share"}],["borrower","대여자","text",{"list":1}],["org","소속","text",{"list":1}],["phone","연락처","phone",{}],["outAt","대여일","date",{"req":1,"list":1}],["dueAt","반납예정일","date",{"req":1,"list":1}],["returnedAt","실제 반납일","date",{"list":1}],["status","상태","select",{"list":1,"filter":1,"options":["대여중","반납완료","연체","분실·파손"]}],["outCheck","반출 시 상태","textarea",{}],["returnCheck","반납 점검","select",{"list":1,"options":["정상","이상 있음"]}],["returnMemo","반납 메모","textarea",{}],["overdue","연체일수","number",{"calc":1,"list":1}],["equipName","장비명","text",{"calc":1}]]},"maintenance":{"sheet":"유지보수","label":"유지보수 이력","icon":"🔩","prefix":"X","title":"kind","roles":["admin"],"cols":[["equipmentId","장비","ref",{"ref":"equipment","req":1,"list":1}],["date","일자","date",{"req":1,"list":1}],["kind","구분","select",{"list":1,"filter":1,"options":["정기점검","수리","소모품교체","펌웨어·SW","교정","불용처리"]}],["detail","내용","textarea",{"req":1,"list":1}],["vendor","업체","text",{"list":1}],["cost","비용(원)","number",{"list":1}],["handler","처리자","text",{}],["result","결과","select",{"list":1,"options":["완료","진행중","부품대기","수리불가"]}],["nextAt","다음 점검일","date",{"list":1}]]},"goal":{"sheet":"성과목표","label":"성과 목표","icon":"🎯","prefix":"G","title":"kpi","roles":["operator"],"cols":[["year","연도","select",{"req":1,"list":1,"filter":1,"options":["2024","2025","2026","2027","2028","2029","2030"]}],["kpi","지표","select",{"req":1,"list":1,"options":["교육 운영 회차","교육 신청 인원","수료 인원","수료율","연인원 교육시간","교육 만족도","참여 기업 수","신규 협약 기업","공유개방 이용 건수","장비 대여 건수","견학·VR 체험 인원","KDT 사전신청 인원","공모전 접수 건수","현업적용도","참여기업 만족도","사후 조사 응답률","기타(수기 입력)"]}],["customName","수기 지표명","text",{"list":1}],["target","목표값","number",{"req":1,"list":1}],["unit","단위(수기 지표)","text",{}],["manualActual","실적 직접 입력(선택)","number",{}],["weight","가중치","number",{}],["memo","산출 근거·메모","textarea",{}],["actual","실적","number",{"calc":1,"list":1}],["rate","달성률(%)","number",{"calc":1,"list":1}],["verdict","판정","text",{"calc":1,"list":1}]]},"agreement":{"sheet":"협약서제출","label":"협약서 제출","icon":"📄","prefix":"Y","title":"company","cols":[["company","기업명","text",{"req":1,"list":1}],["bizNo","사업자등록번호","text",{"list":1}],["ceo","대표자","text",{}],["address","주소","text",{}],["industry","업종","select",{"options":["미디어·콘텐츠","IT·SW","제조","공공기관","교육","기타"]}],["size","기업규모","select",{"options":["대기업","중견기업","중소기업","소상공인","공공"]}],["manager","담당자","text",{"list":1}],["managerPhone","담당자 연락처","phone",{"list":1}],["managerEmail","담당자 이메일","email",{}],["studentId","제출 회원","ref",{"ref":"student"}],["submittedAt","제출일","date",{"list":1}],["fileId","협약서 파일","file",{"list":1}],["fileName","파일명","text",{}],["stampedFileId","날인본","file",{"list":1}],["stampedFileName","날인본 파일명","text",{}],["stampedAt","기관 날인일","date",{}],["stampedBy","날인자","text",{}],["status","검토상태","select",{"list":1,"filter":1,"options":["제출","보완요청","승인","반려"]}],["reviewNote","검토 의견 (회원에게 보임)","textarea",{}],["reviewedAt","검토일","date",{}],["companyId","협약기업","ref",{"ref":"company"}]]},"resource":{"sheet":"자료실","label":"자료실 관리","icon":"🗂","prefix":"D","title":"title","cols":[["title","제목","text",{"req":1,"list":1}],["category","분류","select",{"list":1,"filter":1,"options":["협약서·서식","교육 안내","결과·자료","기타"]}],["desc","설명","textarea",{}],["fileId","파일","file",{"list":1}],["fileName","파일명","text",{"list":1}],["sizeKb","크기(KB)","number",{}],["public","홈페이지 공개","check",{"list":1}],["pinned","상단 고정","check",{}],["downloads","다운로드 수","number",{"list":1}]]},"privacyLog":{"sheet":"개인정보열람기록","label":"개인정보 열람 기록","icon":"🔎","prefix":"V","title":"target","roles":["operator"],"cols":[["at","열람일시","text",{"list":1}],["who","열람자","text",{"list":1}],["target","대상","text",{"list":1}],["item","항목","text",{"list":1}],["reason","사유","text",{"list":1}]]},"surveyForm":{"sheet":"조사지","label":"조사지 관리","icon":"🧾","prefix":"SF","title":"name","cols":[["name","조사명","text",{"req":1,"list":1}],["kind","조사 종류","select",{"req":1,"list":1,"options":["만족도","사전역량","사후역량","현업적용-본인","현업적용-기업","기업만족도"]}],["target","응답 대상","select",{"list":1,"options":["수료생","수강생","기업 담당자"]}],["timing","배정 시점","select",{"list":1,"options":["수료 즉시","수료 후 N일","교육 첫날","교육 마지막 날","매년 12월","직접 배정"]}],["offsetDays","N일","number",{}],["dueDays","응답 기한(일)","number",{}],["active","사용","check",{"list":1}],["intro","안내 문구","textarea",{}],["qCount","문항 수","number",{"calc":1,"list":1}]]},"surveyAssign":{"sheet":"조사배정","label":"조사 대상","icon":"📮","prefix":"SA","title":"respondent","cols":[["formId","조사지","ref",{"ref":"surveyForm","list":1}],["sessionId","회차","ref",{"ref":"session","list":1}],["studentId","훈련생","ref",{"ref":"student"}],["companyId","기업","ref",{"ref":"company"}],["respondent","응답자","text",{"list":1}],["phone","연락처","phone",{"list":1}],["email","이메일","email",{}],["assignKey","중복 방지 키","text",{}],["assignedAt","배정일","date",{"list":1}],["dueAt","응답 기한","date",{"list":1}],["status","상태","select",{"list":1,"filter":1,"options":["대기","응답완료","기한만료"]}],["sentCount","요청 횟수","number",{"list":1}],["lastSentAt","최근 요청일","date",{}],["respondedAt","응답일","date",{"list":1}]]},"surveyAnswer":{"sheet":"조사응답","label":"조사 응답","icon":"🗳","prefix":"SR","title":"formId","cols":[["assignId","배정","ref",{"ref":"surveyAssign"}],["formId","조사지","ref",{"ref":"surveyForm","list":1}],["kind","조사 종류","text",{"list":1}],["sessionId","회차","ref",{"ref":"session","list":1}],["studentId","훈련생","ref",{"ref":"student"}],["companyId","기업","ref",{"ref":"company"}],["answeredAt","응답일","date",{"list":1}],["score","척도 평균(5점)","number",{"list":1}],["answers","응답(JSON)","textarea",{}],["comment","주관식 응답","textarea",{"list":1}]]},"report":{"sheet":"결과보고","label":"결과보고","icon":"📑","prefix":"RP","title":"title","cols":[["sessionId","회차","ref",{"ref":"session","req":1,"list":1}],["title","보고서 제목","text",{"list":1}],["writer","작성자","text",{"list":1}],["writtenAt","작성일","date",{"list":1}],["status","상태","select",{"list":1,"filter":1,"options":["작성중","작성완료","보고완료"]}],["overview","운영 개요 (보완 설명)","textarea",{}],["achievements","운영 성과","textarea",{}],["issues","문제점 및 개선 사항","textarea",{}],["nextPlan","향후 계획","textarea",{}],["photo1","현장 사진 1","file",{}],["photo2","현장 사진 2","file",{}]]},"staff":{"sheet":"담당자","label":"담당자 관리","icon":"🪪","prefix":"U","title":"name","roles":["operator"],"cols":[["name","이름","text",{"req":1,"list":1}],["empNo","사번","text",{"req":1,"list":1}],["dept","소속·직책","text",{"list":1}],["roles","권한","multi",{"req":1,"list":1,"options":["교육담당","관리자","운영자"]}],["active","사용","check",{"list":1}],["resetPw","비밀번호 초기화","check",{}],["lastLogin","최근 로그인","text",{"list":1}]]},"account":{"sheet":"계정대장","label":"계정 대장","icon":"🔐","prefix":"A","title":"service","cols":[["service","서비스명","text",{"req":1,"list":1}],["purpose","용도","select",{"list":1,"filter":1,"options":["문자발송","메일·클라우드","디자인·영상","AI도구","결제·구매","홍보·광고","장비PC","기타"]}],["owner","관리 담당자","text",{"list":1}],["url","바로가기","url",{"list":1}],["vault","비밀번호 보관 위치","select",{"list":1,"options":["팀 비밀번호 관리자","담당자 개인 보관","미정리"]}],["mfa","2단계 인증","select",{"list":1,"options":["사용","미사용","해당없음"]}],["renewAt","갱신·만료일","date",{}],["memo","비고","textarea",{}]]}},"menu":[{"group":"","items":[{"id":"dashboard","label":"운영 대시보드","icon":"🏠"}]},{"group":"교육 운영","items":[{"id":"course"},{"id":"session"},{"id":"student"},{"id":"attendance","label":"수강신청·출석","icon":"📝"},{"id":"cert"}]},{"group":"기업·설문·발송","items":[{"id":"company"},{"id":"survey"},{"id":"message"}]},{"group":"사후관리","items":[{"id":"followup","label":"사후관리 현황","icon":"📮"},{"id":"surveyForm"},{"id":"reportView","label":"교육 결과보고","icon":"📑"}]},{"group":"자료·협약","items":[{"id":"resource"},{"id":"agreement","label":"협약서 제출 관리","icon":"📄"},{"id":"seal","label":"기관 직인 관리","icon":"🔴","roles":["operator"]}]},{"group":"공유개방·사업","items":[{"id":"share","label":"공유개방 신청","icon":"🔧"},{"id":"kdt"},{"id":"contest"}]},{"group":"장비관리","roles":["admin"],"items":[{"id":"equip","label":"장비관리","icon":"🛠","roles":["admin"]}]},{"group":"성과관리","roles":["operator"],"items":[{"id":"perf","label":"성과관리","icon":"📈","roles":["operator"]}]},{"group":"업무 지원","items":[{"id":"manual","label":"업무 매뉴얼","icon":"📖"},{"id":"account"},{"id":"staff","roles":["operator"]},{"id":"privacyLog","roles":["operator"]}]}],"kpis":[{"id":"sessions","label":"교육 운영 회차","unit":"회","group":"교육 운영"},{"id":"applicants","label":"교육 신청 인원","unit":"명","group":"교육 운영"},{"id":"completers","label":"수료 인원","unit":"명","group":"교육 성과"},{"id":"passRate","label":"수료율","unit":"%","group":"교육 성과"},{"id":"eduHours","label":"연인원 교육시간","unit":"시간","group":"교육 성과"},{"id":"satisfaction","label":"교육 만족도","unit":"점","group":"교육 성과"},{"id":"companies","label":"참여 기업 수","unit":"개","group":"기업 협력"},{"id":"newMou","label":"신규 협약 기업","unit":"개","group":"기업 협력"},{"id":"shares","label":"공유개방 이용 건수","unit":"건","group":"공유개방"},{"id":"rentals","label":"장비 대여 건수","unit":"건","group":"공유개방"},{"id":"experience","label":"견학·VR 체험 인원","unit":"명","group":"공유개방"},{"id":"kdt","label":"KDT 사전신청 인원","unit":"명","group":"기타 사업"},{"id":"contest","label":"공모전 접수 건수","unit":"건","group":"기타 사업"},{"id":"transfer","label":"현업적용도","unit":"점","group":"사후관리"},{"id":"companySat","label":"참여기업 만족도","unit":"점","group":"사후관리"},{"id":"followRate","label":"사후 조사 응답률","unit":"%","group":"사후관리"}],"pwMode":false,"homepage":"https://chansue79-dotcom.github.io/KHP/"}</script>
+<div id="bootFail" hidden style="max-width:640px;margin:60px auto;padding:24px 26px;background:#fff;border-radius:16px;font:15px/1.7 system-ui,sans-serif;color:#1C2540;box-shadow:0 1px 3px rgba(0,0,0,.08)">
+  <h1 style="font-size:19px;margin:0 0 8px">관리 화면을 시작하지 못했어요</h1>
+  <p style="margin:0 0 10px">아래 문구를 캡처해서 보내주시면 바로 원인을 찾을 수 있어요.</p>
+  <code style="display:block;background:#F3F5F8;border-radius:10px;padding:12px 14px;white-space:pre-wrap;word-break:break-all;color:#C23B32"></code>
+  <p style="margin:12px 0 0;color:#5E6678;font-size:13.5px">대부분 Apps Script의 admin 파일을 다시 붙여넣고(첫 줄 &lt;!DOCTYPE html&gt;, 마지막 줄 &lt;/html&gt;), 배포 관리에서 새 버전으로 배포하면 해결됩니다.</p>
+</div>
+<div class="demo" id="demo">미리보기 화면입니다. 예시 데이터로 동작하며 새로고침하면 처음 상태로 돌아가요.</div>
+<div class="login" id="login" hidden>
+  <form class="box" id="loginForm" novalidate>
+    <div class="bars" aria-hidden="true" style="border-radius:3px;overflow:hidden"><i></i><i></i><i></i><i></i><i></i></div>
+    <h1>재직자 교육 관리</h1><p>전주문화방송(주) K-하이테크 플랫폼 · 등록된 담당자 전용</p>
+    <div class="fld"><label for="lgName">이름</label><input id="lgName" autocomplete="username" required></div>
+    <div class="fld"><label for="lgNo">사번</label><input id="lgNo" inputmode="numeric" autocomplete="off" required></div>
+    <div class="fld" id="lgPwWrap" hidden><label for="lgPw">비밀번호</label><input id="lgPw" type="password" autocomplete="current-password"></div>
+    <div class="fld" id="lgNewWrap" hidden><label for="lgNew">새 비밀번호 (8자 이상)</label><input id="lgNew" type="password" autocomplete="new-password"></div>
+    <div class="err" id="lgErr" role="alert"></div>
+    <button class="btn solid" style="width:100%;padding:11px" id="lgBtn">로그인</button>
+    <p style="margin:14px 0 0">계정이 없거나 사번이 바뀌었다면 운영자에게 담당자 등록을 요청하세요.</p>
+    <div class="demoacc" id="lgDemo" hidden>미리보기 계정 — 운영자: <b>운영자 / 0000</b> (전체 메뉴) · 교육담당: <b>김교육 / 1001</b> · 관리자: <b>이장비 / 2001</b></div>
+  </form>
+</div>
+<div class="app" id="app" hidden>
+  <aside id="side" aria-label="관리 메뉴"></aside>
+  <main>
+    <div class="top"><h1 id="title">운영 대시보드</h1><div class="r who"><span id="me"></span><a id="sheetLink" target="_blank" rel="noopener" hidden>구글 시트 열기</a><button class="btn" id="logout">로그아웃</button></div></div>
+    <div class="content" id="view"><p class="loading">불러오는 중</p></div>
+  </main>
+</div>
+<div class="scrim" id="scrim"></div>
+<section class="panel" id="panel" aria-label="편집" aria-hidden="true">
+  <header><h2 id="pTitle"></h2><button class="btn" id="pClose">닫기</button></header>
+  <div class="body" id="pBody"></div>
+  <footer><button class="btn danger" id="pDel">삭제</button><span class="sp"></span><button class="btn" id="pCancel">취소</button><button class="btn solid" id="pSave">저장</button></footer>
+</section>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ── 서버 연결: Apps Script에서는 google.script.run, 미리보기에서는 브라우저 안의 예시 서버 ── */
+const IS_GAS = typeof google !== "undefined" && google.script && google.script.run;
+/* GitHub 등에 올려서 쓸 때: Apps Script 배포 주소 (…/exec). 비워두면 Apps Script 안에서 열리는 방식 또는 미리보기로 동작합니다. */
+const API_URL = "https://script.google.com/macros/s/AKfycbwZjjrBfk2r4rCR534kGAvlVC4-B8f7yRYrddDG_Q-VDdQXVbDEVGmzwutsGtQRrutB/exec";
+const MODE = IS_GAS ? "gas" : API_URL ? "http" : "demo";
+let BOOT = null;
+try { BOOT = JSON.parse(document.getElementById("boot").textContent); } catch (e) {}
+if (!BOOT && window.DEMO_BOOT) BOOT = window.DEMO_BOOT;
+if (!BOOT) {   // 파일을 직접 열었을 때: 빈 화면 대신 여는 방법을 안내
+  document.body.innerHTML = `<div style="max-width:560px;margin:60px auto;padding:28px;font:15px/1.7 system-ui,sans-serif;border:1px solid #DDE2EA;border-radius:14px;background:#fff;color:#1C2540">
+    <h1 style="font-size:19px;margin:0 0 10px">관리 화면은 이 파일을 직접 열어서는 볼 수 없어요</h1>
+    <p style="margin:0 0 12px">admin.html은 Apps Script에 넣어 배포한 뒤, 배포 주소 끝에 <b>?page=admin</b>을 붙여서 여는 화면입니다.</p>
+    <ol style="margin:0 0 12px;padding-left:20px"><li>구글 시트 → 확장 프로그램 → Apps Script에 Code.gs, Schema.gs, admin.html을 넣습니다.</li>
+    <li>setup을 한 번 실행하고, 담당자 탭에 이름·사번·권한을 입력합니다.</li>
+    <li>배포 → 웹 앱(실행: 나 / 액세스: 모든 사용자)으로 배포합니다.</li>
+    <li>받은 주소 <code>https://script.google.com/macros/s/…/exec</code> 뒤에 <b>?page=admin</b>을 붙여 엽니다.</li></ol>
+    <p style="margin:0;color:#5E6678">화면만 먼저 보고 싶다면 함께 드린 preview 폴더의 admin_preview.html을 여세요.</p></div>`;
+  throw new Error("admin.html은 Apps Script 배포 주소(?page=admin)로 열어야 합니다.");
+}
+const S = BOOT.schema, KPI_LIST = BOOT.kpis || [];
+let ROLES = [], MENU = [], AUTH = null;   // AUTH = { token, name, dept, roles, sheetUrl }
+const can = r => !r || r.every(x => ROLES.includes(x));
+function applyRoles(roles){
+  ROLES = roles || [];
+  MENU = BOOT.menu.filter(g => can(g.roles)).map(g => Object.assign({}, g, { items: g.items.filter(it => can(it.roles) && (!S[it.id] || can(S[it.id].roles))) })).filter(g => g.items.length);
+}
+function gas(fn, ...args){ return new Promise((res, rej) => google.script.run.withSuccessHandler(res).withFailureHandler(e => rej(e))[fn](...args)); }
+/** 운영자 화면을 GitHub 등에 올렸을 때: Apps Script 배포 주소로 직접 요청 */
+async function http(fn, ...args){
+  const body = fn === "adminLogin" ? { action: "adminLogin", name: args[0], empNo: args[1], password: args[2], newPassword: args[3] }
+    : fn === "adminApi" ? { action: "adminApi", token: args[0], fn: args[1], args: args[2] || [] } : { action: fn };
+  let r;
+  try { r = await fetch(API_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(body) }).then(x => x.json()); }
+  catch (e) { throw new Error("서버에 연결하지 못했어요. 인터넷 연결과 Apps Script 배포(액세스: 모든 사용자)를 확인하세요."); }
+  if (fn === "adminApi") { if (!r.ok) throw new Error(r.error || "처리하지 못했어요."); return r.result; }
+  return r;
+}
+function demo(fn, ...args){ return new Promise((res, rej) => setTimeout(() => { try { res(JSON.parse(JSON.stringify(window.DEMO_BACKEND[fn](...args)))); } catch (e) { rej(e); } }, 120)); }
+/** 모든 요청에 로그인 토큰을 붙여 보냅니다. 토큰이 만료되면 로그인 화면으로 돌아갑니다. */
+async function call(fn, ...args){
+  try { return await (MODE === "gas" ? gas : MODE === "http" ? http : demo)("adminApi", AUTH && AUTH.token, fn, args); }
+  catch (e) { if (/로그인이 필요/.test(e.message || e)) { logout("로그인 시간이 지났어요. 다시 로그인해 주세요."); } throw e; }
+}
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const md = iso => { if(!iso) return ""; const p = String(iso).slice(0,10).split("-"); return p.length===3 ? `${+p[1]}.${p[2]}` : iso; };
+function toast(m){ const t=$("#toast"); t.textContent=m; t.classList.add("show"); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),2400); }
+const tone = s => /^(확정|승인|선발|수료|수상|반납완료|발송완료|협약완료|종료|사용|사용가능|정상|완료|달성|온라인발급)$/.test(s) ? "ok"
+  : /^(취소|반려|미선발|미수료|미수상|오류|만료|폐강|미사용|미정리|미달|수리중|불용|연체|분실·파손|이상 있음|수리불가|발급중지)$/.test(s) ? "no"
+  : /^(신청|접수|대기|보완요청|상담예정|발급대기|협약진행중|작성중|발송예약|주의|점검필요|진행중|부품대기|미협약)$/.test(s) ? "wait"
+  : /^(모집중|운영중|수강중|이용중|심사중|대여중|모집예정|서류제출|서류확인)$/.test(s) ? "go" : "";
+const pill = s => s ? `<span class="pill ${tone(s)}">${esc(s)}</span>` : "";
+
+/* ── 메뉴 ── */
+let current = "dashboard", badges = {};
+function labelOf(id){ for(const g of MENU) for(const it of g.items) if(it.id===id) return { label: it.label || S[id].label, icon: it.icon || S[id].icon }; return {label:id,icon:""}; }
+function renderSide(){
+  $("#side").innerHTML = `<div class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="brand">재직자 교육 관리<small>전주문화방송(주) K-하이테크 플랫폼</small></div>` +
+    MENU.map(g => (g.group ? `<div class="grp">${esc(g.group)}</div>` : "") + g.items.map(it => { const l = labelOf(it.id);
+      return `<button class="nav" data-nav="${it.id}" aria-current="${current===it.id?"page":"false"}"><span class="ic" aria-hidden="true">${l.icon}</span>${esc(l.label)}${badges[it.id]?`<span class="bd">${badges[it.id]}</span>`:""}</button>`; }).join("")).join("");
+}
+$("#side").addEventListener("click", e => { const b = e.target.closest("[data-nav]"); if(b) go(b.dataset.nav); });
+function go(id, opt){ current = id; renderSide(); $("#title").textContent = labelOf(id).label; closePanel();
+  $("#view").onclick = null; $("#view").onchange = null; $("#view").oninput = null;
+  const v = $("#view"); v.innerHTML = `<p class="loading">불러오는 중</p>`; window.scrollTo(0,0);
+  (id==="dashboard"?viewDashboard():id==="attendance"?viewAttendance(opt):id==="manual"?viewManual():id==="equip"?viewEquip(opt):id==="perf"?viewPerf(opt):id==="seal"?viewSeal():id==="followup"?viewFollowup():id==="surveyForm"?viewForms(opt):id==="reportView"?viewReport(opt):viewTable(id, opt))
+    .catch(err => { v.innerHTML = `<p class="none">불러오지 못했어요: ${esc(err.message||err)}</p>`; }); }
+
+/* ── 대시보드 ── */
+async function viewDashboard(){
+  const d = await call("adminDashboard"), k = d.kpi;
+  badges = { agreement: k.agreementPending || 0, equip: d.equip ? d.equip.overdue.length + d.equip.repair : 0, attendance: k.pendingEnroll, cert: k.certPending, share: k.sharePending, kdt: d.newApps.filter(x=>x.kind==="KDT").length, contest: d.newApps.filter(x=>x.kind==="공모전").length };
+  renderSide();
+  const K = (label, val, nav, alert) => `<button class="kpi ${alert&&val?"alert":""}" data-nav="${nav}"><span>${label}</span><b>${val ?? "-"}</b></button>`;
+  const L = (rows, fn, empty) => rows.length ? `<ul class="list">${rows.map(fn).join("")}</ul>` : `<p class="none">${empty}</p>`;
+  $("#view").innerHTML = `
+    <div class="kpis">
+      ${K("이번 달 교육 회차", k.monthSessions, "session")}${K("모집 중 과정", k.openSessions, "session")}
+      ${K("확정 대기 신청", k.pendingEnroll, "attendance", 1)}${K("수료증 미발급", k.certPending, "cert", 1)}
+      ${K("공유개방·VR 접수 대기", k.sharePending, "share", 1)}${K("KDT·공모전 신규", k.newApps, "kdt", 1)}
+      ${K("올해 수료생", k.yearCompleted, "attendance")}${K("평균 만족도 (5점)", k.satisfaction, "survey")}
+    </div>
+    <div class="grid2">
+      <div class="card"><h2>📅 이번 달 교육 일정<button data-nav="session">전체</button></h2>
+        ${L(d.month, s => `<li><div>${esc(s.title)}<small>${md(s.start)}${s.end&&s.end!==s.start?"–"+md(s.end):""} · ${esc(s.time||"")} · ${esc(s.place||"")}</small></div><div>${pill(s.status)} <small style="display:inline">${s.applied}/${s.capacity??"-"}명</small></div></li>`, "이번 달 회차가 없어요. 교육 일정에서 회차를 추가하세요.")}</div>
+      <div class="card"><h2>🟢 모집 중인 과정<button data-nav="session">전체</button></h2>
+        ${L(d.open, s => `<li><div>${esc(s.title)}<small>교육 ${md(s.start)}${s.deadline?` · 마감 ${md(s.deadline)}`:""}</small></div><span class="pill ${s.remaining!==null&&s.remaining<=3?"no":""}">${s.remaining===null?`${s.applied}명 신청`:`잔여 ${s.remaining}석`}</span></li>`, "모집 중인 과정이 없어요.")}</div>
+      <div class="card"><h2>📝 확정 처리할 수강 신청<button data-nav="attendance">처리하기</button></h2>
+        ${L(d.pendingEnroll, e => `<li><div>${esc(e.studentName)}<small>${esc(e.session)} · ${md(e.appliedAt)} 신청</small></div>${pill(e.status)}</li>`, "처리할 신청이 없어요.")}</div>
+      <div class="card"><h2>🎖 수료증 미발급 (훈련생 미조회)<button data-nav="cert">발급 대장</button></h2>
+        ${L(d.certPending, c => `<li><div>${esc(c.studentName)}<small>${esc(c.sessionTitle)} · ${esc(c.no||"")}</small></div>${pill(c.status)}</li>`, "모든 수료생이 수료증을 받았어요.")}</div>
+      <div class="card"><h2>🔧 공유개방·VR 접수 대기<button data-nav="share">처리하기</button></h2>
+        ${L(d.sharePending, s => `<li><div>${esc(s.org||s.name)}<small>${esc(s.type)}${s.start?` · ${md(s.start)}`:""}</small></div>${pill("접수")}</li>`, "대기 중인 접수가 없어요.")}</div>
+      <div class="card"><h2>🎓 KDT·공모전 신규 접수</h2>
+        ${L(d.newApps, a => `<li><div>${esc(a.title)}<small>${esc(a.kind)}</small></div><button class="btn" data-nav="${a.table}">${pill(a.status)}</button></li>`, "새 접수가 없어요.")}</div>
+    </div>
+    ${d.equip?`<div class="card" style="margin-top:14px"><h2>🛠 장비 대여 현황<button data-nav="equip">장비관리</button></h2>
+      <div class="mini" style="margin-bottom:8px"><div><span>대여중</span><b>${d.equip.out}</b></div><div><span>오늘 반납 예정</span><b>${d.equip.dueToday}</b></div><div class="${d.equip.overdue.length?"alert":""}"><span>반납 연체</span><b>${d.equip.overdue.length}</b></div><div class="${d.equip.repair?"alert":""}"><span>수리·점검 필요</span><b>${d.equip.repair}</b></div></div>
+      ${d.equip.overdue.length?`<ul class="list">${d.equip.overdue.map(r=>`<li><div>${esc(r.equipName)}<small>${esc(r.borrower)} · 반납예정 ${md(r.dueAt)}</small></div><span class="pill no">${r.overdue}일 연체</span></li>`).join("")}</ul>`:""}</div>`:""}
+    <div class="card" style="margin-top:14px"><h2>🔗 바로가기</h2><div class="quick">
+      ${BOOT.homepage?`<a class="btn" href="${esc(BOOT.homepage)}" target="_blank" rel="noopener">홈페이지 열기</a>`:""}
+      ${AUTH && AUTH.sheetUrl?`<a class="btn" href="${esc(AUTH.sheetUrl)}" target="_blank" rel="noopener">구글 시트 (원본 데이터)</a>`:""}
+      <button class="btn" data-nav="session">회차 등록</button><button class="btn" data-nav="attendance">출석 입력</button>
+      <button class="btn" data-nav="message">발송 기록</button><button class="btn" data-nav="manual">업무 매뉴얼</button></div></div>`;
+}
+$("#view").addEventListener("click", e => { const b = e.target.closest("[data-nav]"); if (b && !b.closest(".panel")) go(b.dataset.nav); });
+
+/* ── 공통 표 화면 ── */
+const refCache = {};
+async function refOptions(key){ return refCache[key] || (refCache[key] = await call("adminOptions", key)); }
+let T = null; // 현재 표 상태
+async function viewTable(key, opt){
+  opt = opt || {};
+  const t = S[key]; let rows = await call("adminList", key);
+  if (opt.preset) rows = rows.filter(opt.preset);
+  const listCols = t.cols.filter(c => c[3].list);
+  const filterCol = t.cols.find(c => c[3].filter);
+  const refs = {};
+  for (const c of t.cols.filter(c => c[2]==="ref")) refs[c[0]] = Object.fromEntries((await refOptions(c[3].ref)).map(o => [o.id, o.label]));
+  T = { key, t, rows, listCols, filterCol, refs, q:"", f:"", sort:null, opt };
+  const el = opt.el || $("#view");
+  el.innerHTML = `${key==="survey"?surveySummary(rows, refs.sessionId):""}${opt.hint?`<p class="hint">${opt.hint}</p>`:""}
+    <div class="bar"><input type="search" id="tq" placeholder="검색 (이름, 제목, 연락처 등)" aria-label="검색">
+      <span class="count" id="tcount"></span>${opt.extra||""}
+      <button class="btn" id="tcsv">CSV 내려받기</button><button class="btn solid" id="tnew">${opt.newLabel||"새로 추가"}</button></div>
+    ${filterCol?`<div class="chips" id="tf" style="margin-bottom:12px">${["",...filterCol[3].options].map(o=>`<button class="chip" data-f="${esc(o)}" aria-pressed="${o===""}">${o||"전체"}</button>`).join("")}</div>`:""}
+    <div class="tw"><table><thead><tr>${listCols.map(c=>`<th data-k="${c[0]}" aria-sort="none">${esc(c[1])}</th>`).join("")}</tr></thead><tbody id="tb"></tbody></table></div>`;
+  $("#tq").addEventListener("input", e => { T.q = e.target.value.trim(); drawTable(); });
+  $("#tf")?.addEventListener("click", e => { const b = e.target.closest(".chip"); if(!b) return; T.f = b.dataset.f; $("#tf").querySelectorAll(".chip").forEach(x=>x.setAttribute("aria-pressed", x===b)); drawTable(); });
+  document.querySelector("thead").addEventListener("click", e => { const th = e.target.closest("th"); if(!th) return;
+    const k = th.dataset.k, dir = T.sort && T.sort.k===k && T.sort.d===1 ? -1 : 1; T.sort = {k, d:dir};
+    document.querySelectorAll("th").forEach(x => x.setAttribute("aria-sort", x===th ? (dir===1?"ascending":"descending") : "none")); drawTable(); });
+  $("#tb").addEventListener("click", e => {
+    const dl = e.target.closest("[data-dlid]"); if (dl) { e.stopPropagation(); return download(key, dl.dataset.dlid, dl, dl.dataset.dlcol); }
+    const tr = e.target.closest("tr[data-id]"); if(tr) openPanel(key, T.rows.find(r => r.id === tr.dataset.id)); });
+  $("#tnew").addEventListener("click", () => openPanel(key, null, opt.defaults));
+  $("#tcsv").addEventListener("click", () => downloadCsv());
+  if (opt.after) opt.after();
+  drawTable();
+}
+function cellText(c, v){
+  if (c[2]==="check") return v ? "✓" : "";
+  if (c[2]==="multi") return (v||[]).join(", ");
+  if (c[2]==="ref") return T.refs[c[0]]?.[v] || "";
+  if (v === null || v === undefined) return "";
+  return String(v);
+}
+function cellHtml(c, v, row){
+  if (c[2]==="file") return v ? `<button class="btn dlb" data-dlid="${esc(row.id)}" data-dlcol="${c[0]}">내려받기</button>` : "";
+  if (c[0]==="agreement" || c[0]==="agreementStatus") return pill(v);
+  if (c[2]==="select" || c[0]==="verdict") return pill(v);
+  if (c[2]==="url" && v) return `<a href="${esc(v)}" target="_blank" rel="noopener">열기</a>`;
+  if (c[2]==="date") return esc(v||"");
+  return esc(cellText(c, v));
+}
+function visibleRows(){
+  let rows = T.rows;
+  if (T.f) rows = rows.filter(r => r[T.filterCol[0]] === T.f);
+  if (T.q) { const q = T.q.toLowerCase(); rows = rows.filter(r => T.t.cols.some(c => cellText(c, r[c[0]]).toLowerCase().includes(q)) || String(r.id).toLowerCase().includes(q)); }
+  if (T.sort) { const c = T.t.cols.find(x => x[0]===T.sort.k); rows = rows.slice().sort((a,b) => { const x=a[c[0]], y=b[c[0]];
+    if (typeof x==="number" || typeof y==="number") return ((x??-1e9)-(y??-1e9))*T.sort.d; return cellText(c,x).localeCompare(cellText(c,y),"ko")*T.sort.d; }); }
+  else rows = rows.slice().reverse(); // 최근 등록 순
+  return rows;
+}
+function drawTable(){
+  const rows = visibleRows();
+  $("#tcount").textContent = `${rows.length}건${rows.length!==T.rows.length?` / 전체 ${T.rows.length}건`:""}`;
+  $("#tb").innerHTML = rows.length ? rows.map(r => `<tr data-id="${esc(r.id)}">${T.listCols.map(c => `<td>${cellHtml(c, r[c[0]], r)}</td>`).join("")}</tr>`).join("")
+    : `<tr><td colspan="${T.listCols.length}" class="none" style="cursor:default">${T.rows.length?"조건에 맞는 항목이 없어요. 검색어나 필터를 바꿔 보세요.":"아직 등록된 항목이 없어요. 새로 추가를 눌러 첫 항목을 넣으세요."}</td></tr>`;
+}
+function downloadCsv(){
+  const cols = T.t.cols, rows = visibleRows();
+  const q = v => `"${String(v ?? "").replace(/"/g,'""')}"`;
+  const csv = "\ufeff" + [["ID", ...cols.map(c=>c[1]), "등록일시"].map(q).join(",")]
+    .concat(rows.map(r => [r.id, ...cols.map(c => cellText(c, r[c[0]])), r.created].map(q).join(","))).join("\r\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type:"text/csv"}));
+  a.download = `${T.t.label}_${new Date().toISOString().slice(0,10)}.csv`; a.click();
+}
+function surveySummary(rows, sessionLabels){
+  const sat = rows.filter(r => r.kind==="만족도조사" && r.avg!==null), by = {};
+  sat.forEach(r => { (by[r.sessionId] = by[r.sessionId] || []).push(r.avg); });
+  const hope = {}; rows.forEach(r => (r.hope||[]).forEach(h => hope[h] = (hope[h]||0)+1));
+  const hopeRows = Object.entries(hope).sort((a,b)=>b[1]-a[1]), max = Math.max(1, ...hopeRows.map(h=>h[1]));
+  return `<div class="grid2" style="margin-bottom:14px">
+    <div class="card"><h2>회차별 평균 만족도</h2>${Object.keys(by).length?`<ul class="list">${Object.entries(by).map(([sid,v]) =>
+      `<li><div>${esc(sessionLabels?.[sid]||"회차 미지정")}<small>응답 ${v.length}건</small></div><b>${(v.reduce((a,b)=>a+b,0)/v.length).toFixed(2)}</b></li>`).join("")}</ul>`:`<p class="none">만족도 응답이 아직 없어요.</p>`}</div>
+    <div class="card"><h2>희망 분야 (수요)</h2>${hopeRows.length?`<ul class="list">${hopeRows.map(([h,n]) =>
+      `<li><div style="flex:1">${esc(h)}<div style="height:6px;border-radius:3px;background:var(--c1);width:${n/max*100}%;margin-top:4px"></div></div><b>${n}</b></li>`).join("")}</ul>`:`<p class="none">수요조사 응답이 아직 없어요.</p>`}</div></div>`;
+}
+
+const readB64 = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.onerror = rej; r.readAsDataURL(f); });
+const TIMING_TXT = f => f.timing === "수료 후 N일" ? `수료 ${f.offsetDays || 60}일 후` : f.timing;
+
+/* ── 사후관리 현황 ── */
+let FU = { formId: "", sessionId: "" };
+async function viewFollowup(){
+  const d = await call("adminFollowup");
+  if (!FU.formId && d.forms[0]) FU.formId = d.forms[0].id;
+  $("#view").innerHTML = `${d.homepage ? "" : `<div class="warnbar">스크립트 속성에 <b>HOMEPAGE_URL</b>(홈페이지 주소)을 넣어야 응답 링크가 만들어지고 메일이 발송돼요.</div>`}
+    <div class="mini"><div><span>전체 배정</span><b>${d.total.assigned}</b></div><div><span>응답 완료</span><b>${d.total.responded}</b></div><div class="${d.total.pending?"alert":""}"><span>응답 대기</span><b>${d.total.pending}</b></div><div><span>전체 응답률</span><b>${d.total.assigned ? Math.round(d.total.responded / d.total.assigned * 100) + "%" : "-"}</b></div></div>
+    <div class="fgrid">${d.forms.map(f => `<div class="card fcard ${f.active?"":"off"}"><div class="fc-h"><b>${esc(f.name)}</b><button class="btn" data-toggle="${esc(f.id)}" data-on="${f.active?1:0}">${f.active?"사용 중":"꺼짐"}</button></div>
+      <span class="hint" style="margin:0">${esc(TIMING_TXT(f))} 자동 배정</span>
+      <div class="prog" style="margin:12px 0 6px"><i style="width:${f.rate||0}%"></i></div>
+      <div class="fc-n"><span>응답 ${f.responded}/${f.assigned} (${f.rate===null?"-":f.rate+"%"})</span><span>평균 ${f.score ?? "-"}점</span></div>
+      <button class="link-b" data-res="${esc(f.id)}">결과 보기</button></div>`).join("")}</div>
+    <div class="bar" style="margin-top:6px"><span class="count">응답 대기 ${d.pending.length}명${d.autoMail ? " · 새 대상자에게는 메일이 자동 발송돼요" : ""}</span>
+      <button class="btn" id="fuRun">지금 대상자 만들기</button><button class="btn" id="fuYear">연말 기업 만족도 지금 배정</button><button class="btn" id="fuCopy" disabled>선택 링크 복사</button><button class="btn solid" id="fuMail">미응답자에게 메일 보내기</button></div>
+    <div class="tw"><table><thead><tr><th style="cursor:default"><input type="checkbox" id="fuAll" aria-label="전체 선택"></th>${["조사","회차","응답자","연락처","응답 기한","요청"].map(h=>`<th style="cursor:default">${h}</th>`).join("")}</tr></thead>
+      <tbody>${d.pending.length ? d.pending.map(p => `<tr style="cursor:default"><td><input type="checkbox" class="fuP" value="${esc(p.id)}"></td><td>${esc(p.form)}</td><td>${esc(p.session)}</td><td><b>${esc(p.respondent)}</b>${p.hasEmail ? "" : ` <span class="pill wait">메일 없음</span>`}</td><td>${esc(p.phone)}</td><td>${p.dueSoon ? `<span class="pill no">${md(p.dueAt)}</span>` : md(p.dueAt)}</td><td>${p.sentCount}회</td></tr>`).join("") : `<tr><td colspan="7" class="none">응답을 기다리는 대상자가 없어요.</td></tr>`}</tbody></table></div>
+    <div class="card" style="margin-top:14px" id="fuRes"><p class="loading">결과를 불러오는 중</p></div>
+    <div class="card" style="margin-top:14px"><h2>직접 배정</h2><p class="hint">‘직접 배정’ 조사지나, 자동 배정을 놓친 회차가 있을 때 회차를 골라 대상자를 만듭니다.</p>
+      <div class="bar" style="margin:0"><select class="yr" id="maForm">${d.forms.map(f=>`<option value="${esc(f.id)}">${esc(f.name)}</option>`).join("")}</select><select class="yr" id="maSess"><option value="">회차 선택 (기업 조사는 비우면 협약기업 전체)</option></select><button class="btn" id="maGo">배정하기</button></div></div>`;
+  call("adminSessions").then(ss => { $("#maSess").insertAdjacentHTML("beforeend", ss.map(x => `<option value="${esc(x.id)}">${esc(x.title)} (${md(x.start)})</option>`).join("")); });
+  const picked = () => [...document.querySelectorAll(".fuP:checked")].map(x => x.value);
+  $("#view").onchange = e => { if (e.target.id === "fuAll") document.querySelectorAll(".fuP").forEach(c => c.checked = e.target.checked); $("#fuCopy").disabled = !picked().length; if (e.target.id === "fuResSess") { FU.sessionId = e.target.value; drawResults(); } };
+  $("#view").onclick = async e => {
+    const t = e.target;
+    if (t.dataset.toggle) { await call("adminSave", "surveyForm", { id: t.dataset.toggle, active: t.dataset.on !== "1" }); toast(t.dataset.on === "1" ? "조사를 껐어요. 새 대상자가 만들어지지 않아요." : "조사를 켰어요."); return viewFollowup(); }
+    if (t.dataset.res) { FU.formId = t.dataset.res; FU.sessionId = ""; return drawResults(); }
+    if (t.id === "fuRun" || t.id === "fuYear") { t.disabled = true; try { const r = await call("adminRunSchedule", t.id === "fuYear"); toast(`새 대상자 ${r.created}명${r.mailed ? `, 메일 ${r.mailed}건 발송` : ""}`); viewFollowup(); } catch (ex) { toast(ex.message || ex); t.disabled = false; } }
+    if (t.id === "fuMail") { const ids = picked(); if (!confirm(ids.length ? `선택한 ${ids.length}명에게 메일을 보낼까요?` : "응답 대기 중인 모든 대상자에게 메일을 보낼까요? (한 번에 80명까지)")) return;
+      t.disabled = true; try { const r = await call("adminSendSurveys", ids); toast(`메일 ${r.mailed}건 보냈어요.${r.noEmail ? ` 메일 주소가 없는 ${r.noEmail}명은 링크를 복사해 문자로 보내주세요.` : ""}`); viewFollowup(); } catch (ex) { toast(ex.message || ex); t.disabled = false; } }
+    if (t.id === "fuCopy") { const rows = await call("adminSurveyLinks", picked()); const txt = rows.map(r => `${r.respondent}\t${r.phone}\t${r.link}`).join("\n");
+      try { await navigator.clipboard.writeText(txt); toast(`${rows.length}명의 응답 링크를 복사했어요. 문자 발송 화면에 붙여넣으세요.`); } catch (ex) { prompt("아래 내용을 복사하세요", txt); } }
+    if (t.id === "maGo") { t.disabled = true; try { const r = await call("adminAssignManual", $("#maForm").value, $("#maSess").value); toast(`대상자 ${r.created}명을 배정했어요.`); viewFollowup(); } catch (ex) { toast(ex.message || ex); t.disabled = false; } }
+  };
+  drawResults();
+}
+async function drawResults(){
+  const box = $("#fuRes"); if (!box || !FU.formId) return;
+  box.innerHTML = `<p class="loading">결과를 불러오는 중</p>`;
+  const r = await call("adminSurveyResults", FU.formId, FU.sessionId);
+  const bar = (n, max, c) => `<div class="hb"><i style="width:${max ? n / max * 100 : 0}%;background:var(${c})"></i></div>`;
+  box.innerHTML = `<h2>${esc(r.name)} 결과 <select class="yr" id="fuResSess" style="font-size:13px"><option value="">전체 회차</option>${r.sessions.map(x => `<option value="${esc(x.id)}" ${x.id===FU.sessionId?"selected":""}>${esc(x.title)}</option>`).join("")}</select></h2>
+    <div class="mini"><div><span>응답</span><b>${r.responses}</b></div><div><span>응답률</span><b>${r.rate===null?"-":r.rate+"%"}</b></div><div><span>척도 평균</span><b>${r.score ?? "-"}</b></div></div>
+    ${r.responses ? r.questions.map((q, i) => `<div class="qres"><div class="qt"><small>${esc(q.section || "")}</small>${i + 1}. ${esc(q.text)}</div>${
+      q.type === "scale" ? `<div class="qs"><b>${q.avg ?? "-"}</b><span>/ 5</span><div class="dist">${q.dist.map((n, k) => `<span title="${k + 1}점 ${n}명" style="flex:${n || .0001};background:var(--c${k === 4 ? 1 : k === 3 ? 2 : k === 2 ? 5 : 4})"></span>`).join("")}</div><small>${q.n}명</small></div>`
+      : q.type === "text" ? (q.texts.length ? `<ul class="qtext">${q.texts.slice(0, 12).map(t => `<li>${esc(t)}</li>`).join("")}</ul>` : `<p class="none">응답 없음</p>`)
+      : `<div>${q.counts.map(c => `<div class="qc"><span>${esc(c.o)}</span>${bar(c.n, Math.max(1, ...q.counts.map(x => x.n)), "--c1")}<b>${c.n}</b></div>`).join("")}</div>`}</div>`).join("") : `<p class="none">아직 응답이 없어요.</p>`}`;
+}
+
+/* ── 조사지 관리 ── */
+const Q_TYPES = [["scale","5점 척도"],["choice","하나 고르기"],["multi","여러 개 고르기"],["text","주관식"]];
+async function viewForms(opt){
+  if (opt && opt.edit !== undefined) return editForm(opt.edit);
+  const forms = await call("adminList", "surveyForm");
+  $("#view").innerHTML = `<div class="bar"><span class="count">조사지 ${forms.length}개 · 표준안을 그대로 쓰거나 문항을 고쳐 쓰세요.</span><button class="btn solid" data-new>새 조사지</button></div>
+    <div class="fgrid">${forms.map(f => `<div class="card fcard ${f.active?"":"off"}"><div class="fc-h"><b>${esc(f.name)}</b>${pill(f.active?"사용":"미사용")}</div>
+      <span class="hint" style="margin:0">${esc(f.kind)} · ${esc(f.target||"")} · ${esc(TIMING_TXT(f))} · 문항 ${f.qCount}개</span>
+      <button class="btn" style="margin-top:12px" data-edit="${esc(f.id)}">문항 편집</button></div>`).join("")}</div>`;
+  $("#view").onclick = e => { const b = e.target.closest("[data-edit],[data-new]"); if (b) editForm(b.dataset.edit || ""); };
+  $("#view").onchange = null;
+}
+async function editForm(id){
+  const d = await call("adminGetForm", id), f = d.form || { name: "", kind: "만족도", target: "수료생", timing: "직접 배정", offsetDays: 0, dueDays: 14, active: true, intro: "" };
+  let qs = d.questions.length ? d.questions : [{ id: "q1", type: "scale", section: "", text: "", required: true }];
+  const opts = (arr, v) => arr.map(o => `<option ${o===v?"selected":""}>${esc(o)}</option>`).join("");
+  const colOpts = k => S.surveyForm.cols.find(c => c[0] === k)[3].options;
+  const draw = () => {
+    $("#view").innerHTML = `<div class="bar"><button class="btn" id="feBack">목록으로</button><span class="count">${id ? "조사지 편집" : "새 조사지"}</span><button class="btn solid" id="feSave">저장</button></div>
+    <div class="card"><div class="fe-grid">
+      <div class="fld"><label>조사명</label><input id="fe_name" value="${esc(f.name)}"></div>
+      <div class="fld"><label>조사 종류</label><select id="fe_kind">${opts(colOpts("kind"), f.kind)}</select></div>
+      <div class="fld"><label>응답 대상</label><select id="fe_target">${opts(colOpts("target"), f.target)}</select></div>
+      <div class="fld"><label>배정 시점</label><select id="fe_timing">${opts(colOpts("timing"), f.timing)}</select></div>
+      <div class="fld"><label>N일 (수료 후 N일일 때)</label><input id="fe_offset" type="number" value="${f.offsetDays ?? ""}"></div>
+      <div class="fld"><label>응답 기한(일)</label><input id="fe_due" type="number" value="${f.dueDays ?? 14}"></div>
+      <div class="fld" style="grid-column:1/-1"><label>안내 문구 (응답 화면 맨 위)</label><textarea id="fe_intro">${esc(f.intro || "")}</textarea></div>
+      <label class="ck"><input type="checkbox" id="fe_active" ${f.active?"checked":""}> 사용 (켜면 배정 시점에 자동으로 대상자가 만들어져요)</label></div></div>
+    <div class="card" style="margin-top:14px"><h2>문항 ${qs.length}개 <button id="qAdd">문항 추가</button></h2>
+      ${qs.map((q, i) => `<div class="qe" data-i="${i}"><span class="qn">${i + 1}</span>
+        <input class="qe-sec" data-f="section" value="${esc(q.section || "")}" placeholder="영역 (예: 교육 내용)">
+        <select data-f="type">${Q_TYPES.map(([v, l]) => `<option value="${v}" ${q.type===v?"selected":""}>${l}</option>`).join("")}</select>
+        <input class="qe-text" data-f="text" value="${esc(q.text)}" placeholder="문항 내용">
+        <label class="ck"><input type="checkbox" data-f="required" ${q.required?"checked":""}> 필수</label>
+        <span class="qe-btn"><button class="btn" data-mv="-1" aria-label="위로">↑</button><button class="btn" data-mv="1" aria-label="아래로">↓</button><button class="btn danger" data-del aria-label="삭제">삭제</button></span>
+        ${q.type === "choice" || q.type === "multi" ? `<input class="qe-opt" data-f="options" value="${esc((q.options || []).join(", "))}" placeholder="보기를 쉼표로 구분 (예: 매우 만족, 만족, 보통)">` : ""}</div>`).join("")}
+      <p class="hint" style="margin-top:12px">5점 척도 보기: ${d.scale.join(" · ")} · 문항을 바꿔도 이미 받은 응답은 그대로 남아요. 사전·사후 역량 진단은 같은 문항을 써야 변화가 계산돼요.</p></div>`;
+  };
+  const collect = () => document.querySelectorAll(".qe").forEach(row => { const q = qs[+row.dataset.i];
+    row.querySelectorAll("[data-f]").forEach(el => { const k = el.dataset.f; q[k] = el.type === "checkbox" ? el.checked : k === "options" ? el.value.split(",").map(x => x.trim()).filter(Boolean) : el.value; }); });
+  draw();
+  $("#view").onchange = e => { if (e.target.dataset.f === "type") { collect(); draw(); } };
+  $("#view").onclick = async e => {
+    const t = e.target, row = t.closest(".qe");
+    if (t.id === "feBack") return viewForms();
+    if (t.id === "qAdd") { collect(); qs.push({ id: "q" + Date.now().toString(36), type: "scale", section: qs.at(-1)?.section || "", text: "", required: true }); return draw(); }
+    if (row && (t.dataset.mv || t.hasAttribute("data-del"))) { collect(); const i = +row.dataset.i;
+      if (t.hasAttribute("data-del")) qs.splice(i, 1); else { const j = i + (+t.dataset.mv); if (j >= 0 && j < qs.length) [qs[i], qs[j]] = [qs[j], qs[i]]; } return draw(); }
+    if (t.id === "feSave") { collect();
+      const obj = { id: id || undefined, name: $("#fe_name").value.trim(), kind: $("#fe_kind").value, target: $("#fe_target").value, timing: $("#fe_timing").value,
+        offsetDays: $("#fe_offset").value === "" ? "" : +$("#fe_offset").value, dueDays: +$("#fe_due").value || 14, intro: $("#fe_intro").value, active: $("#fe_active").checked };
+      if (!obj.name) return toast("조사명을 입력하세요.");
+      t.disabled = true; try { const nid = await call("adminSaveForm", obj, qs.filter(q => q.text.trim())); id = nid; toast("조사지를 저장했어요."); } catch (ex) { toast(ex.message || ex); } finally { t.disabled = false; } }
+  };
+}
+
+/* ── 교육 결과보고 ── */
+let RP = { sessionId: "" };
+async function viewReport(opt){
+  const ss = await call("adminSessions");
+  if (!RP.sessionId) RP.sessionId = (ss.find(x => ["종료", "운영중"].includes(x.status)) || ss[0] || {}).id || "";
+  $("#view").innerHTML = `<div class="bar"><select class="yr" id="rpSess">${ss.map(x => `<option value="${esc(x.id)}" ${x.id===RP.sessionId?"selected":""}>${esc(x.title)} (${md(x.start)} · ${esc(x.status)})</option>`).join("")}</select>
+    <span class="count"></span><button class="btn" id="rpPrint">인쇄·PDF 저장</button><button class="btn" id="rpWord">Word로 내려받기</button><button class="btn solid" id="rpSave">작성 내용 저장</button></div>
+    <div class="rpwrap"><div class="card rpform" id="rpForm"><p class="loading">불러오는 중</p></div><div class="rpprev"><iframe id="rpFrame" title="결과보고서 미리보기"></iframe></div></div>`;
+  $("#rpSess").onchange = e => { RP.sessionId = e.target.value; viewReport(); };
+  if (!RP.sessionId) { $("#rpForm").innerHTML = `<p class="none">회차가 없어요.</p>`; return; }
+  const d = await call("adminReportData", RP.sessionId), rp = d.report || {};
+  const v = k => esc(rp[k] || "");
+  $("#rpForm").innerHTML = `<h2>작성 항목</h2><p class="hint">숫자와 조사 결과는 자동으로 채워져요. 담당자는 아래 서술 부분만 쓰면 됩니다.</p>
+    <div class="fld"><label>보고서 제목</label><input id="rp_title" value="${v("title") || esc(d.session.title + " 운영 결과보고")}"></div>
+    <div class="fe-grid"><div class="fld"><label>작성자</label><input id="rp_writer" value="${v("writer") || esc(AUTH.name)}"></div><div class="fld"><label>작성일</label><input id="rp_date" type="date" value="${v("writtenAt") || new Date().toISOString().slice(0,10)}"></div></div>
+    <div class="fld"><label>상태</label><select id="rp_status">${["작성중","작성완료","보고완료"].map(o=>`<option ${o===(rp.status||"작성중")?"selected":""}>${o}</option>`).join("")}</select></div>
+    <div class="fld"><label>운영 개요 (보완 설명)</label><textarea id="rp_overview" placeholder="교육 목적, 대상, 운영 방식 등">${v("overview")}</textarea></div>
+    <div class="fld"><label>운영 성과</label><textarea id="rp_ach" placeholder="예: 정원 대비 충족률, 결과물, 기업 반응">${v("achievements")}</textarea></div>
+    <div class="fld"><label>문제점 및 개선 사항</label><textarea id="rp_iss">${v("issues")}</textarea></div>
+    <div class="fld"><label>향후 계획</label><textarea id="rp_next">${v("nextPlan")}</textarea></div>
+    <div class="fld"><label>현장 사진 1</label><input type="file" id="rp_p1" accept="image/jpeg,image/png">${rp.photo1 ? `<span class="hint">등록됨 · 새로 고르면 바뀌어요</span>` : ""}</div>
+    <div class="fld"><label>현장 사진 2</label><input type="file" id="rp_p2" accept="image/jpeg,image/png">${rp.photo2 ? `<span class="hint">등록됨 · 새로 고르면 바뀌어요</span>` : ""}</div>`;
+  const cur = () => Object.assign({}, rp, { title: $("#rp_title").value, writer: $("#rp_writer").value, writtenAt: $("#rp_date").value, status: $("#rp_status").value,
+    overview: $("#rp_overview").value, achievements: $("#rp_ach").value, issues: $("#rp_iss").value, nextPlan: $("#rp_next").value });
+  const local = { p1: rp.photo1Data || "", p2: rp.photo2Data || "" };
+  const preview = () => { $("#rpFrame").srcdoc = reportHtml(d, cur(), local); };
+  $("#rpForm").oninput = preview;
+  $("#rpForm").onchange = async e => { if (e.target.id === "rp_p1" || e.target.id === "rp_p2") { const f = e.target.files[0]; if (f) { local[e.target.id === "rp_p1" ? "p1" : "p2"] = "data:" + f.type + ";base64," + await readB64(f); preview(); } } };
+  preview();
+  $("#rpPrint").onclick = () => { const w = $("#rpFrame").contentWindow; w.focus(); w.print(); };
+  $("#rpWord").onclick = () => { const html = reportHtml(d, cur(), local, true);
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["\ufeff" + html], { type: "application/msword" })); a.download = `${cur().title || "결과보고"}.doc`; document.body.appendChild(a); a.click(); a.remove(); };
+  $("#rpSave").onclick = async () => {
+    const obj = Object.assign({ sessionId: RP.sessionId }, cur()); ["photo1Data","photo2Data","created","photo1","photo2"].forEach(k => delete obj[k]); if (rp.id) obj.id = rp.id;
+    for (const [k, el] of [["photo1", "#rp_p1"], ["photo2", "#rp_p2"]]) { const f = $(el).files[0]; if (f) (obj.__files = obj.__files || {})[k] = { name: f.name, mime: f.type, b64: await readB64(f) }; }
+    try { await call("adminSave", "report", obj); toast("결과보고 내용을 저장했어요."); viewReport(); } catch (ex) { toast(ex.message || ex); }
+  };
+}
+function reportHtml(d, rp, ph, forWord){
+  const e = esc, s = d.session, st = d.stats, sat = d.satisfaction, tr = d.transfer, tc = d.transferCompany;
+  const dt = x => String(x || "").replace(/-/g, ".");
+  const para = t => t ? e(t).replace(/\n/g, "<br>") : `<span class="muted">(작성 전)</span>`;
+  const scaleRows = r => r && r.responses ? r.questions.filter(q => q.type === "scale").map(q => `<tr><td>${e(q.section || "")}</td><td>${e(q.text)}</td><td class="n">${q.avg ?? "-"}</td></tr>`).join("") : "";
+  const texts = (r, ids) => r && r.responses ? r.questions.filter(q => q.type === "text" && (!ids || ids.includes(q.id))).map(q => q.texts.length ? `<p class="qh">${e(q.text)}</p><ul>${q.texts.slice(0, 8).map(t => `<li>${e(t)}</li>`).join("")}</ul>` : "").join("") : "";
+  const sec = (n, t) => `<h2>${n}. ${t}</h2>`;
+  const auto = [st.passRate !== null ? `수료율 ${st.passRate}%` : "", sat && sat.score ? `교육 만족도 ${sat.score}점(5점 만점)` : d.legacySat ? `교육 만족도 ${d.legacySat}점` : "", st.fill !== null ? `정원 충족률 ${st.fill}%` : ""].filter(Boolean).join(", ");
+  return `<!DOCTYPE html><html lang="ko"${forWord ? ' xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"' : ""}><head><meta charset="utf-8"><title>${e(rp.title || "결과보고")}</title><style>
+    @page{size:A4;margin:18mm 16mm}body{font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;font-size:10.5pt;line-height:1.6;color:#111;margin:0;padding:${forWord ? "0" : "18px"}}
+    h1{font-size:18pt;text-align:center;margin:0 0 4px}.sub{text-align:center;color:#555;margin:0 0 18px}
+    h2{font-size:12.5pt;margin:20px 0 8px;padding-bottom:4px;border-bottom:2px solid #1F3A6B;color:#1F3A6B}
+    table{width:100%;border-collapse:collapse;margin:4px 0 8px}th,td{border:1px solid #9aa3b5;padding:5px 8px;text-align:left;vertical-align:top}th{background:#EEF2F8;width:22%;font-weight:700}td.n{text-align:center;width:14%}
+    .grid th{width:auto;text-align:center}.grid td{text-align:center}.muted{color:#999}.qh{font-weight:700;margin:8px 0 2px}ul{margin:2px 0 8px;padding-left:18px}
+    .photos{display:flex;gap:10px}.photos img{width:48%;border:1px solid #ccc}.sign{margin-top:24px;text-align:right}
+    .summary{background:#F4F6FA;border-left:4px solid #1F5FD1;padding:8px 12px;margin:8px 0}
+    @media screen{body{background:#fff}}</style></head><body>
+    <h1>${e(rp.title || s.title + " 운영 결과보고")}</h1><p class="sub">${e(d.org)} ${e(d.center)} · 작성일 ${dt(rp.writtenAt)} · 작성자 ${e(rp.writer || "")}</p>
+    ${auto ? `<div class="summary"><b>요약</b> ${e(s.title)} 과정은 ${dt(s.start)}${s.end && s.end !== s.start ? "~" + dt(s.end) : ""}에 운영되었으며, ${e(auto)}를 기록했습니다.</div>` : ""}
+    ${sec(1, "교육 개요")}<table><tr><th>과정명</th><td>${e(d.course.name || s.title)}</td><th>분야</th><td>${e(d.course.field)}</td></tr>
+      <tr><th>회차</th><td>${e(s.title)}</td><th>교육시간</th><td>${e(d.course.hours)}${d.course.hours ? "시간" : ""}</td></tr>
+      <tr><th>교육기간</th><td>${dt(s.start)}${s.end && s.end !== s.start ? " ~ " + dt(s.end) : ""}</td><th>요일·시간</th><td>${e(s.time || "")}</td></tr>
+      <tr><th>장소</th><td>${e(s.place || "")}</td><th>강사</th><td>${e(s.teacher || "")}</td></tr></table>
+      ${rp.overview ? `<p>${para(rp.overview)}</p>` : ""}
+    ${sec(2, "운영 실적")}<table class="grid"><tr><th>정원</th><th>신청</th><th>확정</th><th>수료</th><th>미수료</th><th>수료율</th><th>평균 출석률</th><th>참여 기업</th></tr>
+      <tr><td>${s.capacity ?? "-"}</td><td>${st.applied}</td><td>${st.confirmed}</td><td>${st.completed}</td><td>${st.failed}</td><td>${st.passRate ?? "-"}%</td><td>${st.attendance ?? "-"}%</td><td>${st.companies}개</td></tr></table>
+      <p>참여자 구분: ${st.kinds.map(k => `${e(k.name)} ${k.n}명`).join(", ") || "-"}</p>
+    ${sec(3, "교육 만족도")}${sat && sat.responses ? `<p>응답 ${sat.responses}명 (응답률 ${sat.rate ?? "-"}%) · 종합 평균 <b>${sat.score}</b>점 / 5점</p><table><tr><th>영역</th><th style="width:auto">문항</th><th>평균</th></tr>${scaleRows(sat)}</table>` : d.legacySat ? `<p>홈페이지 익명 설문 평균 ${d.legacySat}점 / 5점</p>` : `<p class="muted">만족도 응답이 아직 없습니다.</p>`}
+    ${d.competency && d.competency.length ? `${sec(4, "역량 변화 (사전·사후 자가진단)")}<table><tr><th style="width:auto">문항</th><th>사전</th><th>사후</th><th>변화</th></tr>${d.competency.map(c => `<tr><td>${e(c.text)}</td><td class="n">${c.pre ?? "-"}</td><td class="n">${c.post ?? "-"}</td><td class="n">${c.delta === null ? "-" : (c.delta > 0 ? "+" : "") + c.delta}</td></tr>`).join("")}</table>` : ""}
+    ${(tr && tr.responses) || (tc && tc.responses) ? `${sec(d.competency && d.competency.length ? 5 : 4, "현업적용도 (사후관리)")}${tr && tr.responses ? `<p>수료생 응답 ${tr.responses}명 · 평균 <b>${tr.score}</b>점</p><table><tr><th>영역</th><th style="width:auto">문항</th><th>평균</th></tr>${scaleRows(tr)}</table>` : ""}${tc && tc.responses ? `<p>소속 기업 평가 ${tc.responses}개사 · 평균 <b>${tc.score}</b>점</p><table><tr><th>영역</th><th style="width:auto">문항</th><th>평균</th></tr>${scaleRows(tc)}</table>` : ""}` : ""}
+    <h2>${"주요 의견"}</h2>${texts(sat) || `<p class="muted">주관식 의견이 아직 없습니다.</p>`}${texts(tr, ["t7"])}
+    <h2>운영 성과</h2><p>${para(rp.achievements)}</p>
+    <h2>문제점 및 개선 사항</h2><p>${para(rp.issues)}</p>
+    <h2>향후 계획</h2><p>${para(rp.nextPlan)}</p>
+    ${ph.p1 || ph.p2 ? `<h2>현장 사진</h2><div class="photos">${ph.p1 ? `<img src="${ph.p1}" alt="현장 사진 1">` : ""}${ph.p2 ? `<img src="${ph.p2}" alt="현장 사진 2">` : ""}</div>` : ""}
+    <h2>붙임. 수료자 명단 (${d.completers.length}명)</h2>${d.completers.length ? `<table class="grid"><tr><th>번호</th><th>성명</th><th>생년</th><th>소속</th><th>출석률</th><th>이수시간</th></tr>${d.completers.map((c, i) => `<tr><td>${i + 1}</td><td>${e(c.name)}</td><td>${e(c.birth)}</td><td>${e(c.company)}</td><td>${c.rate ?? "-"}%</td><td>${e(c.hours)}</td></tr>`).join("")}</table>` : `<p class="muted">수료 처리된 인원이 없습니다.</p>`}
+    <p class="sign">${e(d.org)} ${e(d.center)}</p></body></html>`;
+}
+
+/* ── 외부 도구 (PDF 읽기·쓰기) ── */
+const LIB_PDFLIB = "https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js";
+const LIB_PDFJS = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs";
+const LIB_PDFJS_WORKER = "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs";
+function loadScript(src){ return new Promise((res, rej) => { if (document.querySelector(`script[src="${src}"]`)) return res(); const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("도구를 불러오지 못했어요. 인터넷 연결을 확인하세요.")); document.head.appendChild(s); }); }
+let PDFJS = null;
+async function pdfjs(){ if (PDFJS) return PDFJS; PDFJS = await import(LIB_PDFJS); PDFJS.GlobalWorkerOptions.workerSrc = LIB_PDFJS_WORKER; return PDFJS; }
+const b64ToBytes = b64 => { const bin = atob(b64), a = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i); return a; };
+const bytesToB64 = u8 => { let s = ""; for (let i = 0; i < u8.length; i += 8192) s += String.fromCharCode.apply(null, u8.subarray(i, i + 8192)); return btoa(s); };
+
+/* ── 기관 직인 관리 (운영자) ── */
+async function viewSeal(){
+  const cur = await call("adminGetSeal");
+  $("#view").innerHTML = `<div class="grid2">
+    <div class="card"><h2>현재 등록된 직인</h2>
+      ${cur ? `<div class="sealbox"><img src="data:${cur.mime};base64,${cur.b64}" alt="등록된 기관 직인"></div><p class="hint" style="margin-top:10px">등록: ${esc(cur.updatedAt)}</p>` : `<p class="none">아직 등록된 직인이 없어요. 오른쪽에서 직인 이미지를 올려주세요.</p>`}
+      <p class="hint">이 직인은 협약서 날인과 홈페이지 수료증에 함께 쓰입니다.</p></div>
+    <div class="card"><h2>직인 이미지 올리기</h2>
+      <p class="hint">흰 종이에 찍은 직인을 스캔하거나 사진으로 찍어 올리면, 흰 배경을 투명하게 바꾸고 여백을 잘라 드려요. 배경이 투명한 PNG가 있으면 그대로 올리셔도 됩니다.</p>
+      <input type="file" id="sealFile" accept="image/png,image/jpeg">
+      <div id="sealEdit" hidden>
+        <div class="sealbox" style="margin-top:14px"><canvas id="sealCv"></canvas></div>
+        <div class="fld" style="margin-top:12px"><label for="sealTh">흰 배경 제거 정도 <span id="sealThV"></span></label><input type="range" id="sealTh" min="180" max="250" value="225"></div>
+        <button class="btn solid" id="sealSave">이 직인으로 등록</button>
+      </div></div></div>`;
+  let img = null;
+  const draw = () => {
+    const th = +$("#sealTh").value; $("#sealThV").textContent = th;
+    const c = document.createElement("canvas"); c.width = img.naturalWidth; c.height = img.naturalHeight;
+    const x = c.getContext("2d"); x.drawImage(img, 0, 0);
+    const d = x.getImageData(0, 0, c.width, c.height), p = d.data; let x0 = c.width, y0 = c.height, x1 = 0, y1 = 0;
+    for (let i = 0; i < p.length; i += 4) {
+      const r = p[i], g = p[i + 1], b = p[i + 2], light = Math.min(r, g, b);
+      if (light >= th) p[i + 3] = 0;                                   // 흰 배경 → 투명
+      else if (light > th - 40) p[i + 3] = Math.round(p[i + 3] * (th - light) / 40);   // 가장자리 부드럽게
+      if (p[i + 3] > 20) { const k = i / 4, px = k % c.width, py = (k / c.width) | 0; if (px < x0) x0 = px; if (px > x1) x1 = px; if (py < y0) y0 = py; if (py > y1) y1 = py; }
+    }
+    x.putImageData(d, 0, 0);
+    const cv = $("#sealCv"), w = Math.max(1, x1 - x0 + 1), h = Math.max(1, y1 - y0 + 1), pad = Math.round(Math.max(w, h) * .04);
+    cv.width = w + pad * 2; cv.height = h + pad * 2; cv.getContext("2d").drawImage(c, x0, y0, w, h, pad, pad, w, h);
+  };
+  $("#sealFile").addEventListener("change", e => { const f = e.target.files[0]; if (!f) return; img = new Image(); img.onload = () => { $("#sealEdit").hidden = false; draw(); }; img.src = URL.createObjectURL(f); });
+  $("#view").addEventListener("input", e => { if (e.target.id === "sealTh" && img) draw(); });
+  $("#view").addEventListener("click", async e => {
+    if (e.target.id !== "sealSave") return;
+    e.target.disabled = true;
+    try { await call("adminSetSeal", { mime: "image/png", b64: $("#sealCv").toDataURL("image/png").split(",")[1] }); toast("기관 직인을 등록했어요."); viewSeal(); }
+    catch (ex) { toast("등록하지 못했어요: " + (ex.message || ex)); e.target.disabled = false; }
+  });
+}
+
+/* ── 협약서에 기관 직인 날인 (운영자) ── */
+async function openStamp(row){
+  const m = document.createElement("div"); m.className = "stampm"; m.id = "stampM";
+  m.innerHTML = `<div class="stampbox" role="dialog" aria-modal="true" aria-label="기관 직인 날인">
+    <div class="stamphead"><b>기관 직인 날인 · ${esc(row.company)}</b><span class="sp"></span>
+      <label class="pg" id="pgWrap" hidden>쪽 <select id="pgSel"></select></label>
+      <label class="pg">크기 <input type="range" id="szSel" min="15" max="50" value="24"> <span id="szV">24mm</span></label>
+      <button class="btn" id="stCancel">닫기</button><button class="btn solid" id="stSave" disabled>날인하여 저장</button></div>
+    <p class="hint" style="margin:8px 0 10px">직인을 끌어서 서명란(기관 날인 칸) 위에 놓으세요. 원본은 그대로 두고 날인본 PDF가 따로 저장돼요.</p>
+    <div class="stage" id="stage"><p class="none" id="stLoad">협약서를 불러오는 중이에요.</p><div><canvas id="pgCv" hidden></canvas><img id="sealImg" alt="기관 직인" hidden draggable="false"></div></div></div>`;
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  $("#stCancel").addEventListener("click", close);
+  let doc = null, isPdf = false, pageW = 0, pageH = 0, scale = 1, sealB64 = "", srcBytes = null, imgEl = null, mmW = 24;
+  try {
+    const [seal, file] = await Promise.all([call("adminGetSeal"), call("adminDownload", "agreement", row.id, "fileId")]);
+    if (!seal) { close(); toast("먼저 ‘기관 직인 관리’에서 직인을 등록하세요."); return go("seal"); }
+    sealB64 = seal.b64; srcBytes = b64ToBytes(file.b64); isPdf = /pdf/i.test(file.mime) || /\.pdf$/i.test(file.name);
+    await loadScript(LIB_PDFLIB);
+    const cv = $("#pgCv"), stage = $("#stage"), maxW = Math.min(720, stage.clientWidth - 2);
+    if (isPdf) {
+      const lib = await pdfjs();
+      doc = await lib.getDocument({ data: srcBytes.slice(), cMapUrl: "https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/cmaps/", cMapPacked: true }).promise;
+      $("#pgSel").innerHTML = Array.from({ length: doc.numPages }, (_, i) => `<option value="${i + 1}" ${i + 1 === doc.numPages ? "selected" : ""}>${i + 1} / ${doc.numPages}</option>`).join("");
+      $("#pgWrap").hidden = doc.numPages < 2;
+      const render = async n => { const pg = await doc.getPage(n), v1 = pg.getViewport({ scale: 1 }); pageW = v1.width; pageH = v1.height; scale = maxW / pageW;
+        const v = pg.getViewport({ scale }); cv.width = v.width; cv.height = v.height; await pg.render({ canvasContext: cv.getContext("2d"), viewport: v }).promise; placeDefault(); };
+      $("#pgSel").addEventListener("change", e => render(+e.target.value));
+      await render(doc.numPages);
+    } else {
+      imgEl = new Image(); await new Promise((res, rej) => { imgEl.onload = res; imgEl.onerror = rej; imgEl.src = URL.createObjectURL(new Blob([srcBytes], { type: file.mime })); });
+      pageW = 595.28; pageH = pageW * imgEl.naturalHeight / imgEl.naturalWidth; scale = maxW / pageW;
+      cv.width = Math.round(pageW * scale); cv.height = Math.round(pageH * scale); cv.getContext("2d").drawImage(imgEl, 0, 0, cv.width, cv.height); placeDefault();
+    }
+    $("#stLoad").remove(); cv.hidden = false;
+    const s = $("#sealImg"); s.src = "data:image/png;base64," + sealB64; s.hidden = false; $("#stSave").disabled = false;
+  } catch (ex) { $("#stLoad") && ($("#stLoad").textContent = "협약서를 열지 못했어요: " + (ex.message || ex)); return; }
+
+  function sealPx(){ return mmW * 72 / 25.4 * scale; }
+  function placeDefault(){ const s = $("#sealImg"), w = sealPx(); s.style.width = w + "px"; s.style.left = ($("#pgCv").width * 0.70 - w / 2) + "px"; s.style.top = ($("#pgCv").height * 0.82 - w / 2) + "px"; }
+  $("#szSel").addEventListener("input", e => { const s = $("#sealImg"), old = s.offsetWidth; mmW = +e.target.value; $("#szV").textContent = mmW + "mm"; const w = sealPx();
+    s.style.width = w + "px"; s.style.left = (s.offsetLeft + (old - w) / 2) + "px"; s.style.top = (s.offsetTop + (old - w) / 2) + "px"; });
+  // 끌어서 옮기기 (마우스·터치)
+  const s = $("#sealImg"); let drag = null;
+  s.addEventListener("pointerdown", e => { drag = { dx: e.clientX - s.offsetLeft, dy: e.clientY - s.offsetTop }; s.setPointerCapture(e.pointerId); });
+  s.addEventListener("pointermove", e => { if (!drag) return; const cv = $("#pgCv");
+    s.style.left = Math.max(-s.offsetWidth / 2, Math.min(cv.width - s.offsetWidth / 2, e.clientX - drag.dx)) + "px";
+    s.style.top = Math.max(-s.offsetHeight / 2, Math.min(cv.height - s.offsetHeight / 2, e.clientY - drag.dy)) + "px"; });
+  s.addEventListener("pointerup", () => { drag = null; });
+
+  $("#stSave").addEventListener("click", async () => {
+    const btn = $("#stSave"); btn.disabled = true; btn.textContent = "날인하는 중";
+    try {
+      const { PDFDocument } = window.PDFLib, sImg = $("#sealImg");
+      const x = sImg.offsetLeft / scale, wPt = sImg.offsetWidth / scale, hPt = sImg.offsetHeight / scale, yTop = sImg.offsetTop / scale;
+      let pdf, page;
+      if (isPdf) { pdf = await PDFDocument.load(srcBytes, { ignoreEncryption: true }); page = pdf.getPage((+($("#pgSel").value || doc.numPages)) - 1); }
+      else { pdf = await PDFDocument.create(); page = pdf.addPage([pageW, pageH]);
+        const im = /png/i.test(row.fileName) ? await pdf.embedPng(srcBytes) : await pdf.embedJpg(srcBytes); page.drawImage(im, { x: 0, y: 0, width: pageW, height: pageH }); }
+      const seal = await pdf.embedPng(b64ToBytes(sealB64)), ph = page.getHeight();
+      page.drawImage(seal, { x, y: ph - yTop - hPt, width: wPt, height: hPt, opacity: 0.92 });
+      const out = await pdf.save();
+      await call("adminSaveStamped", row.id, { name: "stamped.pdf", mime: "application/pdf", b64: bytesToB64(out) });
+      close(); closePanel(); toast("기관 직인을 날인해 저장하고 승인 처리했어요."); refresh("agreement");
+    } catch (ex) { toast("날인하지 못했어요: " + (ex.message || ex)); btn.disabled = false; btn.textContent = "날인하여 저장"; }
+  });
+}
+
+/* ── 파일 내려받기 (협약서·자료) ── */
+async function download(key, id, btn, col){
+  if (btn) { btn.disabled = true; btn.textContent = "받는 중"; }
+  try {
+    const r = await call("adminDownload", key, id, col || "fileId");
+    const bin = atob(r.b64), arr = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([arr], { type: r.mime })); a.download = r.name; document.body.appendChild(a); a.click(); a.remove();
+  } catch (e) { toast("내려받지 못했어요: " + (e.message || e)); }
+  finally { if (btn) { btn.disabled = false; btn.textContent = "내려받기"; } }
+}
+
+/* ── 편집 패널 ── */
+let P = null;
+async function openPanel(key, row, defaults){
+  const t = S[key]; P = { key, id: row?.id || null, reopen: T && T.key===key ? T.opt : null };
+  $("#pTitle").textContent = row ? `${t.label} 수정` : `${t.label} 추가`;
+  $("#pDel").style.display = row ? "" : "none";
+  const fields = [];
+  for (const c of t.cols){
+    const [k, label, type, o] = c, v = row ? row[k] : (defaults && k in defaults ? defaults[k] : (type==="check" ? false : type==="multi" ? [] : ""));
+    const id = "p_"+k, req = o.req ? "<em>*</em>" : "";
+    if (o.calc){ if (row) fields.push(`<div class="fld"><label>${esc(label)} (자동 계산)</label><div class="ro">${esc(cellText(c, v)) || "-"}</div></div>`); continue; }
+    let input;
+    if (type==="select") input = `<select id="${id}" data-k="${k}"><option value="">선택</option>${o.options.map(x=>`<option ${x===v?"selected":""}>${esc(x)}</option>`).join("")}</select>`;
+    else if (type==="ref"){ const opts = await refOptions(o.ref); input = `<select id="${id}" data-k="${k}"><option value="">선택</option>${opts.map(x=>`<option value="${esc(x.id)}" ${x.id===v?"selected":""}>${esc(x.label)}</option>`).join("")}</select>`; }
+    else if (type==="multi") input = `<div class="multi" data-k="${k}" data-multi>${o.options.map(x=>`<label><input type="checkbox" value="${esc(x)}" ${(v||[]).includes(x)?"checked":""}>${esc(x)}</label>`).join("")}</div>`;
+    else if (type==="check") input = `<label class="ck"><input type="checkbox" id="${id}" data-k="${k}" ${v?"checked":""}> 예</label>`;
+    else if (type==="textarea") input = `<textarea id="${id}" data-k="${k}">${esc(v)}</textarea>`;
+    else if (type==="file") { const fname = row && (k === "stampedFileId" ? row.stampedFileName : row.fileName);
+      input = `<div class="filecell">${row && row[k] ? `<span>${esc(fname || "파일")}</span><button type="button" class="btn dlb" data-pdl="${esc(row.id)}" data-pcol="${k}">내려받기</button>` : `<span class="ro" style="display:block">${k === "stampedFileId" ? "아직 기관 날인 전이에요" : "아직 파일이 없어요"}</span>`}</div>${k === "stampedFileId" ? "" : `<input id="${id}" type="file" data-file="${k}" accept="${key === "report" ? "image/jpeg,image/png" : ".pdf,.hwp,.hwpx,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.zip"}" style="margin-top:8px">`}`; }
+    else input = `<input id="${id}" data-k="${k}" type="${type==="number"?"number":type==="date"?"date":type==="email"?"email":type==="url"?"url":type==="phone"?"tel":"text"}" value="${esc(v ?? "")}">`;
+    fields.push(`<div class="fld"><label for="${id}">${esc(label)}${req}</label>${input}</div>`);
+  }
+  if (PANEL_TIPS[key]) fields.unshift(`<p class="hint">${PANEL_TIPS[key]}</p>`);
+  if (key === "agreement" && row && row.fileId && ROLES.includes("operator")) {
+    const okType = /\.(pdf|jpe?g|png)$/i.test(row.fileName || "");
+    fields.unshift(`<div class="stampbar"><div><b>${row.stampedFileId ? "기관 날인 완료" : "기관 직인 날인"}</b><span>${row.stampedFileId ? `${esc(row.stampedAt || "")} · ${esc(row.stampedBy || "")}` : okType ? "기업이 올린 협약서에 우리 기관 직인을 찍어 날인본을 저장합니다." : "PDF·JPG·PNG 협약서에만 직인을 찍을 수 있어요."}</span></div>${okType ? `<button type="button" class="btn solid" id="stampBtn">${row.stampedFileId ? "다시 날인" : "직인 날인하기"}</button>` : ""}</div>`);
+  }
+  if (key === "student" && row && row.rrnMasked && ROLES.includes("operator")) fields.push(`<div class="fld"><label>주민등록번호 전체 (운영자)</label><div class="reveal"><span id="rvBox" class="ro">${esc(row.rrnMasked)}</span><button type="button" class="btn" id="rvBtn">사유 입력 후 확인</button></div><p class="hint">확인하면 열람자·사유·시각이 개인정보 열람 기록에 남고, 30초 뒤 다시 가려집니다.</p></div>`);
+  if (row) fields.push(`<div class="fld"><label>ID · 등록일시</label><div class="ro">${esc(row.id)} · ${esc(row.created||"")}</div></div>`);
+  $("#pBody").innerHTML = fields.join("");
+  $("#pBody").querySelectorAll("[data-pdl]").forEach(b => b.addEventListener("click", e => download(key, e.currentTarget.dataset.pdl, e.currentTarget, e.currentTarget.dataset.pcol)));
+  $("#stampBtn")?.addEventListener("click", () => openStamp(row));
+  $("#rvBtn")?.addEventListener("click", async () => {
+    const reason = prompt("열람 사유를 입력하세요 (예: HRD-Net 훈련생 등록)"); if (!reason) return;
+    try { const v = await call("adminRevealRrn", row.id, reason); $("#rvBox").textContent = v; setTimeout(() => { const b = $("#rvBox"); if (b) b.textContent = row.rrnMasked; }, 30000); }
+    catch (e) { toast(e.message || e); }
+  });
+  $("#panel").classList.add("show"); $("#panel").setAttribute("aria-hidden","false"); $("#scrim").classList.add("show");
+  setTimeout(() => $("#pBody input, #pBody select, #pBody textarea")?.focus(), 200);
+}
+function closePanel(){ $("#panel").classList.remove("show"); $("#panel").setAttribute("aria-hidden","true"); $("#scrim").classList.remove("show"); P = null; }
+["#pClose","#pCancel","#scrim"].forEach(s => $(s).addEventListener("click", closePanel));
+document.addEventListener("keydown", e => { if (e.key==="Escape" && P) closePanel(); });
+$("#pSave").addEventListener("click", async () => {
+  const obj = { id: P.id || undefined };
+  $("#pBody").querySelectorAll("[data-k]").forEach(el => {
+    const k = el.dataset.k;
+    if (el.hasAttribute("data-multi")) obj[k] = [...el.querySelectorAll("input:checked")].map(x=>x.value);
+    else if (el.type==="checkbox") obj[k] = el.checked;
+    else if (el.type==="number") obj[k] = el.value==="" ? "" : Number(el.value);
+    else obj[k] = el.value.trim();
+  });
+  for (const fin of $("#pBody").querySelectorAll("[data-file]")) {
+    const f = fin.files[0]; if (!f) continue;
+    if (f.size > 10 * 1024 * 1024) return toast("파일은 10MB 이하만 올릴 수 있어요.");
+    (obj.__files = obj.__files || {})[fin.dataset.file] = { name: f.name, mime: f.type, b64: await readB64(f) };
+  }
+  const btn = $("#pSave"); btn.disabled = true; btn.textContent = "저장하는 중";
+  try { const key = P.key, re = P.reopen; await call("adminSave", key, obj); Object.keys(refCache).forEach(k => delete refCache[k]); closePanel(); toast(obj.id ? "수정했어요." : "추가했어요."); await refresh(key, re); }
+  catch (e) { toast("저장하지 못했어요: " + (e.message || e)); }
+  finally { btn.disabled = false; btn.textContent = "저장"; }
+});
+$("#pDel").addEventListener("click", async () => {
+  if (!confirm("이 항목을 삭제할까요? 구글 시트에서도 지워지고 되돌릴 수 없어요.")) return;
+  try { const key = P.key, re = P.reopen; await call("adminDelete", key, P.id); Object.keys(refCache).forEach(k => delete refCache[k]); closePanel(); toast("삭제했어요."); await refresh(key, re); }
+  catch (e) { toast("삭제하지 못했어요: " + (e.message || e)); }
+});
+
+/* ── 수강신청·출석 ── */
+const EN_STATUS = ["신청","확정","대기","취소","수강중","수료","미수료"];
+let A = { sessions: [], cur: null, rows: [] };
+async function viewAttendance(){
+  A.sessions = await call("adminSessions");
+  $("#view").innerHTML = `<div class="att"><div class="tw" id="aList"></div><div id="aDetail" class="card"><p class="none">왼쪽에서 회차를 고르세요.</p></div></div>`;
+  drawSessions();
+  const first = A.cur && A.sessions.find(s=>s.id===A.cur) || A.sessions.find(s=>/모집|운영/.test(s.status)) || A.sessions[0];
+  if (first) openSession(first.id);
+}
+function drawSessions(){
+  $("#aList").innerHTML = A.sessions.length ? A.sessions.map(s => `<button class="sess" data-s="${esc(s.id)}" aria-current="${A.cur===s.id}"><b>${esc(s.title)}</b><small>${md(s.start)}${s.end&&s.end!==s.start?"–"+md(s.end):""} · ${esc(s.status)} · 신청 ${s.applied}/${s.capacity??"-"}</small></button>`).join("")
+    : `<p class="none" style="padding:12px">회차가 없어요. 교육 일정 메뉴에서 먼저 회차를 등록하세요.</p>`;
+}
+$("#view").addEventListener("click", e => { const b = e.target.closest("[data-s]"); if (b) openSession(b.dataset.s); });
+async function openSession(id){
+  A.cur = id; drawSessions(); $("#aDetail").innerHTML = `<p class="loading">불러오는 중</p>`;
+  A.rows = await call("adminEnrollments", id); drawEnroll();
+}
+function drawEnroll(){
+  const s = A.sessions.find(x => x.id===A.cur), r = A.rows;
+  const act = r.filter(x => x.status!=="취소"), conf = r.filter(x => ["확정","수강중","수료","미수료"].includes(x.status)).length;
+  $("#aDetail").innerHTML = `<h2 style="font-size:17px;margin:0">${esc(s.title)}</h2>
+    <div class="stats"><div><b>${act.length}</b><span>신청</span></div><div><b>${conf}</b><span>확정</span></div><div><b>${r.filter(x=>x.status==="신청").length}</b><span>확인 대기</span></div><div><b>${s.capacity??"-"}</b><span>정원</span></div><div><b>${r.filter(x=>x.status==="수료").length}</b><span>수료</span></div></div>
+    <div class="bar"><span class="count" id="selC">선택 0명</span>
+      <button class="btn" data-bulk="확정" disabled>선택 확정</button><button class="btn" data-bulk="대기" disabled>선택 대기</button>
+      <button class="btn" data-bulk="수강중" disabled>선택 수강중</button><button class="btn" data-bulk="취소" disabled>선택 취소</button>
+      <button class="btn solid" id="fin">출석 기준으로 수료 처리</button></div>
+    ${r.length?`<div class="tw"><table><thead><tr><th style="cursor:default"><input type="checkbox" id="all" aria-label="전체 선택"></th><th style="cursor:default">이름</th><th style="cursor:default">연락처</th><th style="cursor:default">신청일</th><th style="cursor:default">상태</th><th style="cursor:default">총 교육일</th><th style="cursor:default">출석일</th><th style="cursor:default">출석률</th><th style="cursor:default">판정</th><th style="cursor:default"></th></tr></thead>
+      <tbody>${r.map(x => `<tr data-e="${esc(x.id)}" style="cursor:default"><td><input type="checkbox" class="pick" aria-label="${esc(x.studentName)} 선택"></td><td><b>${esc(x.studentName)}</b></td><td>${esc(x.phone)}</td><td>${md(x.appliedAt)}</td>
+        <td><select data-f="status" aria-label="상태">${EN_STATUS.map(o=>`<option ${o===x.status?"selected":""}>${o}</option>`).join("")}</select></td>
+        <td><input type="number" min="0" data-f="totalDays" value="${x.totalDays??""}" aria-label="총 교육일"></td><td><input type="number" min="0" data-f="attended" value="${x.attended??""}" aria-label="출석일"></td>
+        <td class="rate">${x.rate===null?"-":x.rate+"%"}</td><td class="vd">${pill(x.verdict==="-"?"":x.verdict)}</td><td><span class="saved"></span></td></tr>`).join("")}</tbody></table></div>`
+    : `<p class="none">아직 신청자가 없어요. 홈페이지에 과정이 보이는지 확인하세요 (진행상태가 모집중이어야 해요).</p>`}`;
+}
+function picked(){ return [...document.querySelectorAll(".pick:checked")].map(c => c.closest("tr").dataset.e); }
+function syncSel(){ const n = picked().length; $("#selC").textContent = `선택 ${n}명`; document.querySelectorAll("[data-bulk]").forEach(b => b.disabled = !n); }
+$("#view").addEventListener("change", async e => {
+  const el = e.target; if (current!=="attendance") return;
+  if (el.id==="all"){ document.querySelectorAll(".pick").forEach(c => c.checked = el.checked); return syncSel(); }
+  if (el.classList.contains("pick")) return syncSel();
+  const f = el.dataset.f; if (!f) return;
+  const tr = el.closest("tr"), id = tr.dataset.e, row = A.rows.find(x => x.id===id), mark = tr.querySelector(".saved");
+  const val = f==="status" ? el.value : (el.value==="" ? "" : Number(el.value));
+  mark.className = "saved"; mark.textContent = "저장 중";
+  try {
+    await call("adminSave", "enrollment", { id, [f]: val }); row[f] = val;
+    if (f!=="status"){ row.rate = row.totalDays ? Math.round((row.attended||0)/row.totalDays*100) : null; row.verdict = row.totalDays ? (row.rate>=80?"수료":"미수료") : "-";
+      tr.querySelector(".rate").textContent = row.rate===null ? "-" : row.rate+"%"; tr.querySelector(".vd").innerHTML = pill(row.verdict==="-"?"":row.verdict); }
+    mark.textContent = "저장됨";
+  } catch (err) { mark.className = "saved err"; mark.textContent = "실패"; toast("저장하지 못했어요: " + (err.message||err)); }
+});
+$("#view").addEventListener("click", async e => {
+  if (current!=="attendance") return;
+  const b = e.target.closest("[data-bulk]");
+  if (b){ const ids = picked(), st = b.dataset.bulk; b.disabled = true;
+    try { await call("adminBulkStatus", ids, st); toast(`${ids.length}명을 ${st} 처리했어요.`); A.sessions = await call("adminSessions"); drawSessions(); await openSession(A.cur); }
+    catch (err) { toast("처리하지 못했어요: " + (err.message||err)); b.disabled = false; } return; }
+  if (e.target.id==="fin"){
+    if (!confirm("총 교육일과 출석일이 입력된 확정·수강중 인원을 대상으로 수료·미수료를 확정하고, 수료자는 수료증 발급 대장에 호수를 붙여 등록합니다. 진행할까요?")) return;
+    e.target.disabled = true;
+    try { const r = await call("adminFinalize", A.cur); toast(`수료 ${r.passed}명, 미수료 ${r.failed}명으로 처리했어요.`); await openSession(A.cur); }
+    catch (err) { toast("수료 처리하지 못했어요: " + (err.message||err)); e.target.disabled = false; }
+  }
+});
+
+const PANEL_TIPS = {
+  rental: "신청 건을 고르면 대여자 정보가 자동으로 채워집니다. 저장하면 장비가 ‘대여중’이 되고, 상태를 ‘반납완료’로 바꾸면 반납일이 기록되며 장비가 다시 ‘사용가능’이 됩니다. 반납 점검을 ‘이상 있음’으로 두면 유지보수 이력에 점검 건이 자동으로 생깁니다.",
+  maintenance: "결과가 ‘진행중·부품대기’면 장비가 수리중/점검필요로, ‘완료’면 사용가능으로 바뀝니다. 불용처리를 완료하면 장비가 불용이 됩니다.",
+  equipment: "‘홈페이지 공개’를 체크한 장비만 홈페이지 보유 장비 목록에 보입니다. 상태가 ‘사용가능’이고 ‘대여가능’이면 홈페이지에서 신청할 수 있어요.",
+  staff: "등록된 담당자만 이름과 사번으로 관리 화면에 들어올 수 있습니다. 권한: 교육담당(교육 운영 메뉴), 관리자(+장비관리), 운영자(+성과관리·담당자 관리). 퇴사·휴직자는 ‘사용’을 해제하면 즉시 로그인이 막힙니다. 비밀번호 사용 중이라면 ‘비밀번호 초기화’를 체크하면 다음 로그인 때 새로 정합니다.",
+  agreement: "운영자는 ‘직인 날인하기’로 기관 직인을 찍어 날인본을 저장할 수 있고, 저장하면 자동으로 승인됩니다. 홈페이지에서 회원이 올린 협약서예요. ‘내려받기’로 파일을 확인한 뒤 검토상태를 바꾸세요. 승인하면 협약기업이 ‘협약완료’가 되고, 그 기업 소속 회원은 교육을 신청할 수 있어요. 보완요청·반려 시 검토 의견이 회원의 내 정보·협약서 제출 화면에 보입니다.",
+  resource: "‘홈페이지 공개’를 체크한 자료만 홈페이지 자료실에 보여요. 협약서 양식은 분류를 ‘협약서·서식’, ‘상단 고정’을 체크해 두면 맨 위에 나옵니다. 파일은 기관 구글 드라이브의 비공개 폴더에 저장돼요.",
+  goal: "자동 지표는 실적을 시스템 데이터로 계산합니다. 시스템에 없는 지표(예: 취업률, 예산 집행률)는 ‘기타(수기 입력)’을 고르고 지표명·단위·실적을 직접 넣으세요."
+};
+async function refresh(key, re){
+  if (current === "equip") return viewEquip({ tab: EQ_TAB });
+  if (current === "perf") return viewPerf({ year: PF.year });
+  return viewTable(key, re || undefined);
+}
+
+/* ── 장비관리 (관리자) ── */
+let EQ_TAB = "list";
+const EQ_TABS = [["list","장비 현황"],["request","신청 현황"],["rental","대여·반납"],["maint","유지보수"]];
+async function viewEquip(opt){
+  if (opt && opt.tab) EQ_TAB = opt.tab;
+  const s = await call("adminEquipSummary");
+  const cats = Object.entries(s.byCat);
+  $("#view").innerHTML = `<div class="mini">
+      <div><span>전체 장비</span><b>${s.total}</b></div><div><span>사용가능</span><b>${s.available}</b></div>
+      <div><span>대여중</span><b>${s.out}</b></div><div class="${s.overdue?"alert":""}"><span>반납 연체</span><b>${s.overdue}</b></div>
+      <div class="${s.repair?"alert":""}"><span>수리·점검 필요</span><b>${s.repair}</b></div><div class="${s.requests?"alert":""}"><span>대여 신청 대기</span><b>${s.requests}</b></div>
+      <div><span>이번 달 대여</span><b>${s.monthRentals}</b></div><div><span>올해 유지보수비</span><b>${(s.maintCost||0).toLocaleString()}</b></div></div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div class="card"><h2>분류별 보유 현황</h2>${cats.length?`<ul class="list">${cats.map(([c,v]) => `<li><div>${esc(c)}<small>전체 ${v.total} · 대여중 ${v.out}</small></div><b>${v.available} 사용가능</b></li>`).join("")}</ul>`:`<p class="none">등록된 장비가 없어요. 엑셀로 한 번에 올려보세요.</p>`}</div>
+      <div class="card"><h2>다가오는 점검 일정</h2>${s.nextChecks.length?`<ul class="list">${s.nextChecks.map(n => `<li><div>${esc(n.equipName)}<small>${esc(n.kind)}</small></div><span>${md(n.nextAt)}</span></li>`).join("")}</ul>`:`<p class="none">예정된 점검이 없어요. 유지보수 기록에 다음 점검일을 넣으면 여기 표시됩니다.</p>`}</div></div>
+    <div class="subtabs" role="tablist">${EQ_TABS.map(([id,l]) => `<button class="subtab" role="tab" data-eqtab="${id}" aria-selected="${EQ_TAB===id}">${l}</button>`).join("")}</div>
+    <div id="eqBody"></div>`;
+  document.querySelectorAll("[data-eqtab]").forEach(b => b.addEventListener("click", () => viewEquip({ tab: b.dataset.eqtab })));
+  const el = $("#eqBody");
+  if (EQ_TAB === "list") return viewTable("equipment", { el, extra:`<button class="btn" id="xlsUp">엑셀 업로드</button><button class="btn" id="xlsTpl">업로드 양식</button><input type="file" id="xlsFile" accept=".xlsx,.xls,.csv" hidden>`,
+    newLabel:"장비 등록", hint:"장비를 한 대씩 등록하거나, 엑셀(장비코드·장비명·분류·모델명·수량·보관위치 등)로 한 번에 올릴 수 있어요. 장비코드가 같으면 기존 장비를 수정합니다.", after: bindUpload });
+  if (EQ_TAB === "request") return viewTable("share", { el, preset: r => r.type==="장비대여" || r.type==="시설대관", newLabel:"신청 직접 등록", defaults:{ type:"장비대여", status:"접수" },
+    hint:"홈페이지에서 들어온 장비대여·시설대관 신청입니다. 승인 후 ‘대여·반납’ 탭에서 대여를 등록하세요." });
+  if (EQ_TAB === "rental") return viewTable("rental", { el, newLabel:"대여 등록", defaults:{ outAt: new Date().toISOString().slice(0,10), status:"대여중" },
+    hint:"행을 눌러 상태를 ‘반납완료’로 바꾸면 반납 처리됩니다. 연체일수는 반납예정일이 지나면 자동 계산돼요." });
+  if (EQ_TAB === "maint") return viewTable("maintenance", { el, newLabel:"유지보수 기록", defaults:{ date: new Date().toISOString().slice(0,10), result:"완료" } });
+}
+async function loadXlsx(){
+  if (window.XLSX) return window.XLSX;
+  await new Promise((res, rej) => { const sc = document.createElement("script"); sc.src = "https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"; sc.onload = res; sc.onerror = () => rej(new Error("엑셀 읽기 도구를 불러오지 못했어요. 인터넷 연결을 확인하세요.")); document.head.appendChild(sc); });
+  return window.XLSX;
+}
+const TPL_HEAD = ["장비코드","장비명","분류","모델명","제조사","시리얼번호","수량","취득일","취득금액(원)","보관위치","상태","대여가능","홈페이지 공개","설명(홈페이지 표시)","메모"];
+function bindUpload(){
+  $("#xlsUp").addEventListener("click", () => $("#xlsFile").click());
+  $("#xlsTpl").addEventListener("click", async () => {
+    try { const X = await loadXlsx(); const ws = X.utils.aoa_to_sheet([TPL_HEAD, ["KHP-CAM-001","시네마 카메라","촬영장비","FX6","Sony","S01234",1,"2024-03-15",6500000,"장비실 A-1","사용가능","Y","Y","4K 촬영, 렌즈 키트 포함",""]]);
+      const wb = X.utils.book_new(); X.utils.book_append_sheet(wb, ws, "장비"); X.writeFile(wb, "장비_업로드_양식.xlsx"); }
+    catch (e) { toast(e.message); }
+  });
+  $("#xlsFile").addEventListener("change", async e => {
+    const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+    try {
+      const X = await loadXlsx(), wb = X.read(await f.arrayBuffer(), { cellDates: true });
+      const ws = wb.Sheets[wb.SheetNames[0]];
+      const rows = X.utils.sheet_to_json(ws, { defval: "", raw: true }).map(r => { const o = {}; Object.keys(r).forEach(k => { const v = r[k]; o[String(k).trim()] = v instanceof Date ? v.toISOString().slice(0,10) : v; }); return o; })
+        .filter(r => Object.values(r).some(v => String(v).trim() !== ""));
+      if (!rows.length) return toast("첫 번째 시트에 데이터가 없어요.");
+      showImport(f.name, rows);
+    } catch (err) { toast("파일을 읽지 못했어요: " + (err.message || err)); }
+  });
+}
+function showImport(name, rows){
+  const heads = Object.keys(rows[0]), known = heads.filter(h => TPL_HEAD.includes(h) || /자산번호|관리번호|품명|물품명|모델|규격|구입|위치|수량|분류|구분|비고|시리얼/.test(h));
+  P = { key: "__import" };
+  $("#pTitle").textContent = "엑셀 업로드 확인"; $("#pDel").style.display = "none"; $("#pSave").textContent = `${rows.length}건 올리기`;
+  $("#pBody").innerHTML = `<p><b>${esc(name)}</b> · ${rows.length}행</p>
+    <p class="hint">인식한 열: ${known.length?known.map(esc).join(", "):"없음"}${heads.length>known.length?`<br>무시하는 열: ${heads.filter(h=>!known.includes(h)).map(esc).join(", ")}`:""}</p>
+    <div class="tw"><table class="prev"><thead><tr>${known.slice(0,5).map(h=>`<th style="cursor:default">${esc(h)}</th>`).join("")}</tr></thead>
+    <tbody>${rows.slice(0,8).map(r=>`<tr style="cursor:default">${known.slice(0,5).map(h=>`<td>${esc(r[h])}</td>`).join("")}</tr>`).join("")}</tbody></table></div>
+    ${rows.length>8?`<p class="hint">외 ${rows.length-8}행</p>`:""}<p class="hint">장비명이 없는 행은 건너뛰고, 장비코드가 이미 있는 장비는 내용을 덮어씁니다.</p>`;
+  P.rows = rows;
+  $("#panel").classList.add("show"); $("#panel").setAttribute("aria-hidden","false"); $("#scrim").classList.add("show");
+}
+$("#pSave").addEventListener("click", async e => {
+  if (!P || P.key !== "__import") return;
+  e.stopImmediatePropagation();
+  const btn = $("#pSave"); btn.disabled = true; btn.textContent = "올리는 중";
+  try { const r = await call("adminImport", "equipment", P.rows); closePanel();
+    toast(`추가 ${r.inserted}건 · 수정 ${r.updated}건${r.skipped?` · 건너뜀 ${r.skipped}건`:""}`); await viewEquip({ tab: "list" }); }
+  catch (err) { toast("올리지 못했어요: " + (err.message || err)); }
+  finally { btn.disabled = false; btn.textContent = "저장"; }
+}, true);
+
+/* ── 성과관리 (운영자) ── */
+const PF = { year: String(new Date().getFullYear()), tab: "status", data: null };
+const fmt = (v, unit) => v === null || v === undefined ? "-" : (unit === "%" ? `${v}%` : `${typeof v === "number" ? v.toLocaleString() : v}${unit && unit !== "%" ? unit : ""}`);
+async function viewPerf(opt){
+  if (opt && opt.year) PF.year = opt.year; if (opt && opt.tab) PF.tab = opt.tab;
+  const d = PF.data = await call("adminPerformance", PF.year);
+  $("#view").innerHTML = `<div class="bar"><label for="pfYear" class="count" style="margin-right:0">연도</label>
+      <select id="pfYear" class="yr">${d.years.concat(d.years.includes(PF.year)?[]:[PF.year]).sort().map(y=>`<option ${y===PF.year?"selected":""}>${y}</option>`).join("")}</select>
+      <span class="count">${d.isCurrent?`${d.elapsed}월 기준 · 연말까지 ${12-d.elapsed}개월 남음`:"연간 확정 실적"}</span></div>
+    <div class="subtabs" role="tablist">${[["status","성과 현황"],["input","KPI 입력"],["analysis","데이터 분석"]].map(([id,l]) => `<button class="subtab" role="tab" data-pftab="${id}" aria-selected="${PF.tab===id}">${l}</button>`).join("")}</div>
+    <div id="pfBody"></div>`;
+  $("#pfYear").addEventListener("change", e => viewPerf({ year: e.target.value }));
+  document.querySelectorAll("[data-pftab]").forEach(b => b.addEventListener("click", () => viewPerf({ tab: b.dataset.pftab })));
+  if (PF.tab === "status") perfStatus(d);
+  else if (PF.tab === "analysis") perfAnalysis(d);
+  else perfInput(d);
+}
+/* KPI 입력: 지표별 목표(필수)와 실적(자동 계산값을 덮어쓸 때만)을 한 표에서 입력 */
+function perfInput(d){
+  const goalOf = label => d.goals.find(g => g.kpi === label) || {};
+  const customs = d.goals.filter(g => g.kpi === d.manualLabel);
+  const autoRow = k => { const g = goalOf(k.label), auto = d.metrics[k.id];
+    return `<tr data-kpi="${esc(k.label)}" data-unit="${esc(k.unit)}" data-auto="${auto ?? ""}" style="cursor:default">
+      <td>${esc(k.group)}</td><td><b>${esc(k.label)}</b></td>
+      <td><input type="number" step="any" data-f="target" value="${g.target ?? ""}" aria-label="${esc(k.label)} 목표" style="width:84px"> ${esc(k.unit)}</td>
+      <td>${fmt(auto, k.unit)}</td>
+      <td><input type="number" step="any" data-f="manualActual" value="${g.manualActual ?? ""}" placeholder="자동" aria-label="${esc(k.label)} 실적 직접 입력" style="width:84px"></td>
+      <td><input type="number" step="any" min="0" data-f="weight" value="${g.weight ?? 1}" aria-label="가중치" style="width:56px"></td>
+      <td class="lv"></td><td class="lb2"></td><td class="lp"></td>
+      <td><input type="text" data-f="memo" value="${esc(g.memo || "")}" placeholder="산출 근거" aria-label="메모" style="width:150px;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--surface)"></td></tr>`; };
+  const customRow = g => `<tr data-kpi="${esc(d.manualLabel)}" data-custom="1" data-orig="${esc(g.customName || "")}" style="cursor:default">
+      <td>수기 지표</td><td><input type="text" data-f="customName" value="${esc(g.customName || "")}" placeholder="지표명 (예: 취업률)" aria-label="수기 지표명" style="width:150px;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--surface)"></td>
+      <td><input type="number" step="any" data-f="target" value="${g.target ?? ""}" aria-label="목표" style="width:84px"> <input type="text" data-f="unit" value="${esc(g.unit || "")}" placeholder="단위" aria-label="단위" style="width:44px;padding:5px;border:1px solid var(--line);border-radius:6px;background:var(--surface)"></td>
+      <td>-</td><td><input type="number" step="any" data-f="manualActual" value="${g.manualActual ?? ""}" placeholder="실적" aria-label="실적" style="width:84px"></td>
+      <td><input type="number" step="any" min="0" data-f="weight" value="${g.weight ?? 1}" aria-label="가중치" style="width:56px"></td>
+      <td class="lv"></td><td class="lb2"></td><td class="lp"></td>
+      <td><input type="text" data-f="memo" value="${esc(g.memo || "")}" placeholder="산출 근거" aria-label="메모" style="width:110px;padding:5px 7px;border:1px solid var(--line);border-radius:6px;background:var(--surface)"> <button class="btn danger" data-delrow title="삭제">삭제</button></td></tr>`;
+  $("#pfBody").innerHTML = `<p class="hint">목표값을 넣으면 실적과 달성률이 바로 계산됩니다. 실적은 시스템 데이터로 <b>자동 계산</b>되고, 외부 자료로 확정된 값이 있으면 ‘실적 직접 입력’에 넣어 덮어쓸 수 있어요. 목표를 비우면 그 지표는 평가에서 빠집니다.</p>
+    <div class="bar"><span class="count">${d.year}년 KPI</span><button class="btn" id="kPrev">전년도 목표 불러오기</button><button class="btn" id="kAdd">수기 지표 추가</button><button class="btn solid" id="kSave">저장하고 결과 보기</button></div>
+    <div class="tw"><table id="kTbl"><thead><tr>${["구분","지표","목표","자동 실적","실적 직접 입력","가중치","적용 실적","달성률","판정","메모"].map(h=>`<th style="cursor:default">${h}</th>`).join("")}</tr></thead>
+    <tbody>${KPI_LIST.map(autoRow).join("")}${customs.map(customRow).join("")}</tbody></table></div>`;
+  const removed = [];
+  const calc = tr => {
+    const v = f => { const el = tr.querySelector(`[data-f="${f}"]`); return el && el.value !== "" ? Number(el.value) : null; };
+    const unit = tr.dataset.custom ? (tr.querySelector('[data-f="unit"]').value || "") : tr.dataset.unit;
+    const target = v("target"), manual = v("manualActual"), auto = tr.dataset.auto === undefined || tr.dataset.auto === "" ? null : Number(tr.dataset.auto);
+    const actual = manual !== null ? manual : auto, rate = target && actual !== null ? Math.round(actual / target * 1000) / 10 : null;
+    tr.querySelector(".lv").textContent = target === null ? "" : fmt(actual, unit);
+    tr.querySelector(".lb2").innerHTML = target === null ? "" : `<div style="display:flex;gap:6px;align-items:center">${bar(rate)}<span>${rate === null ? "-" : rate + "%"}</span></div>`;
+    tr.querySelector(".lp").innerHTML = target === null ? `<span class="hint" style="margin:0">평가 안 함</span>` : pill(rate === null ? "" : rate >= 100 ? "달성" : rate >= 80 ? "주의" : "미달");
+  };
+  const tb = $("#kTbl tbody");
+  tb.querySelectorAll("tr").forEach(calc);
+  tb.addEventListener("input", e => calc(e.target.closest("tr")));
+  tb.addEventListener("click", e => { const b = e.target.closest("[data-delrow]"); if (!b) return; const tr = b.closest("tr"); if (tr.dataset.orig) removed.push(tr.dataset.orig); tr.remove(); });
+  $("#kAdd").addEventListener("click", () => { tb.insertAdjacentHTML("beforeend", customRow({})); calc(tb.lastElementChild); tb.lastElementChild.querySelector('[data-f="customName"]').focus(); });
+  $("#kPrev").addEventListener("click", async () => {
+    const prev = String(Number(PF.year) - 1), all = (await call("adminList", "goal")).filter(g => String(g.year) === prev);
+    if (!all.length) return toast(`${prev}년 목표가 없어요.`);
+    let n = 0;
+    all.forEach(g => { if (g.kpi === d.manualLabel) { tb.insertAdjacentHTML("beforeend", customRow({ customName: g.customName, unit: g.unit, target: g.target, weight: g.weight, memo: g.memo })); calc(tb.lastElementChild); n++; return; }
+      const tr = [...tb.querySelectorAll("tr")].find(x => x.dataset.kpi === g.kpi && !x.dataset.custom); if (!tr) return;
+      const t = tr.querySelector('[data-f="target"]'); if (t.value === "") { t.value = g.target; tr.querySelector('[data-f="weight"]').value = g.weight ?? 1; calc(tr); n++; } });
+    toast(n ? `${prev}년 목표 ${n}개를 불러왔어요. 올해 기준으로 고친 뒤 저장하세요.` : "불러올 빈 칸이 없어요.");
+  });
+  $("#kSave").addEventListener("click", async () => {
+    const items = [...tb.querySelectorAll("tr")].map(tr => { const g = f => tr.querySelector(`[data-f="${f}"]`)?.value ?? "";
+      return { kpi: tr.dataset.kpi, customName: g("customName"), target: g("target"), manualActual: g("manualActual"), unit: g("unit"), weight: g("weight"), memo: g("memo") }; })
+      .filter(it => it.kpi !== d.manualLabel || it.customName.trim());
+    removed.filter(n => !items.some(it => it.kpi === d.manualLabel && it.customName === n)).forEach(n => items.push({ kpi: d.manualLabel, customName: n, target: "" }));
+    const btn = $("#kSave"); btn.disabled = true; btn.textContent = "저장하는 중";
+    try { const r = await call("adminSaveKpis", PF.year, items); toast(`KPI ${r.saved}개를 저장했어요.`); viewPerf({ tab: "status" }); }
+    catch (e) { toast("저장하지 못했어요: " + (e.message || e)); btn.disabled = false; btn.textContent = "저장하고 결과 보기"; }
+  });
+}
+function bar(rate){ const r = rate === null ? 0 : Math.min(rate, 100); const c = rate === null ? "" : rate >= 100 ? "" : rate >= 80 ? "warn" : "no"; return `<div class="prog" aria-hidden="true"><i class="${c}" style="width:${r}%"></i></div>`; }
+function perfStatus(d){
+  const done = d.rows.filter(r => r.verdict==="달성").length, warn = d.rows.filter(r => r.verdict==="주의").length, bad = d.rows.filter(r => r.verdict==="미달").length;
+  const groups = [...new Set(d.rows.map(r => r.group))];
+  $("#pfBody").innerHTML = `<div class="card" style="margin-bottom:14px"><div class="big">
+      <div><span class="hint" style="margin:0">종합 달성률 (지표별 100% 상한·가중 평균)</span><div class="num">${d.overall===null?"-":d.overall}<small>${d.overall===null?"":"%"}</small></div></div>
+      <div class="mini" style="flex:1;margin:0"><div><span>목표 지표</span><b>${d.rows.length}</b></div><div><span>달성</span><b>${done}</b></div><div class="${warn?"alert":""}"><span>주의 (80–99%)</span><b>${warn}</b></div><div class="${bad?"alert":""}"><span>미달 (80% 미만)</span><b>${bad}</b></div></div></div></div>
+    ${d.rows.length?`<div class="tw" style="margin-bottom:14px"><table><thead><tr>${["구분","지표","목표","실적","달성률","","판정","부족분",d.isCurrent?"연말 예상":"",d.isCurrent?"월 필요량":""].map(h=>`<th style="cursor:default">${h}</th>`).join("")}</tr></thead>
+      <tbody>${groups.map(g => d.rows.filter(r=>r.group===g).map((r,i) => `<tr style="cursor:default"><td>${i?"":esc(g)}</td><td><b>${esc(r.name)}</b></td><td>${fmt(r.target,r.unit)}</td><td>${fmt(r.actual,r.unit)}${r.source==="직접 입력"?` <small style="display:inline;color:var(--muted)">(직접)</small>`:""}</td>
+        <td>${r.rate===null?"-":Math.round(r.rate)+"%"}</td><td>${bar(r.rate)}</td><td>${pill(r.verdict==="달성"?"달성":r.verdict==="주의"?"주의":r.verdict==="미달"?"미달":"")||esc(r.verdict)}</td>
+        <td>${r.gap?fmt(r.gap,r.unit):"-"}</td><td>${d.isCurrent?(r.projectedRate===null?"-":`${fmt(r.projected,r.unit)} (${Math.round(r.projectedRate)}%)`):""}</td><td>${d.isCurrent&&r.perMonth?`월 ${fmt(r.perMonth,r.unit)}`:""}</td></tr>`).join("")).join("")}</tbody></table></div>`
+      :`<div class="card" style="margin-bottom:14px"><p class="none">${d.year}년 KPI가 아직 없어요. ‘KPI 입력’ 탭에서 지표별 목표를 넣으세요.</p><button class="btn solid" data-pfgo="input">KPI 입력하기</button></div>`}
+    <div class="grid2">
+      <div class="card"><h2>⚠️ 미달성·주의 지표</h2>${d.rows.filter(r=>r.verdict!=="달성").length?`<ul class="list">${d.rows.filter(r=>r.verdict!=="달성").sort((a,b)=>(a.rate??-1)-(b.rate??-1)).map(r => `<li><div>${esc(r.name)}<small>목표 ${fmt(r.target,r.unit)} · 실적 ${fmt(r.actual,r.unit)}${r.memo?` · ${esc(r.memo)}`:""}</small></div><div style="text-align:right">${pill(r.verdict==="실적 없음"?"":r.verdict)}<small>${r.gap?`부족 ${fmt(r.gap,r.unit)}`:""}</small></div></li>`).join("")}</ul>`:`<p class="none">${d.rows.length?"모든 지표를 달성했어요.":"목표를 등록하면 미달 지표를 보여드려요."}</p>`}</div>
+      <div class="card"><h2>💡 분석 요약</h2>${d.insights.length?`<ul class="ins">${d.insights.map(t=>`<li>${esc(t)}</li>`).join("")}</ul>`:`<p class="none">분석할 데이터가 아직 부족해요.</p>`}</div></div>`;
+  document.querySelector("[data-pfgo]")?.addEventListener("click", () => viewPerf({ tab: "input" }));
+}
+function svgBars(items, unit, color){
+  const w = 640, h = 200, pad = 26, n = Math.max(items.length, 1), bw = (w - pad*2) / n, max = Math.max(1, ...items.map(i => i.v || 0));
+  return `<svg class="chart" viewBox="0 0 ${w} ${h+34}" role="img" aria-label="막대 그래프">${items.map((it,i) => { const bh = (it.v||0)/max*h, x = pad + i*bw + bw*.18, y = h - bh + 14;
+    return `<rect x="${x}" y="${y}" width="${bw*.64}" height="${bh}" rx="3" fill="var(${color||"--c1"})"></rect><text class="v" x="${x+bw*.32}" y="${y-4}" text-anchor="middle">${it.v===null||it.v===undefined?"":it.v}</text><text x="${x+bw*.32}" y="${h+30}" text-anchor="middle">${esc(it.l)}</text>`; }).join("")}</svg>`;
+}
+function perfAnalysis(d){
+  const M = d.metrics, P = d.prev;
+  const yoy = (k) => { if (!P || P[k]===null || P[k]===undefined || M[k]===null) return ""; const diff = Math.round((M[k]-P[k])*100)/100; return `<small style="display:inline;color:${diff>=0?"var(--ok)":"var(--err)"}">${diff>=0?"▲":"▼"} ${Math.abs(diff)}</small>`; };
+  const opts = KPI_LIST.map(k => `<option value="${k.id}">${esc(k.label)}</option>`).join("");
+  const dist = (arr, total) => arr.length ? `<ul class="list">${arr.map(x => `<li><div style="flex:1">${esc(x.name)}<div class="prog" style="margin-top:4px"><i style="width:${total?Math.round(x.n/total*100):0}%;background:var(--c2)"></i></div></div><b>${x.n}</b></li>`).join("")}</ul>` : `<p class="none">데이터가 없어요.</p>`;
+  const sum = a => a.reduce((s,x) => s+x.n, 0);
+  $("#pfBody").innerHTML = `
+    <div class="card" style="margin-bottom:14px"><h2>${d.year}년 주요 실적 ${P?`<span class="hint" style="margin:0">전년 대비</span>`:""}</h2>
+      <div class="mini" style="margin:0">${KPI_LIST.map(k => `<div><span>${esc(k.label)}</span><b>${fmt(M[k.id], k.unit)}</b> ${yoy(k.id)}</div>`).join("")}</div></div>
+    <div class="grid2" style="margin-bottom:14px">
+      <div class="card"><h2>연도별 추이 <select id="trendK" class="yr" aria-label="지표 선택">${opts}</select></h2><div id="trendC"></div></div>
+      <div class="card"><h2>월별 추이 <select id="monK" class="yr" aria-label="항목 선택"><option value="applicants">교육 신청</option><option value="completers">수료</option><option value="shares">공유개방 이용</option></select></h2><div id="monC"></div></div></div>
+    <div class="card" style="margin-bottom:14px"><h2>분야별 분석</h2>${d.fields.length?`<div class="tw"><table><thead><tr>${["분야","회차","신청","수료","수료율","만족도"].map(h=>`<th style="cursor:default">${h}</th>`).join("")}</tr></thead><tbody>${d.fields.map(f=>`<tr style="cursor:default"><td><b>${esc(f.field)}</b></td><td>${f.sessions}</td><td>${f.applicants}</td><td>${f.completers}</td><td>${f.passRate===null?"-":f.passRate+"%"}</td><td>${f.satisfaction??"-"}</td></tr>`).join("")}</tbody></table></div>`:`<p class="none">${d.year}년 운영 회차가 없어요.</p>`}</div>
+    <div class="card" style="margin-bottom:14px"><h2>회차별 운영 결과</h2>${d.sessions.length?`<div class="tw"><table><thead><tr>${["회차","시작일","정원","신청","충족률","","수료","만족도"].map(h=>`<th style="cursor:default">${h}</th>`).join("")}</tr></thead><tbody>${d.sessions.map(s=>`<tr style="cursor:default"><td>${esc(s.title)}</td><td>${md(s.start)}</td><td>${s.capacity??"-"}</td><td>${s.applied}</td><td>${s.fill===null?"-":s.fill+"%"}</td><td>${bar(s.fill)}</td><td>${s.completers}</td><td>${s.satisfaction??"-"}</td></tr>`).join("")}</tbody></table></div>`:`<p class="none">회차가 없어요.</p>`}</div>
+    <div class="grid2">
+      <div class="card"><h2>참여 기업 TOP 10</h2>${dist(d.topCompanies, sum(d.topCompanies))}</div>
+      <div class="card"><h2>신청 경로 · 훈련생 구분 <span class="hint" style="margin:0">재수강률 ${d.repeaters===null?"-":d.repeaters+"%"}</span></h2>${dist(d.routes, sum(d.routes))}<div style="height:10px"></div>${dist(d.kinds, sum(d.kinds))}</div></div>`;
+  const drawTrend = () => { const k = $("#trendK").value, unit = KPI_LIST.find(x=>x.id===k).unit; $("#trendC").innerHTML = svgBars(d.trend.map(t => ({ l: t.year, v: t[k] })), unit, "--c1"); };
+  const drawMon = () => { const k = $("#monK").value; $("#monC").innerHTML = svgBars(d.months.map(m => ({ l: m.m+"월", v: m[k] })), "", k==="completers"?"--c3":k==="shares"?"--c4":"--c2"); };
+  $("#trendK").value = "completers"; $("#trendK").addEventListener("change", drawTrend); $("#monK").addEventListener("change", drawMon); drawTrend(); drawMon();
+}
+
+/* ── 업무 매뉴얼 ── */
+async function viewManual(){
+  $("#view").innerHTML = `<div class="card man">
+    <h2>전체 흐름</h2><p>과정 등록 → 회차 등록 → 홍보 → 홈페이지 신청 접수 → 확정·사전안내 → 교육 운영(출석 입력) → 수료 처리 → 수료증 발급 → 설문 → 결과보고</p>
+    <h2>1. 교육 운영 전</h2><ol>
+      <li><b>과정 마스터</b>에 과정을 등록합니다 (분야, 교육시간, 수료기준).</li>
+      <li><b>교육 일정</b>에 회차를 등록하고 진행상태를 <b>모집예정</b>으로 둡니다. 정원과 신청마감일을 꼭 넣으세요.</li>
+      <li>강사 섭외와 장소·장비를 확인합니다. 가상스튜디오·편집실을 쓰면 <b>장비·공유개방</b>의 이용 일정과 겹치지 않는지 봅니다.</li></ol>
+    <h2>2. 홍보 체크리스트</h2><ul>
+      <li>진행상태를 <b>모집중</b>으로 바꾸면 2분 안에 홈페이지에 과정이 올라갑니다.</li>
+      <li>SNS 홍보 (인스타그램·블로그·밴드), 협약기업 담당자 메일, 마케팅 수신 동의자 문자</li>
+      <li>보낸 홍보는 <b>문자·안내 발송 이력</b>에 발송유형 ‘모집홍보’로 기록합니다.</li></ul>
+    <h2>3. 신청 접수·확정</h2><ol>
+      <li>홈페이지 신청은 자동으로 <b>훈련생</b>과 <b>수강신청</b>에 저장됩니다 (같은 이름+생년월일은 한 사람으로 합쳐짐).</li>
+      <li><b>수강신청·출석</b>에서 회차를 고르고 신청자를 체크해 <b>선택 확정</b>합니다. 정원을 넘으면 대기로 둡니다.</li>
+      <li>확정 문자를 보내고, 교육 2–3일 전 사전안내서를 발송한 뒤 회차의 ‘사전안내 발송’을 체크합니다.</li></ol>
+    <h2>4. 교육 운영</h2><ul>
+      <li>첫날 신청자를 <b>수강중</b>으로 바꾸고, 총 교육일을 한 번 입력합니다.</li>
+      <li>매일 출석일을 입력하면 출석률과 수료판정이 바로 계산됩니다. 결과보고용 현장 사진을 남깁니다.</li></ul>
+    <h2>5. 수료·수료증</h2><ol>
+      <li>마지막 날 <b>출석 기준으로 수료 처리</b>를 누르면 기준 이상은 수료, 미만은 미수료가 되고 수료자는 <b>수료증 발급</b>에 호수가 붙어 등록됩니다.</li>
+      <li>수료생은 홈페이지 <b>조회·참여 → 수료증 발급</b>에서 이름과 주민등록번호 앞 6자리를 넣고 바로 <b>인쇄·PDF 저장·메일로 받기</b>를 할 수 있습니다. 수료 처리만 하면 따로 발급할 일이 없어요.</li>
+      <li>처음 조회하면 발급일이 기록되고 상태가 ‘온라인발급’, 메일로 받으면 ‘발송완료’가 됩니다. 발급을 막아야 하면 상태를 ‘발급중지’로 바꾸세요.</li></ol>
+    <h2>6. 설문·결과보고</h2><ul>
+      <li>홈페이지 <b>조회·참여 → 설문 참여</b> 링크를 문자로 보냅니다. 응답은 <b>설문 결과</b>에 쌓이고 회차별 평균이 자동 계산됩니다.</li>
+      <li>결과보고서 작성 후 회차의 ‘결과보고 완료’를 체크하고 진행상태를 <b>종료</b>로 바꿉니다.</li></ul>
+    <h2>공유개방·KDT·공모전</h2><ul>
+      <li>홈페이지 신청은 각 메뉴에 ‘접수’ 상태로 들어옵니다. 처리 후 상태를 바꾸면 신청자가 홈페이지 신청 확인에서 그대로 봅니다.</li>
+      <li>장비 반납 시 ‘반납상태 점검’을 체크하고 만족도조사를 요청합니다.</li></ul>
+    <h2>장비관리 (관리자)</h2><ol>
+      <li><b>장비 현황</b>에서 장비를 등록하거나 <b>엑셀 업로드</b>로 한 번에 올립니다. 업로드 양식을 내려받아 채우면 가장 정확해요.</li>
+      <li>홈페이지 대여 신청은 <b>신청 현황</b>에 접수됩니다. 승인 후 <b>대여·반납</b>에서 대여를 등록하면 장비가 ‘대여중’이 됩니다.</li>
+      <li>반납 시 상태를 ‘반납완료’로 바꾸고 반납 점검을 기록합니다. ‘이상 있음’이면 유지보수 이력에 점검 건이 자동으로 생깁니다.</li>
+      <li>정기점검·수리·소모품 교체는 <b>유지보수</b>에 기록하고 다음 점검일을 넣어두세요.</li></ol>
+    <h2>성과관리 (운영자)</h2><ol>
+      <li>연초에 <b>KPI 입력</b>에서 지표별 목표를 넣습니다. ‘전년도 목표 불러오기’로 시작하면 빠르고, 외부 자료로 확정된 실적은 ‘실적 직접 입력’에 넣으면 자동 계산값 대신 쓰입니다.</li>
+      <li><b>성과 현황</b>에서 달성률과 미달 지표, 연말 예상치와 월 필요량을 확인합니다.</li>
+      <li><b>데이터 분석</b>에서 연도별·월별 추이, 분야별 수료율, 회차별 충족률, 참여 기업을 보고 다음 해 계획에 반영합니다.</li></ol>
+    <h2>유의사항</h2><ul>
+      <li>계정 비밀번호는 이 시스템에 적지 않습니다. 계정 대장에는 서비스명·용도·담당자·보관 위치만 기록하세요.</li>
+      <li>훈련생 개인정보가 담긴 구글 시트는 운영자만 열 수 있게 두고, 외부 공유를 하지 않습니다. 관리 화면에서 자리를 비울 때는 로그아웃하세요 (6시간이 지나면 자동 로그아웃).</li>
+      <li>시트에서 직접 고칠 때는 머리글(1행)과 ID 열을 바꾸지 마세요.</li></ul>
+    <div class="note">담당자 추가·권한 변경: 운영자가 <b>업무 지원 → 담당자 관리</b>에서 이름·사번·권한을 등록합니다. 퇴사자는 ‘사용’을 해제하세요.</div></div>`;
+}
+
+/* ── 시작 ── */
+/* ── 로그인 ── */
+const store = { get(){ try { return JSON.parse(sessionStorage.getItem("khpAdmin") || "null"); } catch (e) { return null; } },
+  set(v){ try { v ? sessionStorage.setItem("khpAdmin", JSON.stringify(v)) : sessionStorage.removeItem("khpAdmin"); } catch (e) {} } };
+function showLogin(msg){
+  $("#app").hidden = true; $("#login").hidden = false; $("#lgErr").textContent = msg || "";
+  $("#lgPwWrap").hidden = !BOOT.pwMode; $("#lgNewWrap").hidden = true; $("#lgDemo").hidden = MODE !== "demo";
+  setTimeout(() => $("#lgName").focus(), 50);
+}
+function startApp(auth){
+  AUTH = auth; store.set(auth); applyRoles(auth.roles);
+  $("#login").hidden = true; $("#app").hidden = false;
+  const roleName = auth.roles.includes("operator") ? "운영자" : auth.roles.includes("admin") ? "관리자" : "교육담당";
+  $("#me").textContent = `${auth.name}${auth.dept ? " · " + auth.dept : ""} (${roleName}${auth.roles.includes("operator") && auth.roles.includes("admin") ? "·관리자" : ""})`;
+  const sl = $("#sheetLink"); sl.hidden = !auth.sheetUrl; if (auth.sheetUrl) sl.href = auth.sheetUrl;
+  current = "dashboard"; renderSide(); go("dashboard");
+}
+function logout(msg){ AUTH = null; store.set(null); closePanel(); showLogin(msg); }
+$("#logout").addEventListener("click", () => logout());
+$("#loginForm").addEventListener("submit", async e => {
+  e.preventDefault();
+  const btn = $("#lgBtn"), err = $("#lgErr"); err.textContent = ""; btn.disabled = true; btn.textContent = "확인하는 중";
+  try {
+    const r = await (MODE === "gas" ? gas : MODE === "http" ? http : demo)("adminLogin", $("#lgName").value.trim(), $("#lgNo").value.trim(), $("#lgPw").value, $("#lgNewWrap").hidden ? "" : $("#lgNew").value);
+    if (r.ok) { $("#lgPw").value = ""; $("#lgNew").value = ""; return startApp({ token: r.token, name: r.name, dept: r.dept, roles: r.roles, sheetUrl: r.sheetUrl }); }
+    if (r.needPassword) { $("#lgNewWrap").hidden = false; $("#lgPwWrap").hidden = true; $("#lgNew").focus(); }
+    if (r.askPassword) { $("#lgPwWrap").hidden = false; $("#lgPw").focus(); }
+    err.textContent = r.message || "로그인하지 못했어요.";
+  } catch (ex) { err.textContent = "로그인하지 못했어요: " + (ex.message || ex); }
+  finally { btn.disabled = false; btn.textContent = "로그인"; }
+});
+
+/* ── 시작 ── */
+$("#demo").classList.toggle("show", MODE === "demo");
+const saved = store.get();
+if (saved && saved.token) startApp(saved); else showLogin();
+window.__adminStarted = true;
+</script>
+</body>
+</html>
