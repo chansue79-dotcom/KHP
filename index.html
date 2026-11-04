@@ -312,6 +312,23 @@ details.c summary{cursor:pointer;color:var(--ink);font-weight:700}
 .gate .acts{display:flex;gap:8px;flex-wrap:wrap}
 @media (max-width:560px){.gate{flex-direction:column;padding:20px}}
 
+/* ── 조사 응답 ─────────────────────────── */
+.ansf{max-width:760px}
+.ans-sec{font-size:16px;font-weight:800;color:var(--primary);margin:28px 0 4px;padding-top:16px;border-top:1px solid var(--line)}
+.aq{border:0;padding:0;margin:0 0 22px}
+.likert{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.lk{position:relative}.lk input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.lk span{display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--line-2);border-radius:8px;padding:10px 4px;background:var(--surface);text-align:center}
+.lk b{font-size:17px}.lk small{font-size:11.5px;color:var(--muted);line-height:1.3}
+.lk input:checked+span{border-color:var(--primary);background:var(--primary-soft);color:var(--primary)}
+.lk input:checked+span small{color:var(--primary)}
+.lk input:focus-visible+span{outline:2.5px solid var(--primary);outline-offset:2px}
+@media (max-width:560px){.lk small{display:none}.likert::after{content:"1 전혀 그렇지 않다 · 5 매우 그렇다";grid-column:1/-1;font-size:12px;color:var(--muted)}}
+
+.retake{border:1px solid var(--line);border-top:3px solid var(--c5);border-radius:10px;padding:20px;background:color-mix(in srgb,var(--c5) 6%,var(--surface))}
+.retake h3{margin:0 0 6px;font-size:17px;font-weight:800}.retake p{margin:0 0 12px;color:var(--muted);font-size:14.5px}
+.retake .btn svg{width:16px;height:16px;margin-right:6px}
+
 /* ── 푸터 ─────────────────────────────── */
 footer{background:#1D2433;color:#AAB3C3;padding:0 0 48px;font-size:14px;line-height:1.8;margin-top:0}
 footer .flinks{border-bottom:1px solid #2E3647;margin-bottom:28px}
@@ -488,7 +505,7 @@ const FORMS = {
     {k:"manager",label:"교육 담당자",type:"text",req:1},
     {k:"managerPhone",label:"담당자 연락처",type:"tel",req:1,ph:"010-1234-5678"},
     {k:"managerEmail",label:"담당자 이메일",type:"email",full:1},
-    {k:"__file",label:"작성한 협약서 파일",type:"file",req:1,full:1,hint:"PDF, HWP, 한글·워드 문서, 스캔 이미지(JPG·PNG) · 10MB 이하"}
+    {k:"__file",label:"직인을 찍은 협약서 파일",type:"file",req:1,full:1,hint:"직인을 찍은 협약서를 스캔한 PDF 또는 사진(JPG·PNG) · 10MB 이하. 센터 직인을 찍어 날인본으로 돌려드립니다."}
   ]},
   b2b:{title:"단체·기업 교육 문의", desc:"직원 대상 맞춤 교육이나 출강을 원하시면 남겨주세요. 담당자가 연락드립니다.", fields:[
     F.org, {k:"name",label:"담당자",type:"text",req:1}, F.phone, F.email,
@@ -567,9 +584,11 @@ const DEMO_COURSES = [
 const DEMO_LIB = [
   {id:"r1", title:"2026 재직자 교육 기업 협약서 양식", category:"협약서·서식", desc:"교육 신청 전 작성해 협약서 제출 메뉴로 올려주세요.", fileName:"기업협약서_양식.hwp", sizeKb:84, date:"2026-10-01", pinned:true},
   {id:"r2", title:"재직자 교육 운영 안내서", category:"교육 안내", desc:"과정별 일정, 수료 기준, 수료증 발급 방법", fileName:"교육운영안내.pdf", sizeKb:1250, date:"2026-09-20", pinned:false},
+  {id:"r4", title:"재수강 사유서 양식", category:"협약서·서식", formKind:"재수강 사유서 양식", desc:"같은 과정을 다시 신청할 때 작성해 수강 신청 화면에서 첨부해 주세요.", fileName:"재수강_사유서_양식.docx", sizeKb:24, date:"2026-11-03", pinned:false},
   {id:"r3", title:"공유개방 장비 이용 수칙", category:"교육 안내", desc:"", fileName:"장비이용수칙.pdf", sizeKb:320, date:"2026-09-02", pinned:false}
 ];
 const DEMO_SKIP_GATE = false;
+const DEMO_TAKEN = ["생성형AI 콘텐츠 제작 기초"];   // 미리보기: 이 과정은 이미 들은 것으로 가정 (재수강 흐름 체험용)
 const DEMO_LOOKUP = [
   {type:"재직자 교육",title:"생성형AI 콘텐츠 제작 기초 1회차",date:"2026-10-07",status:"확정"},
   {type:"기업견학",title:"(주)전주미디어 견학",date:"2026-10-02",status:"승인"},
@@ -616,6 +635,7 @@ function needsLogin(cat, tab){
 }
 function go(token, pick, reason){
   let [cat, tab] = (token || "home").split("-");
+  if(cat === "answer"){ state = {cat, tab:null, pick:{}, token: tab}; history.replaceState(null, "", "#answer-" + tab); render(); window.scrollTo(0,0); return; }
   if(cat === "privacy" || cat === "notice"){ state = {cat, tab:null, pick:{}, nid: pick && pick.n}; history.replaceState(null, "", "#" + cat); render(); window.scrollTo(0,0); return; }
   if(cat === "auth" || cat === "me"){
     if(cat === "me" && !AUTH) { cat = "auth"; }
@@ -643,6 +663,18 @@ document.addEventListener("click", e => {
   go(g.dataset.go, g.dataset.pick ? JSON.parse(g.dataset.pick) : undefined);
 });
 window.addEventListener("hashchange", () => go(location.hash.slice(1)));
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-stamped]"); if(!b) return;
+  if(DEMO){ alert("미리보기에서는 내려받기가 되지 않아요."); return; }
+  b.disabled = true;
+  try{
+    const r = await api("agreeFile", {});
+    if(!r.ok) throw new Error(r.message);
+    const bin = atob(r.b64), arr = new Uint8Array(bin.length); for(let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([arr], {type: r.mime})); a.download = r.name; document.body.appendChild(a); a.click(); a.remove();
+  }catch(ex){ alert(ex.message || "내려받지 못했어요."); }
+  finally{ b.disabled = false; }
+});
 
 function renderNav(){
   const cur = state.cat;
@@ -661,6 +693,7 @@ function render(){
   const shell = (title, trail, inner, tabsHtml) => `<section class="subvis"><div class="wrap"><div class="crumb"><button data-go="home">홈</button>${trail.map(t => `<i>›</i><span>${esc(t)}</span>`).join("")}</div><h1>${esc(title)}</h1>${tabsHtml || '<div style="height:1px"></div>'}</div></section><div class="wrap"><section class="panel">${inner}</section></div>`;
   if(state.cat === "auth"){ main.innerHTML = shell(state.mode === "signup" ? "회원가입" : "로그인", ["회원 서비스"], viewAuth()); return bindAuth(); }
   if(state.cat === "me"){ main.innerHTML = shell("내 정보", ["회원 서비스"], viewMe()); return bindMe(); }
+  if(state.cat === "answer"){ main.innerHTML = shell("설문 참여", ["조사·참여"], `<div id="ans"><p class="none">조사를 불러오는 중이에요.</p></div>`); return bindAnswer(); }
   if(state.cat === "privacy"){ main.innerHTML = shell("개인정보처리방침", ["안내"], viewPrivacy()); return; }
   if(state.cat === "notice"){ main.innerHTML = shell("공지사항", ["안내"], viewNotice()); return; }
   const c = MENU.find(m => m.id === state.cat), t = c.tabs.find(x => x.id === state.tab);
@@ -679,6 +712,7 @@ function render(){
   if(t.view === "library") bindLibrary();
   if(t.view === "equip") bindEquip();
   if(t.view === "form") bindForm(t.form);
+  if(t.view === "form" && t.form === "survey" && AUTH) loadMySurveys();
   if(t.view === "lookup" || t.view === "cert") bindLookup(t.view === "cert" ? "cert" : "check");
 }
 
@@ -811,7 +845,7 @@ function fieldHtml(f, pick, formKey){
     <p>수집 항목: 주민등록번호 13자리<br>수집 목적: 훈련생 등록·훈련 실시 신고 등 훈련 운영, 수료 확인<br>수집 근거: ${esc(CONFIG.RRN_LAW || "근거 법령 확인 후 기재")}<br>보유 기간: ${esc(CONFIG.RETENTION)}<br>처리 방법: 암호화하여 저장하며, 열람은 운영 책임자만 사유를 기록한 뒤 할 수 있습니다.</p></details></div>
     <label class="agree full"><input type="checkbox" name="rrnAgree"> ${esc(f.label)}</label>`;
   if(f.type === "file") return `<div class="full"><label class="lb" for="f___file">${esc(f.label)}<em>*</em></label>
-    <label class="filebox"><input id="f___file" name="__file" type="file" accept=".pdf,.hwp,.hwpx,.doc,.docx,.jpg,.jpeg,.png"><span class="fb-ic" aria-hidden="true">${ICON.doc}</span><span class="fb-t" id="fileLabel">파일을 선택하세요</span><span class="btn">파일 선택</span></label>
+    <label class="filebox"><input id="f___file" name="__file" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"><span class="fb-ic" aria-hidden="true">${ICON.doc}</span><span class="fb-t" id="fileLabel">파일을 선택하세요</span><span class="btn">파일 선택</span></label>
     ${f.hint ? `<div class="hint">${esc(f.hint)}</div>` : ""}</div>`;
   if(AUTH && (PROFILE_KEYS.includes(f.k) || (f.k === "email" && AUTH.me.email))) return "";   // 가입 정보로 자동 입력
   if(AUTH && f.k === "email") f = {...f, req: 0, label: "이메일 (선택 · 수료증 받을 주소)"};
@@ -849,7 +883,8 @@ function viewForm(key){
   if(key === "edu" && AUTH && !AUTH.me.agreementOk && !DEMO_SKIP_GATE) return agreementGate();
   const fm = FORMS[key], consent = fm.consent !== false && !AUTH;
   return `<h1 class="pt">${esc(fm.title)}</h1><p class="pd">${esc(fm.desc)}</p>
-    ${key === "agree" && AUTH && AUTH.me.agreement ? `<div class="reason">최근 제출: ${esc(AUTH.me.agreement.company)} · ${esc(AUTH.me.agreement.status)}${AUTH.me.agreement.note ? ` · 검토 의견: ${esc(AUTH.me.agreement.note)}` : ""}</div>` : ""}
+    ${key === "agree" && AUTH && AUTH.me.agreement ? `<div class="reason">최근 제출: ${esc(AUTH.me.agreement.company)} · ${esc(AUTH.me.agreement.status)}${AUTH.me.agreement.note ? ` · 검토 의견: ${esc(AUTH.me.agreement.note)}` : ""}${AUTH.me.stamped ? ` <button class="btn solid" type="button" data-stamped style="height:36px;margin-left:8px">센터 날인본 내려받기</button>` : ""}</div>` : ""}
+    ${AUTH && key === "survey" ? `<div id="mySv"></div>` : ""}
     ${AUTH && key !== "survey" ? `<div class="me-line">신청자 <b>${esc(AUTH.me.name)}</b> · ${esc(AUTH.me.phone)} — 회원 정보로 접수돼요. <button class="link" data-go="me">정보 수정</button></div>` : ""}
     <form class="f" id="form" novalidate>
       ${fm.fields.map(f => fieldHtml(f, state.pick, key)).join("")}
@@ -886,7 +921,7 @@ function validate(d, key){
     if(f.type === "rrn" && !/^[1-8]\d{6}$/.test(v)) return "주민등록번호 뒤 7자리를 정확히 입력하세요.";
     if(f.type === "rrnConsent" && !v) return "고유식별정보(주민등록번호) 수집·이용에 동의해야 신청할 수 있어요.";
     if(f.k === "bizNo" && v.replace(/\D/g,"").length !== 10) return "사업자등록번호 10자리를 확인하세요.";
-    if(f.type === "file" && d.__fileObj){ const ext = d.__fileObj.name.split(".").pop().toLowerCase(); if(!["pdf","hwp","hwpx","doc","docx","jpg","jpeg","png"].includes(ext)) return "PDF, HWP, 워드 문서, JPG·PNG 파일만 올릴 수 있어요."; if(d.__fileObj.size > 10*1024*1024) return "파일은 10MB 이하만 올릴 수 있어요."; }
+    if(f.type === "file" && d.__fileObj){ const ext = d.__fileObj.name.split(".").pop().toLowerCase(); if(!["pdf","jpg","jpeg","png"].includes(ext)) return "협약서는 직인을 찍어 스캔한 PDF나 사진(JPG·PNG)으로 올려주세요. 한글(HWP) 파일은 인쇄해 직인을 찍은 뒤 스캔해 주세요."; if(d.__fileObj.size > 10*1024*1024) return "파일은 10MB 이하만 올릴 수 있어요."; }
   }
   if(d.start && d.end && d.end < d.start) return "이용 종료일이 시작일보다 빠를 수 없어요.";
   if(FORMS[key].consent !== false && !AUTH && !d.agree) return "개인정보 수집·이용에 동의해야 제출할 수 있어요.";
@@ -906,11 +941,21 @@ function bindForm(key){
     const btn = form.querySelector("[type=submit]"); btn.disabled = true; btn.textContent = "제출하는 중";
     try{
       let res;
-      const fileObj = d.__fileObj; delete d.__fileObj; delete d.__file;
+      let fileObj = d.__fileObj; delete d.__fileObj; delete d.__file;
+      const rb = $("#retakeBox");
+      if(rb){ d.retakeReason = rb.querySelector("textarea").value.trim(); const rf = rb.querySelector("input[type=file]").files[0];
+        if(!d.retakeReason) throw new Error("재수강 사유를 적어주세요.");
+        if(!rf) throw new Error("작성한 재수강 사유서 파일을 첨부해 주세요.");
+        if(rf.size > 10*1024*1024) throw new Error("파일은 10MB 이하만 올릴 수 있어요.");
+        fileObj = rf; }
       const file = fileObj ? { name: fileObj.name, mime: fileObj.type, b64: await toB64(fileObj) } : null;
-      if(DEMO){ await new Promise(r => setTimeout(r, 500)); res = {ok:true, no:"미리보기"}; }
+      if(DEMO){ await new Promise(r => setTimeout(r, 500));
+        res = key === "edu" && d.sessionId && DEMO_TAKEN.includes(String((sessions.find(x => x.id === d.sessionId) || {}).title || "").replace(/\s*\d+회차.*$/, "")) && !d.retakeReason
+          ? {ok:false, need:"retake", prev:["생성형AI 콘텐츠 제작 기초 1회차 (수료)"], message:"이미 수강한 과정이에요. 재수강 사유서를 작성해 첨부하고 사유를 적어주세요."} : {ok:true, no:"미리보기"}; }
       else res = await api("submit", {form:key, data:d, file});
-      if(!res.ok){ if(res.need === "agreement" && AUTH){ AUTH.me.agreementOk = false; setAuth(AUTH); render(); return; } throw new Error(res.message); }
+      if(!res.ok){ if(res.need === "agreement" && AUTH){ AUTH.me.agreementOk = false; setAuth(AUTH); render(); return; }
+        if(res.need === "retake"){ await showRetake(res); throw new Error(res.message); }
+        throw new Error(res.message); }
       if(AUTH && key === "edu"){ AUTH.me.hasRrn = true; setAuth(AUTH); }
       if(AUTH && key === "agree"){ AUTH.me.agreementOk = true; AUTH.me.agreement = { status: "제출", company: d.company }; if(!AUTH.me.company) AUTH.me.company = d.company; setAuth(AUTH); }
       showDone(key, d, res.no);
@@ -920,6 +965,35 @@ function bindForm(key){
       btn.disabled = false; btn.textContent = "제출하기";
     }
   });
+}
+/* 재수강: 같은 과정을 다시 신청하면 사유서를 받습니다 */
+async function showRetake(res){
+  if($("#retakeBox")) return;
+  let form = null;
+  try{ const lib = LIB || (DEMO ? DEMO_LIB : (await api("library")).items || []); LIB = lib; form = lib.find(x => x.formKind === "재수강 사유서 양식"); }catch(e){}
+  const box = document.createElement("div"); box.id = "retakeBox"; box.className = "full retake";
+  box.innerHTML = `<h3>재수강 사유서 제출</h3><p>이미 수강한 과정이에요: <b>${esc((res.prev || []).join(", "))}</b><br>같은 과정을 다시 들으려면 재수강 사유서를 작성해 첨부해 주세요. 담당자가 확인한 뒤 확정 여부를 알려드려요.</p>
+    <p>${form ? `<button type="button" class="btn" data-dl-form="${esc(form.id)}">${ICON.download} 재수강 사유서 양식 내려받기</button>` : `<button type="button" class="btn" data-go="lib-files">자료실에서 양식 받기</button>`}</p>
+    <label class="lb" for="rtReason">재수강 사유<em>*</em></label><textarea id="rtReason" placeholder="예: 현업 프로젝트 투입 전 실습 복습이 필요합니다."></textarea>
+    <label class="lb" for="rtFile" style="margin-top:14px">작성한 사유서 파일<em>*</em></label>
+    <label class="filebox"><input id="rtFile" type="file" accept=".pdf,.hwp,.hwpx,.doc,.docx,.jpg,.jpeg,.png"><span class="fb-ic" aria-hidden="true">${ICON.doc}</span><span class="fb-t" id="rtLabel">파일을 선택하세요</span><span class="btn">파일 선택</span></label>
+    <div class="hint">HWP, 워드, PDF, 사진(JPG·PNG) · 10MB 이하</div>`;
+  const submit = $("#form [type=submit]").closest("div") || $("#form [type=submit]");
+  $("#form").insertBefore(box, submit);
+  box.querySelector("#rtFile").addEventListener("change", e => { const f = e.target.files[0]; $("#rtLabel").textContent = f ? `${f.name} (${Math.ceil(f.size/1024)}KB)` : "파일을 선택하세요"; });
+  box.querySelector("[data-dl-form]")?.addEventListener("click", e => downloadResource(e.currentTarget.dataset.dlForm, e.currentTarget));
+  box.scrollIntoView({block:"center"});
+}
+async function downloadResource(id, btn){
+  if(DEMO){ alert("미리보기에서는 내려받기가 되지 않아요. 실제 홈페이지에서는 바로 저장됩니다."); return; }
+  if(btn) btn.disabled = true;
+  try{
+    const r = await fetch(`${CONFIG.API_URL}?action=resfile&id=${encodeURIComponent(id)}`).then(x => x.json());
+    if(!r.ok) throw new Error(r.message);
+    const bin = atob(r.b64), arr = new Uint8Array(bin.length); for(let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([arr], {type: r.mime})); a.download = r.name; document.body.appendChild(a); a.click(); a.remove();
+  }catch(ex){ alert("내려받지 못했어요. 잠시 후 다시 시도하거나 " + CONFIG.TEL + "로 문의하세요."); }
+  finally{ if(btn) btn.disabled = false; }
 }
 function toB64(file){ return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.onerror = () => rej(new Error("파일을 읽지 못했어요.")); r.readAsDataURL(file); }); }
 function showDone(key, d, no){
@@ -966,6 +1040,56 @@ async function bindLookup(mode){
     }
   }catch(ex){ if(!/로그인/.test(ex.message)) box.innerHTML = `<li>불러오지 못했어요. 잠시 후 다시 시도하세요.</li>`; }
   box.addEventListener("click", e => { const b = e.target.closest("[data-cert]"); if(b) openCert(CERTS[b.dataset.cert]); });
+}
+
+/* 응답할 조사 (사후관리) */
+const DEMO_SURVEY = {ok:true, name:"교육 만족도 조사", session:"생성형AI 콘텐츠 제작 기초 3회차", respondent:"이*은", dueAt:"2026-11-13", intro:"교육에 참여해 주셔서 감사합니다. 보내주신 의견은 다음 교육을 개선하는 데 사용됩니다. (약 3분)",
+  scale:["전혀 그렇지 않다","그렇지 않다","보통이다","그렇다","매우 그렇다"],
+  questions:[{id:"q1",type:"scale",section:"교육 내용",text:"교육 내용이 업무(또는 학업)에 필요한 내용이었다.",required:true},{id:"q4",type:"scale",section:"강사",text:"강사는 내용을 이해하기 쉽게 설명했다.",required:true},
+    {id:"q9",type:"scale",section:"종합",text:"교육에 전반적으로 만족한다.",required:true},{id:"q11",type:"choice",section:"기대 효과",text:"이 교육으로 가장 기대하는 변화는 무엇인가요?",options:["업무 효율 향상","새로운 업무 수행","취업·이직 준비","자기계발","기타"]},
+    {id:"q12",type:"text",section:"의견",text:"좋았던 점을 적어주세요."},{id:"q14",type:"multi",section:"의견",text:"앞으로 듣고 싶은 교육 분야를 골라주세요.",options:["생성형AI","360영상","드론","Virtual Studio","영상편집"]}]};
+async function loadMySurveys(){
+  const box = $("#mySv"); if(!box) return;
+  try{
+    const r = DEMO ? {items:[{token:"demo", name:"교육 만족도 조사", session:"생성형AI 콘텐츠 제작 기초 3회차", dueAt:"2026-11-13"}]} : await api("mySurveys", {});
+    if(!r.items || !r.items.length) return;
+    box.innerHTML = `<div class="gate" style="margin:0 0 28px"><span class="gate-ic" aria-hidden="true">${ICON.survey}</span><div style="flex:1"><h2>응답할 조사가 ${r.items.length}건 있어요</h2>
+      <ul class="res" style="border-top:0;margin:0">${r.items.map(i => `<li><div>${esc(i.name)}<small>${esc(i.session)} · ${esc(String(i.dueAt).replace(/-/g,"."))}까지</small></div><button class="btn solid" data-go="answer-${esc(i.token)}">응답하기</button></li>`).join("")}</ul></div></div>`;
+  }catch(e){}
+}
+async function bindAnswer(){
+  const box = $("#ans");
+  let d; try{ d = DEMO || state.token === "demo" ? DEMO_SURVEY : await api("surveyGet", {token: state.token}); }catch(e){ box.innerHTML = `<p class="none">조사를 불러오지 못했어요. 잠시 후 다시 시도하세요.</p>`; return; }
+  if(!d.ok){ box.innerHTML = `<div class="gate"><span class="gate-ic" aria-hidden="true">${ICON.survey}</span><div><h2>조사에 참여할 수 없어요</h2><p>${esc(d.message)}</p><div class="acts"><button class="btn" data-go="home">홈으로</button></div></div></div>`; return; }
+  if(d.done){ box.innerHTML = `<div class="done"><div class="mark" aria-hidden="true">${ICON.survey}</div><h2>이미 응답한 조사예요</h2><p class="pd">${esc(d.name)}에 참여해 주셔서 감사합니다.</p><div class="acts"><button class="btn" data-go="home">홈으로</button></div></div>`; return; }
+  let last = "";
+  box.innerHTML = `<h1 class="pt">${esc(d.name)}</h1><p class="pd">${esc(d.intro)}</p>
+    <div class="me-line">${d.session ? `과정 <b>${esc(d.session)}</b> · ` : ""}응답자 <b>${esc(d.respondent)}</b> · 응답 기한 ${esc(String(d.dueAt).replace(/-/g,"."))}</div>
+    <form id="ansForm" novalidate class="ansf">${d.questions.map((q, i) => { const head = q.section && q.section !== last ? `<h3 class="ans-sec">${esc(q.section)}</h3>` : ""; last = q.section || last;
+      const req = q.required ? "<em>*</em>" : "";
+      const body = q.type === "scale" ? `<div class="likert">${d.scale.map((l, k) => `<label class="lk"><input type="radio" name="${esc(q.id)}" value="${k+1}"><span><b>${k+1}</b><small>${esc(l)}</small></span></label>`).join("")}</div>`
+        : q.type === "choice" ? `<div class="opts">${q.options.map(o => `<label class="opt"><input type="radio" name="${esc(q.id)}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("")}</div>`
+        : q.type === "multi" ? `<div class="opts">${q.options.map(o => `<label class="opt"><input type="checkbox" name="${esc(q.id)}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("")}</div>`
+        : `<textarea name="${esc(q.id)}" placeholder="자유롭게 적어주세요."></textarea>`;
+      return `${head}<fieldset class="aq" data-q="${esc(q.id)}" data-type="${q.type}" data-req="${q.required?1:0}"><legend class="lb">${i+1}. ${esc(q.text)}${req}</legend>${body}</fieldset>`; }).join("")}
+      <button class="btn solid big" type="submit">응답 제출</button></form><div class="msg" id="ansMsg" role="alert"></div>`;
+  $("#ansForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const out = {}, msg = $("#ansMsg");
+    for(const fs of document.querySelectorAll(".aq")){
+      const id = fs.dataset.q, ty = fs.dataset.type;
+      const v = ty === "multi" ? [...fs.querySelectorAll("input:checked")].map(x => x.value) : ty === "text" ? fs.querySelector("textarea").value.trim() : (fs.querySelector("input:checked") || {}).value;
+      if(fs.dataset.req === "1" && (!v || (Array.isArray(v) && !v.length))){ msg.className = "msg show err"; msg.textContent = `‘${fs.querySelector("legend").textContent.replace(/^\d+\.\s*/,"").replace(/\*$/,"")}’에 응답해 주세요.`; fs.scrollIntoView({block:"center"}); return; }
+      if(v !== undefined) out[id] = ty === "scale" ? Number(v) : v;
+    }
+    const btn = e.target.querySelector("[type=submit]"); btn.disabled = true; btn.textContent = "제출하는 중";
+    try{
+      const r = DEMO || state.token === "demo" ? (await new Promise(x => setTimeout(x, 400)), {ok:true}) : await api("surveyAnswer", {token: state.token, answers: out});
+      if(!r.ok) throw new Error(r.message);
+      box.innerHTML = `<div class="done"><div class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div><h2>응답해 주셔서 감사합니다</h2><p class="pd">보내주신 의견은 다음 교육과 사업 계획에 반영하겠습니다.${DEMO ? " (미리보기라 저장되지는 않았어요)" : ""}</p><div class="acts"><button class="btn" data-go="home">홈으로</button></div></div>`;
+      window.scrollTo(0,0);
+    }catch(ex){ msg.className = "msg show err"; msg.textContent = ex.message || "제출하지 못했어요. 잠시 후 다시 시도하세요."; btn.disabled = false; btn.textContent = "응답 제출"; }
+  });
 }
 
 /* 자료실 */
@@ -1055,7 +1179,7 @@ function viewMe(){
       <div><label class="lb" for="mPhone">휴대폰</label><input id="mPhone" type="tel" value="${esc(m.phone)}"></div>
       <div><label class="lb" for="mCompany">소속 기업명</label><input id="mCompany" type="text" value="${esc(m.company)}"></div>
       <div class="full"><label class="lb" for="mEmail">이메일</label><input id="mEmail" type="email" value="${esc(m.email)}"></div>
-      <div class="full me-line" style="margin:0">기업 협약서: <b>${m.agreement ? `${esc(m.agreement.company)} · ${esc(m.agreement.status)}` : "제출 전"}</b> <button class="link" type="button" data-go="lib-agree">협약서 제출</button><br>주민등록번호: <b>${m.hasRrn ? "등록됨 (암호화 저장)" : "교육 신청 시 입력"}</b></div>
+      <div class="full me-line" style="margin:0">기업 협약서: <b>${m.agreement ? `${esc(m.agreement.company)} · ${esc(m.agreement.status)}` : "제출 전"}</b> <button class="link" type="button" data-go="lib-agree">협약서 제출</button>${m.stamped ? ` · <button class="link" type="button" data-stamped>센터 날인본 내려받기</button>` : ""}<br>주민등록번호: <b>${m.hasRrn ? "등록됨 (암호화 저장)" : "교육 신청 시 입력"}</b></div>
       <label class="agree full"><input type="checkbox" id="mMkt" ${m.marketing?"checked":""}> 교육 모집 소식을 문자로 받겠습니다.</label>
       <div class="full" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn solid" type="submit">저장</button><button class="btn" type="button" id="meOut">로그아웃</button></div></form>
     <div class="msg" id="mMsg" role="status"></div></div>`;
