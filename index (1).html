@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>전주문화방송(주) K-하이테크 플랫폼 공동훈련센터</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ── 디자인 토큰: 교육기관형 ───────────────── */
+:root{
+  color-scheme: light;
+  --bg:#FFFFFF; --surface:#FFFFFF; --fill:#F4F6F9; --fill-2:#EAEEF4;
+  --ink:#1A2233; --muted:#5A6476; --faint:#8C95A6; --line:#DFE3EA; --line-2:#C9D0DB;
+  --navy:#0F2A54; --navy-2:#173A70; --primary:#1F5FD1; --on-primary:#FFFFFF; --primary-soft:#EAF1FC;
+  --brand:var(--primary); --on-brand:var(--on-primary); --soft:var(--fill);
+  --c1:#1F5FD1; --c2:#0B98A8; --c3:#22935F; --c4:#B83C8E; --c5:#C98A00;
+  --ok:#1E8752; --err:#D22B36;
+  --font:"Pretendard Variable","Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){color-scheme:dark;--bg:#0E1524;--surface:#141C2E;--fill:#1A2338;--fill-2:#222C44;--ink:#E9EDF5;--muted:#A6AFC0;--faint:#7D879B;--line:#27324A;--line-2:#34405B;
+    --navy:#0A1C3A;--navy-2:#12294F;--primary:#6E9BFF;--on-primary:#0E1524;--primary-soft:#1B2A4A;--c1:#6E9BFF;--c2:#3CC3D1;--c3:#4CC38A;--c4:#E07CC0;--c5:#F0C24B;--ok:#4CC38A;--err:#FF6B76}
+}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#0E1524;--surface:#141C2E;--fill:#1A2338;--fill-2:#222C44;--ink:#E9EDF5;--muted:#A6AFC0;--faint:#7D879B;--line:#27324A;--line-2:#34405B;
+  --navy:#0A1C3A;--navy-2:#12294F;--primary:#6E9BFF;--on-primary:#0E1524;--primary-soft:#1B2A4A;--c1:#6E9BFF;--c2:#3CC3D1;--c3:#4CC38A;--c4:#E07CC0;--c5:#F0C24B;--ok:#4CC38A;--err:#FF6B76}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 120px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.7 var(--font);-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-x:hidden}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2.5px solid var(--primary);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+@media (max-width:640px){.wrap{padding:0 16px}}
+.bleed{margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw)}
+
+/* ── 헤더 ───────────────────────────────── */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:20;background:var(--surface)}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--surface);border-bottom:1px solid var(--line)}
+.bars{display:none}
+.util{background:var(--fill);border-bottom:1px solid var(--line);font-size:13px;color:var(--muted)}
+.util .wrap{display:flex;justify-content:space-between;align-items:center;height:36px}
+.util .org{font-weight:500}
+.acct{display:flex;gap:16px;align-items:center}
+.tel{color:var(--muted);text-decoration:none;font-variant-numeric:tabular-nums}
+.acct #acct{display:flex;gap:14px;align-items:center}
+.acct .btn{height:auto;padding:0;background:none;color:var(--ink);font-size:13px;font-weight:600}
+.acct .btn:hover{background:none;color:var(--primary)}
+.who{font-size:13px;font-weight:700;background:none;border:0;cursor:pointer;padding:0;color:var(--primary)}
+.brandrow{display:flex;align-items:center;justify-content:space-between;height:76px;gap:24px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;cursor:pointer;background:none;border:0;padding:0;text-align:left}
+.brand .mark{width:40px;height:40px;border-radius:10px;background:var(--navy);display:grid;place-items:center;flex:0 0 auto}
+.brand .mark svg{width:24px;height:24px}
+.brand .nm{display:flex;flex-direction:column;line-height:1.25}
+.brand .nm small{font-size:12.5px;color:var(--muted);font-weight:600}
+.brand .nm b{font-size:19px;font-weight:800;letter-spacing:-.03em;color:var(--navy)}
+:root:not([data-theme="light"]) .brand .nm b{color:var(--ink)}
+.cats{display:flex;gap:0;height:76px;align-items:stretch}
+.catw{position:relative;display:flex}
+.cat{border:0;background:none;padding:0 18px;font-weight:700;font-size:16.5px;letter-spacing:-.02em;color:var(--ink);cursor:pointer;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-1px}
+.cat:hover,.catw:focus-within .cat{color:var(--primary)}
+.cat[aria-current="page"]{color:var(--primary);border-bottom-color:var(--primary)}
+.cat.hl{color:var(--primary)}
+.sub{position:absolute;top:100%;left:50%;transform:translateX(-50%);min-width:180px;background:var(--surface);border:1px solid var(--line);border-top:2px solid var(--primary);padding:8px 0;display:none;z-index:12;box-shadow:0 8px 24px rgba(15,42,84,.08)}
+.catw:hover .sub,.catw:focus-within .sub{display:block}
+.sub button{display:block;width:100%;text-align:left;border:0;background:none;padding:9px 18px;font-size:14.5px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.sub button:hover{color:var(--primary);background:var(--fill)}
+@media (max-width:980px){
+  .brandrow{height:64px}.brand .nm small{display:none}.brand .nm b{font-size:17px}
+  header .wrap.nav2{padding:0}
+  .cats{height:auto;overflow-x:auto;scrollbar-width:none;border-top:1px solid var(--line);padding:0 12px}
+  .cats::-webkit-scrollbar{display:none}
+  .cat{padding:12px 12px;font-size:15px}
+  .sub{display:none!important}
+  .brandrow .cats{display:none}
+  .navm{display:flex!important}
+  .util .org{display:none}
+}
+.navm{display:none}
+
+main{min-height:60vh;padding-bottom:72px}
+
+/* ── 메인 배너 ───────────────────────────── */
+.visual{background:var(--navy);color:#fff;position:relative;overflow:hidden}
+.visual::after{content:"";position:absolute;right:-120px;top:-120px;width:520px;height:520px;border-radius:50%;border:80px solid rgba(255,255,255,.04)}
+.visual .wrap{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:48px;align-items:center;padding-top:64px;padding-bottom:64px;position:relative;z-index:1}
+@media (max-width:900px){.visual .wrap{grid-template-columns:1fr;gap:28px;padding-top:40px;padding-bottom:40px}}
+.visual .kicker{display:inline-block;font-size:14px;font-weight:600;color:#BFD3FF;margin-bottom:14px}
+.visual h1{font-size:clamp(32px,4.6vw,50px);line-height:1.2;letter-spacing:-.04em;font-weight:800;margin:0 0 18px;color:#fff}
+.visual p{font-size:17px;color:#C9D4E8;margin:0 0 30px;max-width:32em}
+.visual .ctas{display:flex;gap:10px;flex-wrap:wrap}
+.visual .btn.solid{background:#fff;color:var(--navy)}
+.visual .btn.solid:hover{background:#E8EEF9}
+.visual .btn.ghost{background:transparent;color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.5)}
+.visual .btn.ghost:hover{background:rgba(255,255,255,.08)}
+.notice-box{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:22px 24px}
+.notice-box h2{font-size:15px;font-weight:700;color:#BFD3FF;margin:0 0 10px}
+.notice-box ul{list-style:none;margin:0;padding:0}
+.notice-box li{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid rgba(255,255,255,.12);font-size:15px}
+.notice-box li:first-child{border-top:0}
+.notice-box .tel-big{font-size:28px;font-weight:800;letter-spacing:-.03em;color:#fff;margin:0 0 12px;font-variant-numeric:tabular-nums}
+.notice-box li b{color:#C9D4E8;font-weight:600;white-space:nowrap}
+.notice-box li span{text-align:right}
+.notice-box li button{background:none;border:0;color:#fff;cursor:pointer;text-align:left;padding:0;font-weight:600}
+.notice-box li span{color:#fff;font-size:14.5px;font-variant-numeric:tabular-nums}
+
+/* ── 퀵메뉴 ─────────────────────────────── */
+.quick{display:grid;grid-template-columns:repeat(6,1fr);border-bottom:1px solid var(--line)}
+@media (max-width:900px){.quick{grid-template-columns:repeat(3,1fr)}}
+.qitem{display:flex;flex-direction:column;align-items:center;gap:10px;border:0;background:none;padding:28px 8px;cursor:pointer;border-right:1px solid var(--line)}
+.qitem:last-child{border-right:0}
+@media (max-width:900px){.qitem:nth-child(3n){border-right:0}.qitem:nth-child(-n+3){border-bottom:1px solid var(--line)}}
+.qitem .ic{width:60px;height:60px;border-radius:50%;display:grid;place-items:center;background:var(--primary-soft);color:var(--primary);transition:background .15s,color .15s}
+.qitem .ic svg{width:26px;height:26px}
+.qitem:hover .ic{background:var(--primary);color:var(--on-primary)}
+.qitem b{font-size:15.5px;font-weight:700;letter-spacing:-.02em}
+.qitem span.d{font-size:13px;color:var(--muted);text-align:center;line-height:1.45}
+@media (max-width:640px){.qitem span.d{display:none}.qitem{padding:20px 6px}.qitem .ic{width:52px;height:52px}}
+
+/* ── 메인 게시판 ─────────────────────────── */
+.boards{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:40px;padding-top:56px}
+@media (max-width:900px){.boards{grid-template-columns:1fr;gap:40px}}
+.bh{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:2px solid var(--ink)}
+.bh h2{font-size:22px;font-weight:800;letter-spacing:-.035em;margin:0}
+.more{background:none;border:0;cursor:pointer;color:var(--muted);font-size:14px;font-weight:600;padding:4px 0;display:inline-flex;align-items:center;gap:4px}
+.more:hover{color:var(--primary)}
+.more::after{content:"+";font-size:18px;line-height:1;font-weight:400}
+.blist{list-style:none;margin:0;padding:0}
+.blist li{display:grid;grid-template-columns:64px 1fr auto;gap:16px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line)}
+.blist .dt{text-align:center;border-right:1px solid var(--line);padding-right:12px;line-height:1.2}
+.blist .dt b{display:block;font-size:22px;font-weight:800;letter-spacing:-.03em;font-variant-numeric:tabular-nums;color:var(--navy)}
+:root:not([data-theme="light"]) .blist .dt b{color:var(--ink)}
+.blist .dt span{font-size:12.5px;color:var(--muted)}
+.blist h3{margin:0;font-size:16px;font-weight:700;letter-spacing:-.02em}
+.blist .m{font-size:13.5px;color:var(--muted);margin-top:2px}
+.blist .r{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+.tag{display:inline-block;font-size:12.5px;font-weight:700;padding:3px 9px;border-radius:4px;background:var(--primary-soft);color:var(--primary);white-space:nowrap}
+.tag.low{background:color-mix(in srgb,var(--err) 10%,transparent);color:var(--err)}
+.tag.off{background:var(--fill);color:var(--faint)}
+.nlist{list-style:none;margin:0;padding:0}
+.nlist li{display:flex;justify-content:space-between;gap:16px;padding:15px 0;border-bottom:1px solid var(--line);font-size:15.5px}
+.nlist li b{font-weight:600}
+.nlist li span{color:var(--faint);font-size:14px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.nlist .new{display:inline-block;margin-left:6px;font-size:11px;font-weight:800;color:var(--err)}
+@media (max-width:560px){.blist li{grid-template-columns:52px 1fr}.blist .r{grid-column:2;flex-direction:row;align-items:center;justify-content:space-between}}
+
+/* ── 교육 분야 ───────────────────────────── */
+.fields-h{padding-top:64px}
+.fieldgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:20px}
+@media (max-width:900px){.fieldgrid{grid-template-columns:1fr 1fr}}
+.fcell{padding:24px 22px;background:var(--surface);border:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;width:100%;height:100%;box-shadow:inset -1px 0 0 var(--line)}
+.fcell:hover{background:var(--fill)}
+.fcell .bar{display:block;width:28px;height:4px;border-radius:2px;background:var(--tone);margin-bottom:14px}
+.fcell b{display:block;font-size:17px;font-weight:800;letter-spacing:-.03em;margin-bottom:6px}
+.fcell span{display:block;font-size:14px;color:var(--muted);line-height:1.55}
+
+/* ── 하위 페이지 상단 ─────────────────────── */
+.subvis{background:var(--fill);border-bottom:1px solid var(--line)}
+.subvis .wrap{padding-top:40px;padding-bottom:0}
+.crumb{font-size:13px;color:var(--muted);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.crumb button{background:none;border:0;padding:0;color:var(--muted);cursor:pointer;font-size:13px}
+.crumb button:hover{color:var(--primary)}
+.crumb i{font-style:normal;color:var(--faint)}
+.subvis h1{font-size:32px;font-weight:800;letter-spacing:-.04em;margin:10px 0 24px}
+.tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;margin-bottom:-1px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;border:1px solid transparent;border-bottom:0;background:none;padding:13px 22px;font-weight:700;font-size:15px;color:var(--muted);cursor:pointer;border-radius:8px 8px 0 0}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--surface);color:var(--primary);border-color:var(--line)}
+.panel{background:var(--surface);padding:40px 0 0;margin-top:0}
+h1.pt{font-size:24px;letter-spacing:-.035em;font-weight:800;margin:0 0 6px;line-height:1.3;padding-left:14px;border-left:4px solid var(--primary)}
+p.pd{color:var(--muted);margin:0 0 28px;font-size:15.5px;max-width:46em}
+.link{background:none;border:0;padding:0;color:var(--primary);font-weight:700;font-size:14.5px;cursor:pointer}
+.none{padding:24px 0;color:var(--muted)}
+
+/* ── 목록 ─────────────────────────────── */
+.search{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.search input{flex:1 1 260px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.chip{border:1px solid var(--line-2);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:13.5px;font-weight:600;color:var(--muted);cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.row{display:grid;grid-template-columns:4px 1fr auto;gap:18px;align-items:center;padding:20px 0;border-bottom:1px solid var(--line)}
+.row:first-of-type{border-top:2px solid var(--ink)}
+.row .tone{align-self:stretch;border-radius:2px;background:var(--tone,var(--faint))}
+.row h3{margin:0;font-size:17px;font-weight:700;letter-spacing:-.025em}
+.row .m{font-size:14px;color:var(--muted);margin-top:2px}
+.row .r{text-align:right;font-size:13.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.row .r .btn{margin-top:6px}
+.low{color:var(--err);font-weight:700}
+@media (max-width:560px){.row{grid-template-columns:4px 1fr}.row .r{grid-column:2;text-align:left}}
+
+/* ── 버튼 ─────────────────────────────── */
+.btn{display:inline-flex;align-items:center;justify-content:center;height:44px;padding:0 20px;border:0;background:var(--fill);color:var(--ink);border-radius:8px;font-weight:700;font-size:15px;cursor:pointer;text-decoration:none;white-space:nowrap;box-shadow:inset 0 0 0 1px var(--line-2);transition:background .15s}
+.btn:hover{background:var(--fill-2)}
+.btn.solid{background:var(--primary);color:var(--on-primary);box-shadow:none}
+.btn.solid:hover{background:color-mix(in srgb,var(--primary) 86%,#000)}
+.btn.big{height:52px;padding:0 28px;font-size:16px}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+@media (max-width:560px){.btn.big{width:100%}}
+
+/* ── 폼 ───────────────────────────────── */
+form.f{display:grid;grid-template-columns:1fr 1fr;gap:22px 20px;max-width:760px}
+form.f .full{grid-column:1/-1}
+@media (max-width:640px){form.f{grid-template-columns:1fr}}
+.lb{display:block;font-weight:700;font-size:14.5px;margin-bottom:8px}
+.lb em{font-style:normal;color:var(--err);margin-left:3px}
+input[type=text],input[type=tel],input[type=email],input[type=password],input[type=date],input[type=number],input[type=url],input[type=search],select,textarea{width:100%;font:400 16px/1.4 var(--font);padding:0 14px;height:50px;border:1px solid var(--line-2);border-radius:8px;background:var(--surface);color:var(--ink);transition:border-color .15s,box-shadow .15s}
+textarea{min-height:120px;padding:12px 14px;resize:vertical;height:auto}
+input::placeholder,textarea::placeholder{color:var(--faint)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+input:disabled{background:var(--fill);color:var(--muted)}
+.hint{font-size:13px;color:var(--muted);margin-top:6px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.opt{position:relative}
+.opt input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.opt span{display:block;border:1px solid var(--line-2);border-radius:8px;padding:10px 18px;font-size:15px;font-weight:600;color:var(--muted);background:var(--surface)}
+.opt input:checked+span{border-color:var(--primary);background:var(--primary-soft);color:var(--primary)}
+.opt input:focus-visible+span{outline:2.5px solid var(--primary);outline-offset:2px}
+.scale .opt span{min-width:52px;text-align:center}
+.agree{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.agree input{width:20px;height:20px;margin-top:3px;accent-color:var(--primary)}
+details.c{font-size:14px;color:var(--muted);background:var(--fill);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+details.c summary{cursor:pointer;color:var(--ink);font-weight:700}
+.msg{display:none;margin-top:18px;padding:14px 18px;border-radius:8px;font-weight:600;max-width:760px}
+.msg.show{display:block}
+.msg.err{background:color-mix(in srgb,var(--err) 9%,transparent);color:var(--err)}
+.msg.ok{background:color-mix(in srgb,var(--ok) 10%,transparent);color:var(--ok)}
+
+/* ── 완료 화면 ───────────────────────────── */
+.done{max-width:600px;margin:0 auto;text-align:center;padding:12px 0}
+.done .mark{width:64px;height:64px;border-radius:50%;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;margin:0 auto 18px}
+.done h2{margin:0 0 8px;font-size:26px;letter-spacing:-.04em;font-weight:800}
+.done .pd{margin-left:auto;margin-right:auto}
+.done dl{display:grid;grid-template-columns:auto 1fr;gap:10px 20px;margin:24px 0 28px;padding:20px 24px;border-top:2px solid var(--ink);border-bottom:1px solid var(--line);text-align:left;font-size:15px}
+.done dt{color:var(--muted)}
+.done dd{margin:0;font-weight:600}
+.done .acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+
+/* ── 로드맵 · 안내 ───────────────────────── */
+.road{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.road .col{padding:22px;box-shadow:inset -1px 0 0 var(--line)}
+.road h3{margin:0 0 14px;font-size:17px;font-weight:800;letter-spacing:-.03em;padding-bottom:12px;border-bottom:3px solid var(--tone)}
+.road ol{margin:0;padding:0;list-style:none}
+.road li{padding:10px 0;font-size:15px;border-bottom:1px dashed var(--line)}
+.road li:last-child{border-bottom:0}
+.road li small{display:inline-block;color:var(--tone);font-size:12.5px;font-weight:800;margin-right:8px}
+.facts{display:grid;grid-template-columns:160px 1fr;gap:0;margin:0 0 28px;border-top:2px solid var(--ink)}
+.facts dt,.facts dd{padding:16px 18px;border-bottom:1px solid var(--line);margin:0}
+.facts dt{background:var(--fill);font-weight:700;font-size:14.5px}
+@media (max-width:560px){.facts{grid-template-columns:1fr}.facts dt{border-bottom:0}}
+
+/* ── 조회 결과 ───────────────────────────── */
+.res{list-style:none;padding:0;margin:8px 0 0;max-width:820px;border-top:2px solid var(--ink)}
+.res li{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:18px 4px;border-bottom:1px solid var(--line);font-weight:600}
+.res small{display:block;color:var(--muted);font-size:13.5px;font-weight:500;margin-top:2px}
+.st{font-size:13px;font-weight:700;padding:4px 10px;border-radius:4px;background:var(--fill);color:var(--muted);white-space:nowrap}
+.st.ok{color:var(--ok);background:color-mix(in srgb,var(--ok) 11%,transparent)}
+.st.no{color:var(--err);background:color-mix(in srgb,var(--err) 9%,transparent)}
+
+/* ── 회원 ─────────────────────────────── */
+.auth{max-width:520px;margin:0 auto;padding:8px 0}
+.authtabs{display:flex;border-bottom:2px solid var(--line);margin-bottom:28px}
+.authtabs button{flex:1;border:0;background:none;padding:14px;font-weight:700;font-size:16px;color:var(--muted);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
+.authtabs button[aria-selected="true"]{color:var(--primary);border-bottom-color:var(--primary)}
+.reason{background:var(--primary-soft);color:var(--ink);border-radius:8px;padding:14px 16px;font-size:14.5px;margin-bottom:20px}
+.me-line{background:var(--fill);border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-size:14.5px;margin-bottom:24px;max-width:760px}
+
+/* ── 수료증 창 ───────────────────────────── */
+.cm{position:fixed;inset:0;z-index:50;background:rgba(10,20,40,.55);display:flex;align-items:flex-start;justify-content:center;padding:calc(20px + env(safe-area-inset-top,0px)) 12px 20px;overflow:auto}
+.cm-box{background:var(--surface);border-radius:14px;width:min(880px,100%);padding:20px}
+.cm-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.cm-bar .sp{flex:1}
+.cm-hint{margin:12px 0}
+.cm-view{background:var(--fill);border-radius:8px;overflow:hidden;position:relative}
+.cm-view iframe{width:800px;height:1130px;border:0;transform-origin:0 0;position:absolute;left:4px;top:4px;background:#fff}
+
+/* ── 자료실 · 협약서 ───────────────────── */
+.btable{width:100%;border-collapse:collapse;border-top:2px solid var(--ink);font-size:15px}
+.btable th{font-size:14px;font-weight:700;color:var(--muted);background:var(--fill);padding:13px 12px;border-bottom:1px solid var(--line);text-align:left}
+.btable td{padding:16px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+.btable td b{font-weight:700;display:block}
+.btable td small{display:block;color:var(--muted);font-size:13.5px;margin-top:2px}
+.btable .c-no{width:64px;text-align:center;color:var(--muted)}
+.btable .c-cat{width:120px;color:var(--muted);font-size:14px}
+.btable .c-dt{width:110px;color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.btable .c-dl{width:90px;text-align:center}
+.btable tr.pin td{background:color-mix(in srgb,var(--primary-soft) 55%,transparent)}
+.dl{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-2);background:var(--surface);border-radius:6px;padding:6px 10px;cursor:pointer;font-size:12.5px;font-weight:700;color:var(--primary)}
+.dl:hover{border-color:var(--primary);background:var(--primary-soft)}
+.dl svg{width:16px;height:16px}
+@media (max-width:700px){.btable .c-cat,.btable .c-dt,.btable thead{display:none}.btable .c-no{width:40px}.btable td{padding:14px 6px}}
+.filebox{display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line-2);border-radius:10px;padding:14px 16px;cursor:pointer;background:var(--fill)}
+.filebox:hover{border-color:var(--primary)}
+.filebox input{position:absolute;opacity:0;width:1px;height:1px}
+.filebox:focus-within{border-color:var(--primary);box-shadow:0 0 0 3px var(--primary-soft)}
+.filebox .fb-ic{color:var(--primary)}.filebox .fb-ic svg{width:24px;height:24px;display:block}
+.filebox .fb-t{flex:1;color:var(--muted);font-size:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.filebox .btn{height:36px;padding:0 14px;font-size:14px;pointer-events:none}
+.rrn{display:flex;align-items:center;gap:10px;max-width:420px}
+.rrn input{flex:1;min-width:0;letter-spacing:.15em}
+.rrn span{color:var(--muted);font-weight:700}
+.gate{display:flex;gap:20px;align-items:flex-start;border:1px solid var(--line);border-top:3px solid var(--primary);border-radius:10px;padding:28px;margin-top:22px;max-width:760px}
+.gate-ic{width:52px;height:52px;border-radius:50%;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center;flex:0 0 auto}
+.gate-ic svg{width:26px;height:26px}
+.gate h2{margin:0 0 6px;font-size:20px;font-weight:800;letter-spacing:-.03em}
+.gate p{margin:0 0 14px;color:var(--muted)}
+.steps3{margin:0 0 20px;padding-left:20px;color:var(--ink)}
+.steps3 li{margin:4px 0}
+.gate .acts{display:flex;gap:8px;flex-wrap:wrap}
+@media (max-width:560px){.gate{flex-direction:column;padding:20px}}
+
+/* ── 조사 응답 ─────────────────────────── */
+.ansf{max-width:760px}
+.ans-sec{font-size:16px;font-weight:800;color:var(--primary);margin:28px 0 4px;padding-top:16px;border-top:1px solid var(--line)}
+.aq{border:0;padding:0;margin:0 0 22px}
+.likert{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.lk{position:relative}.lk input{position:absolute;opacity:0;inset:0;cursor:pointer}
+.lk span{display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--line-2);border-radius:8px;padding:10px 4px;background:var(--surface);text-align:center}
+.lk b{font-size:17px}.lk small{font-size:11.5px;color:var(--muted);line-height:1.3}
+.lk input:checked+span{border-color:var(--primary);background:var(--primary-soft);color:var(--primary)}
+.lk input:checked+span small{color:var(--primary)}
+.lk input:focus-visible+span{outline:2.5px solid var(--primary);outline-offset:2px}
+@media (max-width:560px){.lk small{display:none}.likert::after{content:"1 전혀 그렇지 않다 · 5 매우 그렇다";grid-column:1/-1;font-size:12px;color:var(--muted)}}
+
+.retake{border:1px solid var(--line);border-top:3px solid var(--c5);border-radius:10px;padding:20px;background:color-mix(in srgb,var(--c5) 6%,var(--surface))}
+.retake h3{margin:0 0 6px;font-size:17px;font-weight:800}.retake p{margin:0 0 12px;color:var(--muted);font-size:14.5px}
+.retake .btn svg{width:16px;height:16px;margin-right:6px}
+
+/* ── 푸터 ─────────────────────────────── */
+footer{background:#1D2433;color:#AAB3C3;padding:0 0 48px;font-size:14px;line-height:1.8;margin-top:0}
+footer .flinks{border-bottom:1px solid #2E3647;margin-bottom:28px}
+footer .flinks .wrap{display:flex;gap:24px;height:52px;align-items:center}
+footer .flinks button{background:none;border:0;color:#D5DBE6;cursor:pointer;padding:0;font-size:14px}
+footer .flinks button.strong{color:#fff;font-weight:700}
+footer b{color:#fff;font-size:16px;font-weight:800;display:block;margin-bottom:8px}
+footer .copy{margin-top:14px;color:#7F899B;font-size:13px}
+.demo{display:none;background:#1D2433;color:#fff;text-align:center;font-size:13px;padding:7px 12px}
+.demo.show{display:block}
+
+/* ══ 네이비 테마 (2026.11) ══ */
+:root{ --navy:#0B1D3A; --navy-2:#13294B; --primary:#13294B; --on-primary:#FFFFFF; --primary-soft:#E8EEF6; --teal:#1FB5A8; --teal-2:#2FD3C6; --ink:#0F1B2D; --line:#E2E7EF; --fill:#F4F6FA; --fill-2:#E9EEF5; --c1:#13294B; }
+.util{display:none}
+header{border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(11,29,58,.03)}
+.brandrow{height:80px;gap:20px}
+.brand .mark{background:var(--navy)} .brand .nm b{color:var(--navy);white-space:nowrap;font-size:17px} .brand .nm small{white-space:nowrap}
+.hero .wrap,.infoband .wrap{max-width:1200px}
+header .wrap{max-width:1320px}
+.cats{flex:1;justify-content:center}
+.cat{font-size:15.5px;color:var(--ink);padding:0 13px}
+@media (max-width:1260px){.hright .tlink{display:none}}.cat:hover,.catw:focus-within .cat{color:var(--teal)}
+.cat[aria-current="page"]{color:var(--navy);border-bottom-color:var(--teal)}.cat.hl{color:var(--navy)}
+.sub{border-top-color:var(--teal)}
+.hright{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tlink{background:none;border:0;cursor:pointer;font-size:13.5px;color:var(--muted);padding:6px 6px;font-weight:600}.tlink:hover{color:var(--navy)}
+.cta-pill{background:var(--navy);color:#fff;border:0;border-radius:999px;padding:13px 24px;font-weight:800;font-size:14.5px;cursor:pointer;letter-spacing:-.01em;margin-left:6px}
+.cta-pill:hover{background:var(--navy-2)}
+@media (max-width:980px){.hright .tlink{display:none}.cta-pill{padding:10px 16px;font-size:13.5px}}
+@media (max-width:640px){.brandrow{height:64px;gap:8px}.brand{flex:1;min-width:0}.brand .nm{min-width:0;overflow:hidden}.brand .nm b{font-size:14.5px;overflow:hidden;text-overflow:ellipsis;display:block}.brand .mark{width:36px;height:36px}.cta-pill{padding:9px 12px;font-size:12.5px;margin-left:0}}
+@media (max-width:380px){.brand .nm b{font-size:13px}}
+.hero{position:relative;background:linear-gradient(180deg,#081630,#0B1D3A);color:#fff;overflow:hidden}
+.hero-bg{position:absolute;inset:0}.hero-bg svg{width:100%;height:100%;display:block}
+.hero-in{position:relative;padding-top:72px;padding-bottom:64px;max-width:1200px}
+.kicker{color:var(--teal-2);font-weight:800;letter-spacing:.18em;font-size:15px;margin:0 0 18px}
+.hero h1{margin:0 0 20px;font-size:clamp(38px,6vw,68px);line-height:1.12;letter-spacing:-.045em;font-weight:900}
+.hero h1 span{display:block}.hero h1 .w{color:#fff}.hero h1 .c{color:var(--teal-2)}
+.hero .hsub{color:#C8D3E6;font-size:16px;font-weight:600;letter-spacing:.02em;margin:0 0 26px;max-width:46em}
+.hboxes{display:grid;grid-template-columns:repeat(2,minmax(0,330px));gap:10px;margin-bottom:28px}
+.hboxes button{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.55);color:#fff;text-align:left;padding:12px 14px;font-weight:600;font-size:14.5px;cursor:pointer}
+.hboxes button:hover{border-color:var(--teal-2);color:var(--teal-2)}
+.hbtns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hb{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.65);color:#fff;border-radius:4px;padding:13px 20px;font-weight:700;font-size:15px;cursor:pointer}
+.hb i{font-style:normal;margin-left:8px}.hb:hover{background:rgba(255,255,255,.1)}
+.hcta{background:var(--teal);border:1.5px solid var(--teal-2);color:#fff;border-radius:4px;padding:14px 34px;font-weight:800;font-size:16px;cursor:pointer;margin-left:8px;box-shadow:0 0 24px rgba(47,211,198,.25)}
+.hcta i{font-style:normal;margin-left:8px}.hcta:hover{background:#18A196}
+@media (max-width:640px){.hboxes{grid-template-columns:1fr 1fr}.hboxes button{font-size:13px;padding:10px}.hcta{margin-left:0;width:100%}
+  .hbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.hb{padding:11px 6px;font-size:13px;white-space:nowrap}.hb i{display:none}.hcta{grid-column:1/-1}.hero-in{padding-top:44px}
+  .ibar{flex-direction:column;align-items:flex-start;gap:6px}.cdrow{margin-top:18px}}
+.infoband{background:var(--navy-2);padding:28px 0 34px}
+.ibar{border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:18px 24px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 30px;color:#fff;font-size:15px}
+.ibar b{color:#F2C14E;margin-right:8px;font-weight:800}
+.cdrow{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:24px;flex-wrap:wrap}
+.cd-k{margin:0;color:#F2C14E;font-weight:700;font-size:15px}.cd-t{margin:4px 0 0;color:#fff;font-size:20px;font-weight:800;letter-spacing:-.02em}
+.cd{display:flex;gap:12px}.cd div{width:82px;background:#fff;border-radius:12px 12px 10px 10px;text-align:center;padding:10px 0 8px;box-shadow:inset 0 -3px 0 rgba(11,29,58,.12)}
+.cd b{display:block;font-size:34px;font-weight:900;color:var(--navy);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}.cd span{font-size:12px;color:var(--muted);font-weight:600}
+@media (max-width:640px){.cd div{width:64px}.cd b{font-size:26px}}
+.quick{margin-top:0;border-bottom:1px solid var(--line)}
+.qitem .ic{background:var(--primary-soft);color:var(--navy)}.qitem:hover .ic{background:var(--navy);color:#fff}
+.bh{border-bottom-color:var(--navy)}.bh h2{color:var(--navy)}
+.blist .dt b{color:var(--navy)}
+.tag{background:color-mix(in srgb,var(--teal) 14%,transparent);color:#0E7F76}
+.btn.solid{background:var(--navy)}.btn.solid:hover{background:var(--navy-2)}
+.subvis{background:linear-gradient(180deg,#0B1D3A,#13294B);border-bottom:0;color:#fff;position:relative;overflow:hidden}
+.subvis::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(95,227,214,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(95,227,214,.06) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.subvis .wrap{position:relative;z-index:1}
+.subvis h1{color:#fff}.crumb,.crumb button{color:#AEBBD2}.crumb i{color:#6F80A0}.crumb button:hover{color:var(--teal-2)}
+.tab{color:#C8D3E6}.tab:hover{color:#fff}.tab[aria-selected="true"]{background:#fff;color:var(--navy);border-color:transparent}
+h1.pt{border-left-color:var(--teal)}
+.opt input:checked+span{border-color:var(--navy);background:var(--primary-soft);color:var(--navy)}
+input:focus,select:focus,textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(31,181,168,.18)}
+.link{color:#0E7F76}
+footer{background:#081630}
+.floaty{position:fixed;right:18px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.fb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:78px;height:78px;border-radius:50%;border:0;cursor:pointer;text-decoration:none;font-weight:800;font-size:11.5px;line-height:1.2;text-align:center;box-shadow:0 6px 18px rgba(11,29,58,.22)}
+.fb svg{width:22px;height:22px}
+.fb-apply{background:var(--navy);color:#fff}.fb-talk{background:#FEE500;color:#191600}.fb-top{width:52px;height:52px;background:#fff;color:var(--navy)}
+@media (max-width:640px){.fb{width:62px;height:62px;font-size:10px}.fb svg{width:18px;height:18px}.fb-top{width:44px;height:44px}}
+</style>
+</head>
+<body>
+<div class="demo" id="demo">미리보기 화면입니다. 예시 데이터로 표시되며 신청 내용은 저장되지 않아요.</div>
+<header>
+  <div class="util"><div class="wrap"><span class="org" id="utilOrg"></span><div class="acct"><a class="tel" id="tel"></a><span id="acct"></span></div></div></div>
+  <div class="wrap">
+    <div class="brandrow">
+      <button class="brand" data-go="home" id="brand"></button>
+      <nav class="cats" id="cats" aria-label="주요 메뉴"></nav>
+      <div class="hright"><span id="acctTop"></span><button class="cta-pill" data-go="edu-apply">교육 과정 신청</button></div>
+    </div>
+  </div>
+  <nav class="cats navm" id="catsM" aria-label="주요 메뉴(모바일)"></nav>
+</header>
+<main id="main"></main>
+<footer><div class="flinks"><div class="wrap"><button class="strong" data-go="privacy">개인정보처리방침</button><button data-go="lib-files">자료실</button><button data-go="edu-schedule">교육 일정</button><button data-go="my-survey">설문 참여</button></div></div><div class="wrap" id="foot"></div></footer>
+<div class="floaty" aria-label="빠른 메뉴">
+  <button class="fb fb-apply" data-go="edu-apply"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span>신청서<br>작성하기</span></button>
+  <a class="fb fb-talk" id="fbTalk" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 4C6.9 4 3 7.2 3 11.1c0 2.5 1.6 4.6 4 5.9l-.9 3.3c-.1.4.3.7.6.5l3.9-2.6c.5.1.9.1 1.4.1 5.1 0 9-3.2 9-7.2S17.1 4 12 4z"/></svg><span>카카오톡<br>상담문의</span></a>
+  <button class="fb fb-top" id="fbTop" aria-label="맨 위로"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 19V6M6 11l6-6 6 6"/></svg></button>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════
+   설정 — 기관 정보, 메뉴, 안내 문구는 여기서만 고치면 됩니다
+   ════════════════════════════════════════════════════════ */
+const CONFIG = {
+  API_URL: "https://script.google.com/macros/s/AKfycbwZjjrBfk2r4rCR534kGAvlVC4-B8f7yRYrddDG_Q-VDdQXVbDEVGmzwutsGtQRrutB/exec",   // Apps Script 홈페이지용 배포 주소 (비워두면 미리보기 모드)
+  ORG: "전주문화방송(주)",
+  ORG_SUB: "K-하이테크 플랫폼 공동훈련센터",
+  TEL: "063-220-8214~8216",
+  TEL_LINK: "0632208214",
+  HOURS: "평일 09:00–18:00",
+  ADDRESS: "전북특별자치도 전주시 완산구 선너머1길 50 전주문화방송",
+  RETENTION: "사업 종료 후 3년",
+  KAKAO_URL: "",   // 카카오톡 채널 상담 주소 (예: https://pf.kakao.com/_xxxx/chat). 비워두면 버튼이 숨겨져요
+  RRN_LAW: "",   // 주민등록번호 수집 근거 법령 (예: 사업 근거 법령의 조항) — 개인정보 담당자 확인 후 입력하세요
+  REQUIRE_LOGIN_TO_BROWSE: false   // true로 바꾸면 교육 일정·안내까지 모든 화면을 로그인 후에만 볼 수 있어요
+};
+
+/* 공지사항 — 위에서부터 최신 순으로 적어주세요 */
+const NOTICES = [
+  {date:"2026-10-28", title:"2026년 11월 재직자 교육 수강생 모집 안내", body:"생성형AI, 360 영상, 드론 과정 수강생을 모집합니다. 교육 일정 메뉴에서 과정별 일정을 확인하고 신청해 주세요."},
+  {date:"2026-10-20", title:"홈페이지 회원가입 후 수료증을 직접 발급받을 수 있습니다", body:"회원가입 후 조회·참여 메뉴의 수료증 발급에서 인쇄, PDF 저장, 메일 받기를 할 수 있습니다."},
+  {date:"2026-10-02", title:"공유개방 장비·시설 이용 신청 방법 안내", body:"공유개방 메뉴에서 보유 장비를 검색하고 이용 신청서를 제출하면 1–2일 안에 승인 여부를 문자로 안내합니다."}
+];
+
+/* 메뉴 구성: 카테고리 → 탭 */
+const MENU = [
+  {id:"edu", name:"재직자 교육", tabs:[
+    {id:"schedule", name:"교육 일정", view:"schedule"},
+    {id:"apply", name:"수강 신청", view:"form", form:"edu"},
+    {id:"roadmap", name:"교육 로드맵", view:"roadmap"},
+    {id:"group", name:"단체·기업 교육 문의", view:"form", form:"b2b"}
+  ]},
+  {id:"kdt", name:"KDT 과정", tabs:[
+    {id:"info", name:"과정 안내", view:"info", info:"kdt"},
+    {id:"apply", name:"사전 신청", view:"form", form:"kdt"}
+  ]},
+  {id:"share", name:"공유개방", tabs:[
+    {id:"equip", name:"보유 장비·시설", view:"equip"},
+    {id:"rent", name:"장비·시설 이용 신청", view:"form", form:"rent"},
+    {id:"tour", name:"기업견학 신청", view:"form", form:"tour"}
+  ]},
+  {id:"vr", name:"VR 체험", tabs:[
+    {id:"info", name:"프로그램 안내", view:"info", info:"vr"},
+    {id:"edu", name:"VR 체험교육 신청", view:"form", form:"vredu"},
+    {id:"bus", name:"VR버스 신청", view:"form", form:"vrbus"}
+  ]},
+  {id:"contest", name:"공모전", tabs:[
+    {id:"info", name:"공모전 안내", view:"info", info:"contest"},
+    {id:"apply", name:"작품 접수", view:"form", form:"contest"}
+  ]},
+  {id:"lib", name:"자료실", tabs:[
+    {id:"files", name:"자료실", view:"library"},
+    {id:"agree", name:"협약서 제출", view:"form", form:"agree"}
+  ]},
+  {id:"my", name:"조회·참여", hl:true, tabs:[
+    {id:"check", name:"신청 확인", view:"lookup"},
+    {id:"cert", name:"수료증 발급", view:"cert"},
+    {id:"survey", name:"설문 참여", view:"form", form:"survey"}
+  ]}
+];
+
+/* 홈 화면 바로가기 */
+const ICON = {
+  apply:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12"/><path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></svg>',
+  cert:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="5"/><path d="M9 13.5 7.5 21 12 18.5 16.5 21 15 13.5"/></svg>',
+  equip:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="13" height="10" rx="2"/><path d="m16 11 5-3v8l-5-3"/></svg>',
+  vr:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-4l-2-2.5h-2L9 17H5a2 2 0 0 1-2-2z"/></svg>',
+  doc:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>',
+  download:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>',
+  survey:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>',
+  chev:'<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg>'
+};
+const QUICK = [
+  {go:"edu-apply", name:"교육 신청", desc:"모집 중인 재직자 과정", icon:"apply"},
+  {go:"my-check", name:"신청 확인", desc:"교육·견학·공모전 진행 상태", icon:"check"},
+  {go:"my-cert", name:"수료증 발급", desc:"바로 인쇄하거나 PDF로 저장", icon:"cert"},
+  {go:"share-rent", name:"장비·시설 이용", desc:"촬영 장비 대여, 스튜디오 대관", icon:"equip"},
+  {go:"vr-edu", name:"VR 체험 신청", desc:"학교·기관 단체 체험교육", icon:"vr"},
+  {go:"lib-files", name:"자료실", desc:"협약서 양식·교육 안내 자료", icon:"doc"}
+];
+
+const FIELD_TONE = {"생성형AI":"--c1","360영상":"--c2","드론":"--c3","Virtual Studio":"--c4","영상편집":"--c5"};
+const FIELDS = ["생성형AI","360영상","드론","Virtual Studio","영상편집"];
+
+/* 교육 로드맵 (단계별 과정) */
+const ROADMAP = [
+  {field:"생성형AI", steps:[["입문","생성형AI 콘텐츠 제작 기초"],["기본","AI 프롬프트와 비즈니스 활용"],["심화","AI 영상 제작 실무"]]},
+  {field:"360영상", steps:[["입문","360 카메라 촬영 기초"],["기본","360 영상 편집과 VR 업로드"],["심화","실감형 콘텐츠 기획"]]},
+  {field:"드론", steps:[["입문","드론 안전과 기초 비행"],["기본","항공 촬영 구도"],["심화","드론 영상 편집"]]},
+  {field:"Virtual Studio", steps:[["입문","가상스튜디오 이해"],["기본","크로마키 촬영 실습"],["심화","방송형 콘텐츠 제작"]]},
+  {field:"영상편집", steps:[["입문","프리미어 프로 기초"],["기본","자막·색보정"],["심화","숏폼 콘텐츠 제작"]]}
+];
+
+/* 보유 장비·시설 — 서버가 연결되면 관리자 웹 ‘장비 현황’에서 ‘홈페이지 공개’한 장비로 자동 교체됩니다. */
+let EQUIP = [
+  {name:"가상스튜디오", cat:"시설", desc:"크로마키 가상 세트, 조명, 방송 스위처", item:"가상스튜디오"},
+  {name:"5층 편집실", cat:"시설", desc:"편집 PC 10대, 프리미어·애프터이펙트", item:"편집PC"},
+  {name:"360 카메라", cat:"촬영장비", desc:"360 영상 촬영용 카메라, 삼각대 포함", item:"360카메라"},
+  {name:"시네마 카메라", cat:"촬영장비", desc:"4K 촬영, 렌즈 키트", item:"촬영장비"},
+  {name:"촬영용 드론", cat:"드론", desc:"항공 촬영용, 배터리 3개", item:"드론"},
+  {name:"VR 헤드셋", cat:"VR", desc:"단체 체험용 VR 기기 세트", item:"VR장비"}
+];
+
+/* 안내 페이지 문구 */
+const INFO = {
+  kdt:{title:"KDT 과정 안내", desc:"디지털 실무 인재를 키우는 3개월 집중 과정입니다.", facts:[
+    ["교육 기간","약 3개월 (주 5일)"],["대상","구직자, 졸업예정자, 직무 전환을 원하는 재직자"],["교육 분야","생성형AI·영상 콘텐츠 제작 실무"],
+    ["교육비","전액 지원 (국민내일배움카드 필요)"],["선발 절차","사전 신청 → 상담 → 서류 제출 → 선발 안내"]], go:"kdt-apply", cta:"사전 신청하기"},
+  vr:{title:"VR 체험 프로그램", desc:"학교와 기관을 대상으로 실감형 콘텐츠를 직접 체험하는 프로그램입니다.", facts:[
+    ["VR 체험교육","센터 교육장에서 VR 기기로 체험하고 간단한 콘텐츠를 만들어 봅니다."],["VR버스","VR 장비를 실은 버스가 학교·기관으로 찾아갑니다."],
+    ["대상","초·중·고 학생, 지역 기관 단체 (10명 이상)"],["비용","무료"]], go:"vr-edu", cta:"체험교육 신청하기"},
+  contest:{title:"VR 창작 공모전", desc:"실감형 콘텐츠 아이디어와 작품을 공모합니다.", facts:[
+    ["접수 기간","공고 확인 후 입력"],["참가 자격","전북 지역 거주자 또는 재학·재직자, 개인 또는 팀(최대 4명)"],
+    ["출품 부문","VR콘텐츠, 360영상, 메타버스"],["제출 방법","작품 파일을 클라우드에 올린 뒤 링크로 제출"],["결과 발표","심사 후 개별 연락 및 홈페이지 공지"]], go:"contest-apply", cta:"작품 접수하기"}
+};
+
+/* 신청서 정의: 항목만 추가·삭제하면 화면이 바뀝니다 */
+const F = {
+  name:{k:"name",label:"이름",type:"text",req:1,auto:"name"},
+  phone:{k:"phone",label:"휴대폰",type:"tel",req:1,ph:"010-1234-5678",auto:"tel"},
+  email:{k:"email",label:"이메일",type:"email",req:1,auto:"email"},
+  birth:{k:"birth",label:"생년월일",type:"text",req:1,ph:"900101",hint:"숫자 6자리",max:6,num:1},
+  org:{k:"org",label:"기관·기업명",type:"text",req:1,auto:"organization"},
+  people:{k:"people",label:"인원",type:"number",req:1,ph:"20"},
+  date:{k:"date",label:"희망 날짜",type:"date",req:1},
+  msg:{k:"message",label:"요청 사항",type:"textarea",full:1,ph:"희망 시간, 대상 연령, 준비가 필요한 점 등을 적어주세요."}
+};
+const FORMS = {
+  edu:{title:"수강 신청", desc:"한 번 신청하면 다음 과정부터 이력이 이어집니다. 확정되면 문자로 알려드려요.", fields:[
+    {k:"sessionId",label:"신청 과정",type:"session",req:1,full:1},
+    F.name, F.birth, F.phone, F.email,
+    {k:"company",label:"소속 기업·기관",type:"text",auto:"organization"},
+    {k:"job",label:"직급·직무",type:"text",ph:"대리 / 영상편집"},
+    {k:"kind",label:"구분",type:"radio",req:1,full:1,opts:["재직자","프리랜서","구직자","대학생","기타"]},
+    {k:"rrnBack",label:"주민등록번호",type:"rrn",req:1,full:1,onlyIf:"noRrn"},
+    {k:"rrnAgree",label:"고유식별정보(주민등록번호) 수집·이용에 동의합니다. (필수)",type:"rrnConsent",full:1,onlyIf:"noRrn"},
+    {k:"marketing",label:"다음 과정 모집 소식을 문자로 받겠습니다. (선택)",type:"check",full:1}
+  ]},
+  agree:{title:"기업 협약서 제출", desc:"자료실에서 협약서 양식을 내려받아 작성하고 대표자 서명(직인)을 받은 뒤 올려주세요. 기업 정보는 협약서에 적은 내용과 같게 입력해 주세요.", fields:[
+    {k:"company",label:"기업명",type:"text",req:1,auto:"organization"},
+    {k:"bizNo",label:"사업자등록번호",type:"text",req:1,ph:"123-45-67890",num:1},
+    {k:"ceo",label:"대표자",type:"text",req:1},
+    {k:"size",label:"기업 규모",type:"radio",opts:["중소기업","중견기업","대기업","소상공인","공공"]},
+    {k:"address",label:"기업 주소",type:"text",req:1,full:1},
+    {k:"industry",label:"업종",type:"radio",full:1,opts:["미디어·콘텐츠","IT·SW","제조","공공기관","교육","기타"]},
+    {k:"manager",label:"교육 담당자",type:"text",req:1},
+    {k:"managerPhone",label:"담당자 연락처",type:"tel",req:1,ph:"010-1234-5678"},
+    {k:"managerEmail",label:"담당자 이메일",type:"email",full:1},
+    {k:"__file",label:"직인을 찍은 협약서 파일",type:"file",req:1,full:1,hint:"직인을 찍은 협약서를 스캔한 PDF 또는 사진(JPG·PNG) · 10MB 이하. 센터 직인을 찍어 날인본으로 돌려드립니다."}
+  ]},
+  b2b:{title:"단체·기업 교육 문의", desc:"직원 대상 맞춤 교육이나 출강을 원하시면 남겨주세요. 담당자가 연락드립니다.", fields:[
+    F.org, {k:"name",label:"담당자",type:"text",req:1}, F.phone, F.email,
+    {k:"people",label:"예상 인원",type:"number",ph:"15"},
+    {k:"fields",label:"관심 분야",type:"multi",full:1,opts:FIELDS},
+    {...F.msg, label:"문의 내용", ph:"희망 일정, 교육 장소(센터/출강), 원하는 내용을 적어주세요."}
+  ]},
+  kdt:{title:"KDT 사전 신청", desc:"사전 신청 후 담당자가 상담 일정을 안내해 드립니다.", fields:[
+    {k:"course",label:"희망 과정",type:"radio",req:1,full:1,opts:["KDT 3개월 과정"]},
+    F.name, F.birth, F.phone, F.email,
+    {k:"status",label:"현재 상태",type:"radio",req:1,full:1,opts:["구직자","졸업예정자","대학생","재직자","기타"]},
+    {k:"region",label:"거주 지역",type:"radio",req:1,full:1,opts:["전주","전북(기타)","타지역"]},
+    {k:"interests",label:"관심 분야",type:"multi",full:1,opts:FIELDS},
+    {k:"motive",label:"지원 동기",type:"textarea",full:1,ph:"간단히 적어주세요. (선택)"}
+  ]},
+  rent:{title:"장비·시설 이용 신청", desc:"승인 여부는 1–2일 안에 문자로 안내합니다.", fields:[
+    {k:"useType",label:"이용 구분",type:"radio",req:1,full:1,opts:["장비대여","시설대관"]},
+    {k:"items",label:"장비·시설",type:"multi",req:1,full:1,opts:["가상스튜디오","편집PC","360카메라","촬영장비","드론","VR장비","기타"]},
+    {...F.org, req:0, label:"소속 기업·기관"}, {k:"name",label:"신청자",type:"text",req:1,auto:"name"}, F.phone, F.email,
+    {k:"start",label:"이용 시작일",type:"date",req:1}, {k:"end",label:"이용 종료일",type:"date",req:1},
+    {...F.people, label:"이용 인원"}, {...F.msg, ph:"촬영 목적, 필요한 부대 장비 등을 적어주세요."}
+  ]},
+  tour:{title:"기업견학 신청", desc:"스튜디오와 장비를 둘러보고 공유개방 프로그램을 안내받을 수 있어요.", fields:[
+    F.org, {k:"name",label:"담당자",type:"text",req:1}, F.phone, F.email,
+    F.date, {...F.people, label:"방문 인원"}, {...F.msg, ph:"관심 있는 장비나 시설, 방문 목적을 적어주세요."}
+  ]},
+  vredu:{title:"VR 체험교육 신청", desc:"센터 교육장에서 진행합니다. 10명 이상 단체로 신청하세요.", fields:[
+    {...F.org, label:"학교·기관명"}, {k:"name",label:"인솔 담당자",type:"text",req:1}, F.phone, F.email,
+    F.date, {...F.people, label:"참여 인원"},
+    {k:"target",label:"대상",type:"radio",req:1,full:1,opts:["초등학생","중학생","고등학생","성인","기타"]}, F.msg
+  ]},
+  vrbus:{title:"VR버스 신청", desc:"VR버스가 학교·기관으로 찾아갑니다. 주차 공간(버스 1대)이 필요해요.", fields:[
+    {...F.org, label:"학교·기관명"}, {k:"name",label:"담당자",type:"text",req:1}, F.phone, F.email,
+    F.date, {...F.people, label:"참여 인원"},
+    {k:"place",label:"방문 주소",type:"text",req:1,full:1,ph:"버스가 도착할 주소"},
+    {k:"target",label:"대상",type:"radio",req:1,full:1,opts:["초등학생","중학생","고등학생","성인","기타"]}, F.msg
+  ]},
+  contest:{title:"공모전 작품 접수", desc:"접수 후 신청 확인 메뉴에서 접수 상태를 볼 수 있어요.", fields:[
+    {k:"contest",label:"공모전",type:"radio",req:1,full:1,opts:["VR 창작 공모전"]},
+    {k:"title",label:"작품명",type:"text",req:1,full:1},
+    {k:"teamType",label:"참가 구분",type:"radio",req:1,opts:["개인","팀"]},
+    {k:"category",label:"출품 부문",type:"radio",req:1,opts:["VR콘텐츠","360영상","메타버스","기타"]},
+    {k:"name",label:"대표자",type:"text",req:1}, F.phone, F.email,
+    {k:"org",label:"소속 (학교·회사)",type:"text"},
+    {k:"members",label:"팀원",type:"text",full:1,ph:"팀일 경우 이름을 쉼표로 구분",showIf:["teamType","팀"]},
+    {k:"link",label:"작품 링크",type:"url",req:1,full:1,ph:"https://",hint:"구글 드라이브·유튜브 등 공유 링크"},
+    {k:"desc",label:"작품 설명",type:"textarea",req:1,full:1}
+  ]},
+  survey:{title:"설문 참여", desc:"이름 없이 익명으로 저장됩니다. 2분이면 끝나요.", consent:false, fields:[
+    {k:"kind",label:"설문 종류",type:"radio",req:1,full:1,opts:["만족도조사","수요조사"]},
+    {k:"sessionId",label:"참여한 교육",type:"pastSession",req:1,full:1,showIf:["kind","만족도조사"]},
+    {k:"overall",label:"교육 전반에 만족하셨나요?",type:"scale",req:1,full:1,showIf:["kind","만족도조사"]},
+    {k:"teacher",label:"강사 만족도",type:"scale",req:1,full:1,showIf:["kind","만족도조사"]},
+    {k:"content",label:"교육 내용 만족도",type:"scale",req:1,full:1,showIf:["kind","만족도조사"]},
+    {k:"env",label:"교육 환경·장비 만족도",type:"scale",req:1,full:1,showIf:["kind","만족도조사"]},
+    {k:"recommend",label:"주변에 추천하시겠어요?",type:"radio",full:1,opts:["적극 추천","추천","보통","비추천"],showIf:["kind","만족도조사"]},
+    {k:"hope",label:"앞으로 배우고 싶은 분야",type:"multi",full:1,opts:FIELDS},
+    {k:"good",label:"좋았던 점",type:"textarea",full:1,showIf:["kind","만족도조사"]},
+    {k:"improve",label:"바라는 점·개선 의견",type:"textarea",full:1}
+  ]}
+};
+
+/* ════════════ 미리보기용 예시 데이터 ════════════ */
+const DEMO_SESSIONS = [
+  {id:"d1",title:"생성형AI 콘텐츠 제작 기초 1회차",field:"생성형AI",start:"2026-11-03",end:"2026-11-06",time:"화–금 18:30–21:30",place:"교육장",hours:12,remaining:7},
+  {id:"d2",title:"360 영상 촬영과 VR 업로드",field:"360영상",start:"2026-11-10",end:"2026-11-11",time:"화–수 18:30–21:30",place:"가상스튜디오",hours:6,remaining:2},
+  {id:"d3",title:"드론 항공촬영 입문",field:"드론",start:"2026-11-14",end:"",time:"토 10:00–17:00",place:"외부(출강)",hours:6,remaining:10},
+  {id:"d4",title:"가상스튜디오 방송 제작 실습",field:"Virtual Studio",start:"2026-11-24",end:"2026-11-27",time:"화–금 18:30–21:30",place:"가상스튜디오",hours:12,remaining:0},
+  {id:"d5",title:"프리미어 프로 숏폼 편집",field:"영상편집",start:"2026-12-01",end:"2026-12-04",time:"화–금 18:30–21:30",place:"5층 편집실",hours:12,remaining:12}
+];
+const DEMO_PAST = [{id:"p1",title:"생성형AI 콘텐츠 제작 기초 (10월)",start:"2026-10-13"},{id:"p2",title:"드론 항공촬영 입문 (10월)",start:"2026-10-17"}];
+const DEMO_COURSES = [
+  {title:"생성형AI 콘텐츠 제작 기초 3회차",start:"2026-10-13",end:"2026-10-16",status:"수료",cert:{id:"demo1",no:"제2026-001호",issuedAt:"2026-10-16",emailMasked:"ho***@example.com",html:"<!DOCTYPE html><html lang=\"ko\"><head><meta charset=\"utf-8\"><title>수료증 홍길동</title><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}html,body{margin:0;padding:0;background:#fff;color:#1a1a1a}body{font-family:\"Nanum Myeongjo\",\"Noto Serif KR\",\"Batang\",\"AppleMyungjo\",serif}.page{width:210mm;height:296mm;padding:14mm;position:relative}.frame{height:100%;border:3px double #8a6d2b;padding:10mm 14mm;position:relative;display:flex;flex-direction:column}.frame:before{content:\"\";position:absolute;inset:3mm;border:1px solid #c9b27a;pointer-events:none}.no{font-size:11pt;color:#444}h1{margin:26mm 0 20mm;text-align:center;font-size:40pt;letter-spacing:18pt;font-weight:700;padding-left:18pt}table{border-collapse:collapse;font-size:14pt;margin:0 6mm}td{padding:3.2mm 0;vertical-align:top}td.k{width:34mm;letter-spacing:2pt;color:#333}.body{margin:16mm 6mm 0;font-size:15pt;line-height:2;word-break:keep-all}.date{margin-top:auto;text-align:center;font-size:14pt;letter-spacing:1pt}.issuer{margin:12mm 0 10mm;text-align:center;font-size:20pt;font-weight:700;letter-spacing:3pt;position:relative}.seal{display:inline-block;vertical-align:middle;margin-left:4mm;width:20mm;height:20mm}.stamp{border:2px solid #c0392b;color:#c0392b;border-radius:50%;font-size:10pt;line-height:19mm;text-align:center;letter-spacing:0;font-weight:700}.center{text-align:center;font-size:11pt;color:#555}@media screen{body{background:#eee}.page{margin:0 auto;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.15)}}@media print{body{background:#fff}.page{box-shadow:none}}</style></head><body><div class=\"page\"><div class=\"frame\"><div class=\"no\">제 2026-001 호</div><h1>수료증</h1><table><tr><td class=\"k\">성　　명</td><td>홍길동</td></tr><tr><td class=\"k\">생년월일</td><td>1990년 1월 1일</td></tr><tr><td class=\"k\">과 정 명</td><td>생성형AI 콘텐츠 제작 기초 3회차</td></tr><tr><td class=\"k\">교육기간</td><td>2026.10.13 ~ 2026.10.16 (12시간)</td></tr></table><p class=\"body\">위 사람은 전주문화방송(주) K-하이테크 플랫폼 공동훈련센터에서 실시한 위 교육과정을 성실히 이수하였으므로 이 증서를 수여합니다.</p><div class=\"date\">2026년 10월 16일</div><div class=\"issuer\">전주문화방송(주) 대표이사<span class=\"seal stamp\">직인</span></div><div class=\"center\">K-하이테크 플랫폼 공동훈련센터 · 063-220-8214~8216</div></div></div></body></html>"}},
+  {title:"360 영상 촬영과 VR 업로드 1회차",start:"2026-11-10",end:"2026-11-11",status:"확정",cert:null}
+];
+const DEMO_LIB = [
+  {id:"r1", title:"2026 재직자 교육 기업 협약서 양식", category:"협약서·서식", desc:"교육 신청 전 작성해 협약서 제출 메뉴로 올려주세요.", fileName:"기업협약서_양식.hwp", sizeKb:84, date:"2026-10-01", pinned:true},
+  {id:"r2", title:"재직자 교육 운영 안내서", category:"교육 안내", desc:"과정별 일정, 수료 기준, 수료증 발급 방법", fileName:"교육운영안내.pdf", sizeKb:1250, date:"2026-09-20", pinned:false},
+  {id:"r4", title:"재수강 사유서 양식", category:"협약서·서식", formKind:"재수강 사유서 양식", desc:"같은 과정을 다시 신청할 때 작성해 수강 신청 화면에서 첨부해 주세요.", fileName:"재수강_사유서_양식.docx", sizeKb:24, date:"2026-11-03", pinned:false},
+  {id:"r3", title:"공유개방 장비 이용 수칙", category:"교육 안내", desc:"", fileName:"장비이용수칙.pdf", sizeKb:320, date:"2026-09-02", pinned:false}
+];
+const DEMO_SKIP_GATE = false;
+const DEMO_TAKEN = ["생성형AI 콘텐츠 제작 기초"];   // 미리보기: 이 과정은 이미 들은 것으로 가정 (재수강 흐름 체험용)
+const DEMO_LOOKUP = [
+  {type:"재직자 교육",title:"생성형AI 콘텐츠 제작 기초 1회차",date:"2026-10-07",status:"확정"},
+  {type:"기업견학",title:"(주)전주미디어 견학",date:"2026-10-02",status:"승인"},
+  {type:"공모전",title:"우리 동네 360 투어",date:"2026-09-28",status:"심사중"}
+];
+
+/* ════════════ 앱 ════════════ */
+let DEMO = !CONFIG.API_URL;
+let sessions = [], pastSessions = [];
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const WEEK = ["일","월","화","수","목","금","토"];
+const md = iso => { if(!iso) return ""; const d = new Date(iso+"T00:00:00"); return `${d.getMonth()+1}.${String(d.getDate()).padStart(2,"0")}(${WEEK[d.getDay()]})`; };
+const josa = w => { const c = w.charCodeAt(w.length-1) - 0xAC00; return c >= 0 && c <= 11171 && c % 28 ? "이" : "가"; };
+const range = s => s.end && s.end !== s.start ? `${md(s.start)} – ${md(s.end)}` : md(s.start);
+
+/* 회원 로그인 상태 (이 기기에 7일 유지) */
+let AUTH = (() => { try { return JSON.parse(localStorage.getItem("khpMember") || "null"); } catch(e){ return null; } })();
+function setAuth(a){ AUTH = a; try{ a ? localStorage.setItem("khpMember", JSON.stringify(a)) : localStorage.removeItem("khpMember"); }catch(e){} renderAcct(); }
+async function api(action, payload){
+  if(DEMO) throw new Error("demo");
+  const r = payload
+    ? await fetch(CONFIG.API_URL, {method:"POST", headers:{"Content-Type":"text/plain;charset=utf-8"}, body:JSON.stringify({action, token: AUTH && AUTH.token, ...payload})})
+    : await fetch(`${CONFIG.API_URL}?action=${encodeURIComponent(action)}`);
+  const j = await r.json();
+  if(j && j.auth){ setAuth(null); go("auth", null, "로그인 시간이 지났어요. 다시 로그인해 주세요."); throw new Error("로그인이 필요합니다."); }
+  return j;
+}
+function renderAcct(){
+  const top = $("#acctTop");
+  if(top) top.innerHTML = AUTH ? `<button class="tlink" data-go="me">${esc(AUTH.me.name)}님</button><button class="tlink" id="logoutTop">로그아웃</button>` : `<button class="tlink" data-go="auth">로그인</button><button class="tlink" data-go="auth" data-signup="1">회원가입</button>`;
+  $("#logoutTop")?.addEventListener("click", () => { setAuth(null); go("home"); });
+  const el = $("#acct"); if(!el) return;
+  el.innerHTML = AUTH ? `<button class="who" data-go="me">${esc(AUTH.me.name)}님 내 정보</button><button class="btn" id="logoutBtn">로그아웃</button>`
+    : `<button class="btn" data-go="auth">로그인</button><button class="btn" data-go="auth" data-signup="1">회원가입</button>`;
+  $("#logoutBtn")?.addEventListener("click", () => { setAuth(null); go("home"); });
+}
+
+/* 라우팅: #카테고리-탭 */
+let state = {cat:"home", tab:null, pick:{}};
+/** 로그인해야 쓰는 화면: 신청서(설문 제외), 신청 확인, 수료증 */
+function needsLogin(cat, tab){
+  if(cat === "me") return true;
+  const c = MENU.find(m => m.id === cat), t = c && c.tabs.find(x => x.id === tab);
+  if(!t) return CONFIG.REQUIRE_LOGIN_TO_BROWSE && cat !== "auth" && cat !== "home";
+  return CONFIG.REQUIRE_LOGIN_TO_BROWSE || t.view === "lookup" || t.view === "cert" || (t.view === "form" && t.form !== "survey");
+}
+function go(token, pick, reason){
+  let [cat, tab] = (token || "home").split("-");
+  if(cat === "answer"){ state = {cat, tab:null, pick:{}, token: tab}; history.replaceState(null, "", "#answer-" + tab); render(); window.scrollTo(0,0); return; }
+  if(cat === "privacy" || cat === "notice"){ state = {cat, tab:null, pick:{}, nid: pick && pick.n}; history.replaceState(null, "", "#" + cat); render(); window.scrollTo(0,0); return; }
+  if(cat === "auth" || cat === "me"){
+    if(cat === "me" && !AUTH) { cat = "auth"; }
+    state = {cat, tab:null, pick:{}, after: state.cat === "auth" ? state.after : (cat === "auth" ? (state.after || null) : null), reason, mode: (state.mode || "login")};
+    if(reason === undefined && cat === "auth") state.reason = "";
+    history.replaceState(null, "", "#" + cat); render(); window.scrollTo(0,0); return;
+  }
+  const c = MENU.find(m => m.id === cat);
+  if(c && !c.tabs.find(t => t.id === tab)) tab = c.tabs[0].id;
+  if(CONFIG.REQUIRE_LOGIN_TO_BROWSE && !AUTH && !c && cat === "home"){ state = {cat:"auth", after:"home", pick:{}, mode:"signup", reason:"홈페이지를 이용하려면 먼저 회원가입이나 로그인을 해주세요."}; history.replaceState(null, "", "#auth"); render(); return; }
+  if(c && !AUTH && needsLogin(cat, tab)){
+    const t = c.tabs.find(x => x.id === tab);
+    state = {cat:"auth", after:`${cat}-${tab}`, afterPick: pick || {}, pick:{}, mode: state.mode || "login", reason:`‘${t.name}’은 회원만 이용할 수 있어요. 처음이라면 회원가입을, 가입했다면 로그인을 해주세요.`};
+    history.replaceState(null, "", "#auth"); render(); window.scrollTo(0,0); return;
+  }
+  state = {cat: c ? cat : "home", tab: c ? tab : null, pick: pick || {}};
+  const h = state.cat === "home" ? "" : `${state.cat}-${state.tab}`;
+  if(location.hash.slice(1) !== h) history.replaceState(null, "", h ? "#"+h : location.pathname + location.search);
+  render(); window.scrollTo(0,0);
+}
+document.addEventListener("click", e => {
+  const g = e.target.closest("[data-go]"); if(!g) return;
+  e.preventDefault();
+  if(g.dataset.go === "auth") state.mode = g.dataset.signup ? "signup" : "login";
+  go(g.dataset.go, g.dataset.pick ? JSON.parse(g.dataset.pick) : undefined);
+});
+window.addEventListener("hashchange", () => go(location.hash.slice(1)));
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-stamped]"); if(!b) return;
+  if(DEMO){ alert("미리보기에서는 내려받기가 되지 않아요."); return; }
+  b.disabled = true;
+  try{
+    const r = await api("agreeFile", {});
+    if(!r.ok) throw new Error(r.message);
+    const bin = atob(r.b64), arr = new Uint8Array(bin.length); for(let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([arr], {type: r.mime})); a.download = r.name; document.body.appendChild(a); a.click(); a.remove();
+  }catch(ex){ alert(ex.message || "내려받지 못했어요."); }
+  finally{ b.disabled = false; }
+});
+
+function renderNav(){
+  const cur = state.cat;
+  $("#cats").innerHTML = MENU.map(m => `<div class="catw"><button class="cat ${m.hl?"hl":""}" data-go="${m.id}" aria-current="${cur===m.id?"page":"false"}">${esc(m.name)}</button>
+    <div class="sub">${m.tabs.map(t => `<button data-go="${m.id}-${t.id}">${esc(t.name)}</button>`).join("")}</div></div>`).join("");
+  $("#catsM").innerHTML = `<button class="cat" data-go="home" aria-current="${cur==="home"?"page":"false"}">홈</button>` +
+    MENU.map(m => `<button class="cat ${m.hl?"hl":""}" data-go="${m.id}" aria-current="${cur===m.id?"page":"false"}">${esc(m.name)}</button>`).join("");
+  const a = $("#catsM [aria-current=page]"); if(a) a.scrollIntoView({block:"nearest", inline:"nearest"});
+  document.activeElement && document.activeElement.closest && document.activeElement.closest(".sub") && document.activeElement.blur();
+}
+
+function render(){
+  renderNav();
+  const main = $("#main");
+  clearInterval(CD_TIMER);
+  if(state.cat === "home"){ main.innerHTML = viewHome(); startCountdown(); return; }
+  const shell = (title, trail, inner, tabsHtml) => `<section class="subvis"><div class="wrap"><div class="crumb"><button data-go="home">홈</button>${trail.map(t => `<i>›</i><span>${esc(t)}</span>`).join("")}</div><h1>${esc(title)}</h1>${tabsHtml || '<div style="height:1px"></div>'}</div></section><div class="wrap"><section class="panel">${inner}</section></div>`;
+  if(state.cat === "auth"){ main.innerHTML = shell(state.mode === "signup" ? "회원가입" : "로그인", ["회원 서비스"], viewAuth()); return bindAuth(); }
+  if(state.cat === "me"){ main.innerHTML = shell("내 정보", ["회원 서비스"], viewMe()); return bindMe(); }
+  if(state.cat === "answer"){ main.innerHTML = shell("설문 참여", ["조사·참여"], `<div id="ans"><p class="none">조사를 불러오는 중이에요.</p></div>`); return bindAnswer(); }
+  if(state.cat === "privacy"){ main.innerHTML = shell("개인정보처리방침", ["안내"], viewPrivacy()); return; }
+  if(state.cat === "notice"){ main.innerHTML = shell("공지사항", ["안내"], viewNotice()); return; }
+  const c = MENU.find(m => m.id === state.cat), t = c.tabs.find(x => x.id === state.tab);
+  const tabs = `<div class="tabs" role="tablist">${c.tabs.map(x => `<button class="tab" role="tab" data-go="${c.id}-${x.id}" aria-selected="${x.id===t.id}">${esc(x.name)}</button>`).join("")}</div>`;
+  const head = `<section class="subvis"><div class="wrap"><div class="crumb"><button data-go="home">홈</button><i>›</i><button data-go="${c.id}">${esc(c.name)}</button><i>›</i><span>${esc(t.name)}</span></div><h1>${esc(c.name)}</h1>${tabs}</div></section>`;
+  const body = t.view === "library" ? viewLibrary()
+    : t.view === "schedule" ? viewSchedule()
+    : t.view === "roadmap" ? viewRoadmap()
+    : t.view === "equip" ? viewEquip()
+    : t.view === "info" ? viewInfo(t.info)
+    : t.view === "lookup" ? viewLookup("check")
+    : t.view === "cert" ? viewLookup("cert")
+    : viewForm(t.form);
+  main.innerHTML = head + `<div class="wrap"><section class="panel" role="tabpanel">${body}</section></div>`;
+  if(t.view === "schedule") bindSchedule();
+  if(t.view === "library") bindLibrary();
+  if(t.view === "equip") bindEquip();
+  if(t.view === "form") bindForm(t.form);
+  if(t.view === "form" && t.form === "survey" && AUTH) loadMySurveys();
+  if(t.view === "lookup" || t.view === "cert") bindLookup(t.view === "cert" ? "cert" : "check");
+}
+
+/* 홈 */
+const FIELD_DESC = {"생성형AI":"이미지·영상·글 생성 도구로 콘텐츠 제작","360영상":"360 촬영, 스티칭, VR 플랫폼 업로드","드론":"안전 수칙, 기초 비행, 항공 촬영","Virtual Studio":"크로마키·가상 세트 방송형 제작","영상편집":"컷 편집, 자막, 색보정, 숏폼"};
+function viewHome(){
+  const open = sessions.filter(s => s.remaining === null || s.remaining > 0).slice(0, 5);
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const next = sessions.filter(s => (s.remaining === null || s.remaining > 0) && (s.deadline || s.start) && String(s.deadline || s.start) >= todayIso).sort((a, b) => String(a.deadline || a.start).localeCompare(String(b.deadline || b.start)))[0];
+  const dot = v => String(v || "").replace(/-/g, ".");
+  const due = next ? (next.deadline || next.start) : "";
+  return `<section class="hero">
+      <div class="hero-bg" aria-hidden="true">${heroArt()}</div>
+      <div class="wrap hero-in">
+        <p class="kicker">현장 장비로 배우는 미디어·AI 실무교육</p>
+        <h1><span class="w">방송 현장의 장비로</span><span class="c">미디어 기술을 배우는</span><span class="c">재직자 교육</span></h1>
+        <p class="hsub">생성형AI, 360 영상, 드론, 가상스튜디오까지 — 전주문화방송 K-하이테크 플랫폼 공동훈련센터의 실습 중심 무료 교육</p>
+        <div class="hboxes">${["생성형AI 콘텐츠 제작","360 영상·VR 프로덕션","드론 항공촬영","가상스튜디오 방송 제작"].map(t => `<button data-go="edu-schedule">${t}</button>`).join("")}</div>
+        <div class="hbtns"><button class="hb" data-go="edu-schedule">교육 일정 보기 <i>↓</i></button><button class="hb" data-go="edu-roadmap">교육 로드맵 <i>↓</i></button><button class="hb" data-go="my-cert">수료증 발급 <i>↓</i></button>
+          <button class="hcta" data-go="edu-apply">교육과정 신청하기 <i>→</i></button></div>
+      </div>
+    </section>
+    <section class="infoband"><div class="wrap">
+      ${next ? `<div class="ibar"><span><b>모집마감</b>${dot(due)}</span><span><b>교육기간</b>${dot(next.start)}${next.end && next.end !== next.start ? "–" + dot(next.end).slice(5) : ""}</span><span><b>교육시간</b>${esc(next.time || "-")}</span><span><b>교육장소</b>${esc(next.place || "-")}</span><span><b>문의처</b>${esc(CONFIG.TEL)}</span></div>
+      <div class="cdrow"><div><p class="cd-k">다음 모집 마감까지</p><p class="cd-t">${esc(next.title)}</p></div><div class="cd" id="countdown" data-due="${esc(due)}">${["일","시간","분","초"].map(u => `<div><b>00</b><span>${u}</span></div>`).join("")}</div></div>`
+      : `<div class="ibar"><span><b>교육 문의</b>${esc(CONFIG.TEL)}</span><span><b>운영시간</b>${esc(CONFIG.HOURS)}</span><span><b>교육장소</b>${esc(CONFIG.ADDRESS.replace("전북특별자치도 ",""))}</span></div>`}
+    </div></section>
+    <div class="wrap">
+      <nav class="quick" aria-label="자주 찾는 메뉴">${QUICK.map(q => `<button class="qitem" data-go="${q.go}"><span class="ic" aria-hidden="true">${ICON[q.icon]}</span><b>${esc(q.name)}</b><span class="d">${esc(q.desc)}</span></button>`).join("")}</nav>
+      <div class="boards">
+        <section><div class="bh"><h2>모집 중인 교육</h2><button class="more" data-go="edu-schedule">더보기</button></div>
+          <ul class="blist">${open.length ? open.map(boardRow).join("") : `<li style="display:block"><p class="none">지금 모집 중인 교육이 없어요. 설문 참여에서 듣고 싶은 교육을 알려주세요.</p></li>`}</ul></section>
+        <section><div class="bh"><h2>공지사항</h2><button class="more" data-go="notice">더보기</button></div>
+          <ul class="nlist">${NOTICES.slice(0,5).map((n,i) => `<li><b><button class="link" style="color:inherit;font-weight:600;text-align:left" data-go="notice" data-pick='${esc(JSON.stringify({n:i}))}'>${esc(n.title)}</button>${daysAgo(n.date) <= 7 ? '<span class="new">NEW</span>' : ""}</b><span>${esc(n.date.replace(/-/g,"."))}</span></li>`).join("")}</ul></section>
+      </div>
+      <section class="fields-h"><div class="bh"><h2>교육 분야</h2><button class="more" data-go="edu-roadmap">로드맵</button></div>
+        <div class="fieldgrid">${FIELDS.map(f => `<button class="fcell" style="--tone:var(${FIELD_TONE[f]})" data-go="edu-schedule"><span class="bar"></span><b>${esc(f)}</b><span>${esc(FIELD_DESC[f]||"")}</span></button>`).join("")}</div></section>
+    </div>`;
+}
+function heroArt(){
+  const nodes = [[620,120],[700,200],[820,150],[900,260],[760,320],[980,110],[1080,220],[860,400],[1020,360],[1140,300]];
+  const lines = [[0,1],[1,2],[2,5],[1,4],[4,3],[3,6],[5,6],[3,8],[8,9],[6,9],[4,7],[7,8]];
+  const bars = Array.from({length:14},(_,i) => { const h = 30 + ((i*37)%90); return `<rect x="${1040+i*14}" y="${520-h}" width="8" height="${h}" rx="2"/>`; }).join("");
+  return `<svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice"><defs><pattern id="hg" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#5FE3D6" stroke-opacity=".06"/></pattern>
+    <radialGradient id="hgl" cx="78%" cy="40%" r="45%"><stop offset="0" stop-color="#1FB5A8" stop-opacity=".35"/><stop offset="1" stop-color="#1FB5A8" stop-opacity="0"/></radialGradient></defs>
+    <rect width="1200" height="600" fill="url(#hg)"/><rect width="1200" height="600" fill="url(#hgl)"/>
+    <g stroke="#5FE3D6" stroke-opacity=".35" stroke-width="1.2" fill="none">${lines.map(([a,b]) => `<path d="M${nodes[a][0]} ${nodes[a][1]}H${(nodes[a][0]+nodes[b][0])/2}V${nodes[b][1]}H${nodes[b][0]}"/>`).join("")}</g>
+    <g fill="#5FE3D6">${nodes.map(([x,y],i) => `<circle cx="${x}" cy="${y}" r="${i%3?3:5}" opacity="${i%3?.7:1}"/>`).join("")}</g>
+    <g fill="#5FE3D6" opacity=".25">${bars}</g>
+    <g fill="none" stroke="#5FE3D6" stroke-opacity=".25"><circle cx="930" cy="250" r="120"/><circle cx="930" cy="250" r="80" stroke-dasharray="4 8"/><path d="M640 470h300l30-30h160"/><path d="M700 520h220l24-24h220"/></g></svg>`;
+}
+let CD_TIMER = null;
+function startCountdown(){
+  clearInterval(CD_TIMER);
+  const el = $("#countdown"); if(!el) return;
+  const due = new Date(el.dataset.due + "T23:59:59");
+  const tick = () => { const ms = Math.max(0, due - new Date()), sec = Math.floor(ms / 1000);
+    const v = [Math.floor(sec / 86400), Math.floor(sec % 86400 / 3600), Math.floor(sec % 3600 / 60), sec % 60];
+    el.querySelectorAll("b").forEach((b, i) => { b.textContent = String(v[i]).padStart(2, "0"); });
+    if(!ms) clearInterval(CD_TIMER); };
+  tick(); CD_TIMER = setInterval(tick, 1000);
+}
+function daysAgo(iso){ return Math.floor((Date.now() - Date.parse(iso + "T00:00:00")) / 864e5); }
+function boardRow(s){
+  const full = s.remaining !== null && s.remaining <= 0, low = !full && s.remaining !== null && s.remaining <= 3;
+  const d = s.start ? new Date(s.start + "T00:00:00") : null;
+  return `<li><div class="dt"><b>${d ? `${d.getMonth()+1}.${String(d.getDate()).padStart(2,"0")}` : "-"}</b><span>${d ? WEEK[d.getDay()] + "요일" : ""}</span></div>
+    <div><h3>${esc(s.title)}</h3><div class="m">${esc(s.field||"")}${s.time?` · ${esc(s.time)}`:""}${s.place?` · ${esc(s.place)}`:""}</div></div>
+    <div class="r"><span class="tag ${full?"off":low?"low":""}">${full?"마감":low?`마감 임박 ${s.remaining}석`:"모집중"}</span>
+      <button class="btn ${full?"":"solid"}" style="height:34px;padding:0 14px;font-size:13.5px" ${full?"disabled":""} data-go="edu-apply" data-pick='${esc(JSON.stringify({sessionId:s.id}))}'>신청</button></div></li>`;
+}
+function viewNotice(){
+  const sel = state.nid !== undefined ? NOTICES[state.nid] : null;
+  return (sel ? `<h1 class="pt">${esc(sel.title)}</h1><p class="pd">${esc(sel.date.replace(/-/g,"."))}</p><p style="max-width:46em">${esc(sel.body)}</p><p style="margin-top:28px"><button class="btn" data-go="notice">목록으로</button></p>` :
+    `<ul class="nlist" style="border-top:2px solid var(--ink)">${NOTICES.map((n,i) => `<li><b><button class="link" style="color:inherit;font-weight:600;text-align:left" data-go="notice" data-pick='${esc(JSON.stringify({n:i}))}'>${esc(n.title)}</button></b><span>${esc(n.date.replace(/-/g,"."))}</span></li>`).join("")}</ul>`);
+}
+function viewPrivacy(){
+  return `<p class="pd">${esc(CONFIG.ORG)}(이하 ‘기관’)는 홈페이지 이용자의 개인정보를 소중히 다루며, 다음과 같이 처리합니다.</p>
+    <dl class="facts">
+      <dt>수집 항목</dt><dd>회원: 이름, 주민등록번호 앞 6자리(생년월일), 휴대폰 번호, 소속 기업명, 이메일(선택)<br>신청: 신청서별 기재 항목(교육·장비·견학·공모전 등)</dd>
+      <dt>이용 목적</dt><dd>회원 확인, 교육 신청·운영, 출석·수료 관리, 수료증 발급, 장비·시설 이용 관리, 사업 성과 보고</dd>
+      <dt>보유 기간</dt><dd>${esc(CONFIG.RETENTION)}. 탈퇴 요청 시 관련 법령에 따라 보관해야 하는 정보를 제외하고 지체 없이 파기합니다.</dd>
+      <dt>주민등록번호</dt><dd>회원가입 시 앞 6자리만 받습니다. 교육을 신청할 때 훈련생 등록을 위해 13자리를 별도 동의를 받아 수집하며(근거: ${esc(CONFIG.RRN_LAW || "근거 법령 확인 후 기재")}), 암호화해 저장하고 운영 책임자만 사유를 기록한 뒤 열람합니다.</dd>
+      <dt>제출 서류</dt><dd>기업 협약서: 기업명, 사업자등록번호, 대표자, 주소, 담당자 연락처와 협약서 파일. 협약 관리와 교육 운영에만 이용합니다.</dd>
+      <dt>제3자 제공</dt><dd>법령에 근거가 있거나 이용자가 동의한 경우를 제외하고 제공하지 않습니다.</dd>
+      <dt>문의</dt><dd>개인정보 열람·정정·삭제 요청: ${esc(CONFIG.TEL)} (${esc(CONFIG.HOURS)})</dd>
+    </dl><p class="hint">기관의 공식 개인정보처리방침이 있으면 이 내용을 그 문서로 바꿔 주세요.</p>`;
+}
+function rowSession(s){
+  const full = s.remaining !== null && s.remaining <= 0, low = !full && s.remaining !== null && s.remaining <= 3;
+  return `<div class="row" style="--tone:var(${FIELD_TONE[s.field]||"--faint"})"><span class="tone"></span>
+    <div><h3>${esc(s.title)}</h3><div class="m">${esc(range(s))} · ${esc(s.time||"")} · ${esc(s.place||"")}${s.hours?` · ${s.hours}시간`:""}</div></div>
+    <div class="r"><span class="${low?"low":""}">${full?"정원 마감":s.remaining===null?"":`남은 자리 ${s.remaining}석`}</span><br>
+    <button class="btn ${full?"":"solid"}" ${full?"disabled":""} data-go="edu-apply" data-pick='${esc(JSON.stringify({sessionId:s.id}))}'>${full?"마감":"신청"}</button></div></div>`;
+}
+
+/* 교육 일정: 검색 + 분야 필터 */
+let schedQ = "", schedField = "";
+function viewSchedule(){
+  return `<h1 class="pt">교육 일정</h1><p class="pd">과정명으로 찾거나 분야를 골라 보세요.</p>
+    <div class="search"><input type="search" id="sq" placeholder="과정명 검색 (예: 드론)" value="${esc(schedQ)}" aria-label="과정명 검색"></div>
+    <div class="chips" id="sf">${["",...FIELDS].map(f => `<button class="chip" data-f="${esc(f)}" aria-pressed="${schedField===f}">${f||"전체"}</button>`).join("")}</div>
+    <div id="slist"></div>`;
+}
+function bindSchedule(){
+  const draw = () => {
+    const list = sessions.filter(s => (!schedField || s.field === schedField) && (!schedQ || s.title.includes(schedQ)));
+    $("#slist").innerHTML = list.length ? list.map(rowSession).join("") : `<p class="none">조건에 맞는 과정이 없어요. 검색어를 지우거나 다른 분야를 골라 보세요.</p>`;
+  };
+  $("#sq").addEventListener("input", e => { schedQ = e.target.value.trim(); draw(); });
+  $("#sf").addEventListener("click", e => { const b = e.target.closest(".chip"); if(!b) return; schedField = b.dataset.f;
+    $("#sf").querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b)); draw(); });
+  draw();
+}
+
+/* 로드맵 */
+function viewRoadmap(){
+  return `<h1 class="pt">교육 로드맵</h1><p class="pd">분야별로 입문 → 기본 → 심화 순서로 들으면 좋아요.</p>
+    <div class="road">${ROADMAP.map(r => `<div class="col" style="--tone:var(${FIELD_TONE[r.field]})"><h3>${esc(r.field)}</h3><ol>${r.steps.map(s => `<li><small>${esc(s[0])}</small>${esc(s[1])}</li>`).join("")}</ol></div>`).join("")}</div>
+    <p style="margin-top:22px"><button class="btn solid" data-go="edu-schedule">열린 일정 보기</button></p>`;
+}
+
+/* 장비 */
+let eqQ = "", eqCat = "";
+function viewEquip(){
+  const cats = [...new Set(EQUIP.map(e => e.cat))];
+  return `<h1 class="pt">보유 장비·시설</h1><p class="pd">필요한 장비를 찾아 바로 이용 신청할 수 있어요.</p>
+    <div class="search"><input type="search" id="eq" placeholder="장비명 검색 (예: 카메라)" value="${esc(eqQ)}" aria-label="장비명 검색"></div>
+    <div class="chips" id="ec">${["",...cats].map(c => `<button class="chip" data-c="${esc(c)}" aria-pressed="${eqCat===c}">${c||"전체"}</button>`).join("")}</div>
+    <div id="elist"></div>`;
+}
+function bindEquip(){
+  const draw = () => {
+    const list = EQUIP.filter(e => (!eqCat || e.cat === eqCat) && (!eqQ || (e.name+e.desc).includes(eqQ)));
+    $("#elist").innerHTML = list.length ? list.map(e => { const off = e.available === false;
+      return `<div class="row"><span class="tone"></span><div><h3>${esc(e.name)}</h3><div class="m">${esc(e.cat)}${e.desc?` · ${esc(e.desc)}`:""}</div></div>
+      <div class="r"><span class="${off?"low":""}">${e.available===undefined?"":off?"지금은 대여 불가":"대여 가능"}</span><br><button class="btn" ${off?"disabled":""} data-go="share-rent" data-pick='${esc(JSON.stringify({useType:e.cat==="시설"?"시설대관":"장비대여", items:[e.item], message:`희망 장비: ${e.name}`}))}'>이용 신청</button></div></div>`; }).join("")
+      : `<p class="none">찾는 장비가 없어요. 이용 신청서의 요청 사항에 적어주시면 확인해 드릴게요.</p>`;
+  };
+  $("#eq").addEventListener("input", e => { eqQ = e.target.value.trim(); draw(); });
+  $("#ec").addEventListener("click", e => { const b = e.target.closest(".chip"); if(!b) return; eqCat = b.dataset.c;
+    $("#ec").querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b)); draw(); });
+  draw();
+}
+
+/* 안내 */
+function viewInfo(key){
+  const i = INFO[key];
+  return `<h1 class="pt">${esc(i.title)}</h1><p class="pd">${esc(i.desc)}</p>
+    <dl class="facts">${i.facts.map(f => `<dt>${esc(f[0])}</dt><dd>${esc(f[1])}</dd>`).join("")}</dl>
+    <button class="btn solid big" data-go="${i.go}">${esc(i.cta)}</button>`;
+}
+
+/* 신청서 */
+const PROFILE_KEYS = ["name","birth","phone"];
+function fieldHtml(f, pick, formKey){
+  if(f.onlyIf === "noRrn" && (!AUTH || AUTH.me.hasRrn)) return "";   // 주민번호는 처음 신청할 때 한 번만
+  if(f.type === "rrn") return `<div class="full"><label class="lb" for="f_rrnBack">주민등록번호<em>*</em></label>
+    <div class="rrn"><input type="text" value="${esc(AUTH.me.birth)}" disabled aria-label="앞 6자리"><span aria-hidden="true">-</span><input id="f_rrnBack" name="rrnBack" type="password" inputmode="numeric" maxlength="7" autocomplete="off" placeholder="뒤 7자리"></div>
+    <div class="hint">HRD-Net 훈련생 등록을 위해 처음 신청할 때 한 번만 받으며, 암호화해 저장합니다.</div></div>`;
+  if(f.type === "rrnConsent") return `<div class="full"><details class="c" open><summary>고유식별정보(주민등록번호) 수집·이용 안내</summary>
+    <p>수집 항목: 주민등록번호 13자리<br>수집 목적: 훈련생 등록·훈련 실시 신고 등 훈련 운영, 수료 확인<br>수집 근거: ${esc(CONFIG.RRN_LAW || "근거 법령 확인 후 기재")}<br>보유 기간: ${esc(CONFIG.RETENTION)}<br>처리 방법: 암호화하여 저장하며, 열람은 운영 책임자만 사유를 기록한 뒤 할 수 있습니다.</p></details></div>
+    <label class="agree full"><input type="checkbox" name="rrnAgree"> ${esc(f.label)}</label>`;
+  if(f.type === "file") return `<div class="full"><label class="lb" for="f___file">${esc(f.label)}<em>*</em></label>
+    <label class="filebox"><input id="f___file" name="__file" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"><span class="fb-ic" aria-hidden="true">${ICON.doc}</span><span class="fb-t" id="fileLabel">파일을 선택하세요</span><span class="btn">파일 선택</span></label>
+    ${f.hint ? `<div class="hint">${esc(f.hint)}</div>` : ""}</div>`;
+  if(AUTH && (PROFILE_KEYS.includes(f.k) || (f.k === "email" && AUTH.me.email))) return "";   // 가입 정보로 자동 입력
+  if(AUTH && f.k === "email") f = {...f, req: 0, label: "이메일 (선택 · 수료증 받을 주소)"};
+  const id = "f_"+f.k, req = f.req ? "<em>*</em>" : "";
+  let v = pick[f.k];
+  if(v === undefined && AUTH){ if(f.k === "manager") v = AUTH.me.name; if(f.k === "managerPhone") v = AUTH.me.phone; if(f.k === "managerEmail") v = AUTH.me.email; if(f.k === "company") v = AUTH.me.company; if(f.k === "org" && ["rent","tour","b2b"].includes(formKey)) v = AUTH.me.company; if(f.k === "kind" && AUTH.me.kind) v = AUTH.me.kind; }
+  const show = f.showIf ? `data-show="${f.showIf[0]}:${f.showIf[1]}" hidden` : "";
+  const wrap = (inner, lbl=true) => `<div class="${f.full?"full":""}" ${show}>${lbl?`<label class="lb" for="${id}">${esc(f.label)}${req}</label>`:""}${inner}${f.hint?`<div class="hint">${esc(f.hint)}</div>`:""}</div>`;
+  if(f.type === "session" || f.type === "pastSession"){
+    const list = f.type === "session" ? sessions.filter(s => s.remaining === null || s.remaining > 0) : pastSessions;
+    return wrap(`<select id="${id}" name="${f.k}">${`<option value="">선택하세요</option>` + list.map(s => `<option value="${esc(s.id)}" ${v===s.id?"selected":""}>${esc(md(s.start))} ${esc(s.title)}</option>`).join("")}</select>`);
+  }
+  if(f.type === "textarea") return wrap(`<textarea id="${id}" name="${f.k}" placeholder="${esc(f.ph||"")}">${esc(typeof v==="string"?v:"")}</textarea>`);
+  if(f.type === "radio" || f.type === "multi" || f.type === "scale"){
+    const opts = f.type === "scale" ? ["1","2","3","4","5"] : f.opts, it = f.type === "multi" ? "checkbox" : "radio";
+    const pre = Array.isArray(v) ? v : v ? [v] : (f.type==="radio" && opts.length===1 ? [opts[0]] : []);
+    return `<fieldset class="${f.full?"full":""}" ${show} style="border:0;padding:0;margin:0"><legend class="lb">${esc(f.label)}${req}${f.type==="scale"?` <span class="hint" style="display:inline;font-weight:400">1 매우 불만 – 5 매우 만족</span>`:""}</legend>
+      <div class="opts ${f.type==="scale"?"scale":""}">${opts.map(o => `<label class="opt"><input type="${it}" name="${f.k}" value="${esc(o)}" ${pre.includes(o)?"checked":""}><span>${esc(o)}</span></label>`).join("")}</div></fieldset>`;
+  }
+  if(f.type === "check") return `<label class="agree full"><input type="checkbox" name="${f.k}"> ${esc(f.label)}</label>`;
+  return wrap(`<input id="${id}" name="${f.k}" type="${f.type}" ${f.auto?`autocomplete="${f.auto}"`:""} ${f.max?`maxlength="${f.max}"`:""} ${f.num?`inputmode="numeric"`:""} placeholder="${esc(f.ph||"")}" ${f.type==="number"?`min="1"`:""} value="${esc(typeof v==="string"?v:"")}">`);
+}
+function agreementGate(){
+  const a = AUTH.me.agreement;
+  const why = !a ? "교육을 신청하려면 먼저 소속 기업의 협약서를 제출해야 해요."
+    : a.status === "보완요청" ? `제출한 협약서에 보완이 필요해요.${a.note ? ` (검토 의견: ${a.note})` : ""} 고친 협약서를 다시 제출해 주세요.`
+    : a.status === "반려" ? `제출한 협약서가 반려됐어요.${a.note ? ` (검토 의견: ${a.note})` : ""} 문의 ${CONFIG.TEL}`
+    : "교육을 신청하려면 협약서가 필요해요.";
+  return `<h1 class="pt">수강 신청</h1><div class="gate"><span class="gate-ic" aria-hidden="true">${ICON.doc}</span>
+    <div><h2>기업 협약서 제출이 먼저 필요해요</h2><p>${esc(why)}</p>
+    <ol class="steps3"><li>자료실에서 협약서 양식 내려받기</li><li>작성 후 대표자 서명(직인)</li><li>협약서 제출 화면에서 올리기</li></ol>
+    <div class="acts"><button class="btn" data-go="lib-files">양식 내려받기</button><button class="btn solid" data-go="lib-agree">협약서 제출하기</button></div></div></div>`;
+}
+function viewForm(key){
+  if(key === "edu" && AUTH && !AUTH.me.agreementOk && !DEMO_SKIP_GATE) return agreementGate();
+  const fm = FORMS[key], consent = fm.consent !== false && !AUTH;
+  return `<h1 class="pt">${esc(fm.title)}</h1><p class="pd">${esc(fm.desc)}</p>
+    ${key === "agree" && AUTH && AUTH.me.agreement ? `<div class="reason">최근 제출: ${esc(AUTH.me.agreement.company)} · ${esc(AUTH.me.agreement.status)}${AUTH.me.agreement.note ? ` · 검토 의견: ${esc(AUTH.me.agreement.note)}` : ""}${AUTH.me.stamped ? ` <button class="btn solid" type="button" data-stamped style="height:36px;margin-left:8px">센터 날인본 내려받기</button>` : ""}</div>` : ""}
+    ${AUTH && key === "survey" ? `<div id="mySv"></div>` : ""}
+    ${AUTH && key !== "survey" ? `<div class="me-line">신청자 <b>${esc(AUTH.me.name)}</b> · ${esc(AUTH.me.phone)} — 회원 정보로 접수돼요. <button class="link" data-go="me">정보 수정</button></div>` : ""}
+    <form class="f" id="form" novalidate>
+      ${fm.fields.map(f => fieldHtml(f, state.pick, key)).join("")}
+      ${consent ? `<div class="full"><details class="c"><summary>개인정보 수집·이용 안내</summary><p>입력한 정보는 신청 접수·안내·결과 보고에만 쓰고, ${esc(CONFIG.RETENTION)} 보관 후 파기합니다. 동의하지 않으면 신청할 수 없어요.</p></details></div>
+      <label class="agree full"><input type="checkbox" name="__agree"> 개인정보 수집·이용에 동의합니다. (필수)</label>` : ""}
+      <div class="full"><button class="btn solid big" type="submit">제출하기</button></div>
+    </form><div class="msg" id="fmsg" role="alert"></div>`;
+}
+function readForm(form, key){
+  const out = {};
+  FORMS[key].fields.forEach(f => {
+    if(!form.querySelector(`[name="${f.k}"]`)) return;   // 화면에 없는 항목(회원 정보로 채움)은 건너뜀
+    if(f.type === "file"){ const fl = form.querySelector(`[name="${f.k}"]`).files[0]; out[f.k] = fl ? fl.name : ""; out.__fileObj = fl || null; return; }
+    if(f.type === "rrnConsent"){ out[f.k] = form.querySelector(`[name="${f.k}"]`).checked; return; }
+    const holder = form.querySelector(`[name="${f.k}"]`)?.closest("[data-show]");
+    if(holder && holder.hidden) return;
+    if(f.type === "multi") out[f.k] = [...form.querySelectorAll(`[name="${f.k}"]:checked`)].map(x => x.value);
+    else if(f.type === "radio" || f.type === "scale") out[f.k] = form.querySelector(`[name="${f.k}"]:checked`)?.value || "";
+    else if(f.type === "check") out[f.k] = form.querySelector(`[name="${f.k}"]`).checked;
+    else out[f.k] = (form.querySelector(`[name="${f.k}"]`)?.value || "").trim();
+  });
+  out.agree = !!form.querySelector(`[name="__agree"]`)?.checked;
+  return out;
+}
+function validate(d, key){
+  for(const f of FORMS[key].fields){
+    if(!(f.k in d)) continue;
+    const v = d[f.k];
+    if(f.req && !(AUTH && f.k === "email") && (Array.isArray(v) ? !v.length : !v)) return `${f.label} 항목을 ${f.type==="radio"||f.type==="multi"||f.type==="scale"||f.type==="file"||f.type.includes("ession")?"선택":"입력"}하세요.`;
+    if(v && f.k === "phone" && !/^01\d-?\d{3,4}-?\d{4}$/.test(v)) return "휴대폰 번호를 010-1234-5678 형식으로 입력하세요.";
+    if(v && f.k === "birth" && !/^\d{6}$/.test(v)) return "생년월일을 숫자 6자리로 입력하세요. 예: 900101";
+    if(v && f.type === "email" && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) return "이메일 주소를 다시 확인하세요.";
+    if(v && f.type === "url" && !/^https?:\/\//.test(v)) return "작품 링크는 https:// 로 시작하는 주소로 입력하세요.";
+    if(f.type === "rrn" && !/^[1-8]\d{6}$/.test(v)) return "주민등록번호 뒤 7자리를 정확히 입력하세요.";
+    if(f.type === "rrnConsent" && !v) return "고유식별정보(주민등록번호) 수집·이용에 동의해야 신청할 수 있어요.";
+    if(f.k === "bizNo" && v.replace(/\D/g,"").length !== 10) return "사업자등록번호 10자리를 확인하세요.";
+    if(f.type === "file" && d.__fileObj){ const ext = d.__fileObj.name.split(".").pop().toLowerCase(); if(!["pdf","jpg","jpeg","png"].includes(ext)) return "협약서는 직인을 찍어 스캔한 PDF나 사진(JPG·PNG)으로 올려주세요. 한글(HWP) 파일은 인쇄해 직인을 찍은 뒤 스캔해 주세요."; if(d.__fileObj.size > 10*1024*1024) return "파일은 10MB 이하만 올릴 수 있어요."; }
+  }
+  if(d.start && d.end && d.end < d.start) return "이용 종료일이 시작일보다 빠를 수 없어요.";
+  if(FORMS[key].consent !== false && !AUTH && !d.agree) return "개인정보 수집·이용에 동의해야 제출할 수 있어요.";
+  return "";
+}
+function bindForm(key){
+  const form = $("#form"), msg = $("#fmsg");
+  if(!form) return;   // 협약서 안내 화면처럼 신청서가 없는 경우
+  const sync = () => form.querySelectorAll("[data-show]").forEach(el => {
+    const [k, v] = el.dataset.show.split(":"); el.hidden = (form.querySelector(`[name="${k}"]:checked`)?.value || "") !== v; });
+  form.addEventListener("change", sync); sync();
+  form.querySelector('[name="__file"]')?.addEventListener("change", e => { const fl = e.target.files[0]; $("#fileLabel").textContent = fl ? `${fl.name} (${Math.ceil(fl.size/1024)}KB)` : "파일을 선택하세요"; });
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const d = readForm(form, key), err = validate(d, key);
+    if(err){ msg.className = "msg show err"; msg.textContent = err; msg.scrollIntoView({block:"nearest"}); return; }
+    const btn = form.querySelector("[type=submit]"); btn.disabled = true; btn.textContent = "제출하는 중";
+    try{
+      let res;
+      let fileObj = d.__fileObj; delete d.__fileObj; delete d.__file;
+      const rb = $("#retakeBox");
+      if(rb){ d.retakeReason = rb.querySelector("textarea").value.trim(); const rf = rb.querySelector("input[type=file]").files[0];
+        if(!d.retakeReason) throw new Error("재수강 사유를 적어주세요.");
+        if(!rf) throw new Error("작성한 재수강 사유서 파일을 첨부해 주세요.");
+        if(rf.size > 10*1024*1024) throw new Error("파일은 10MB 이하만 올릴 수 있어요.");
+        fileObj = rf; }
+      const file = fileObj ? { name: fileObj.name, mime: fileObj.type, b64: await toB64(fileObj) } : null;
+      if(DEMO){ await new Promise(r => setTimeout(r, 500));
+        res = key === "edu" && d.sessionId && DEMO_TAKEN.includes(String((sessions.find(x => x.id === d.sessionId) || {}).title || "").replace(/\s*\d+회차.*$/, "")) && !d.retakeReason
+          ? {ok:false, need:"retake", prev:["생성형AI 콘텐츠 제작 기초 1회차 (수료)"], message:"이미 수강한 과정이에요. 재수강 사유서를 작성해 첨부하고 사유를 적어주세요."} : {ok:true, no:"미리보기"}; }
+      else res = await api("submit", {form:key, data:d, file});
+      if(!res.ok){ if(res.need === "agreement" && AUTH){ AUTH.me.agreementOk = false; setAuth(AUTH); render(); return; }
+        if(res.need === "retake"){ await showRetake(res); throw new Error(res.message); }
+        throw new Error(res.message); }
+      if(AUTH && key === "edu"){ AUTH.me.hasRrn = true; setAuth(AUTH); }
+      if(AUTH && key === "agree"){ AUTH.me.agreementOk = true; AUTH.me.agreement = { status: "제출", company: d.company }; if(!AUTH.me.company) AUTH.me.company = d.company; setAuth(AUTH); }
+      showDone(key, d, res.no);
+    }catch(ex){
+      msg.className = "msg show err";
+      msg.textContent = ex.message && ex.message !== "demo" && !/fetch|JSON/i.test(ex.message) ? ex.message : `저장하지 못했어요. 잠시 후 다시 제출하거나 ${CONFIG.TEL}로 연락하세요.`;
+      btn.disabled = false; btn.textContent = "제출하기";
+    }
+  });
+}
+/* 재수강: 같은 과정을 다시 신청하면 사유서를 받습니다 */
+async function showRetake(res){
+  if($("#retakeBox")) return;
+  let form = null;
+  try{ const lib = LIB || (DEMO ? DEMO_LIB : (await api("library")).items || []); LIB = lib; form = lib.find(x => x.formKind === "재수강 사유서 양식"); }catch(e){}
+  const box = document.createElement("div"); box.id = "retakeBox"; box.className = "full retake";
+  box.innerHTML = `<h3>재수강 사유서 제출</h3><p>이미 수강한 과정이에요: <b>${esc((res.prev || []).join(", "))}</b><br>같은 과정을 다시 들으려면 재수강 사유서를 작성해 첨부해 주세요. 담당자가 확인한 뒤 확정 여부를 알려드려요.</p>
+    <p>${form ? `<button type="button" class="btn" data-dl-form="${esc(form.id)}">${ICON.download} 재수강 사유서 양식 내려받기</button>` : `<button type="button" class="btn" data-go="lib-files">자료실에서 양식 받기</button>`}</p>
+    <label class="lb" for="rtReason">재수강 사유<em>*</em></label><textarea id="rtReason" placeholder="예: 현업 프로젝트 투입 전 실습 복습이 필요합니다."></textarea>
+    <label class="lb" for="rtFile" style="margin-top:14px">작성한 사유서 파일<em>*</em></label>
+    <label class="filebox"><input id="rtFile" type="file" accept=".pdf,.hwp,.hwpx,.doc,.docx,.jpg,.jpeg,.png"><span class="fb-ic" aria-hidden="true">${ICON.doc}</span><span class="fb-t" id="rtLabel">파일을 선택하세요</span><span class="btn">파일 선택</span></label>
+    <div class="hint">HWP, 워드, PDF, 사진(JPG·PNG) · 10MB 이하</div>`;
+  const submit = $("#form [type=submit]").closest("div") || $("#form [type=submit]");
+  $("#form").insertBefore(box, submit);
+  box.querySelector("#rtFile").addEventListener("change", e => { const f = e.target.files[0]; $("#rtLabel").textContent = f ? `${f.name} (${Math.ceil(f.size/1024)}KB)` : "파일을 선택하세요"; });
+  box.querySelector("[data-dl-form]")?.addEventListener("click", e => downloadResource(e.currentTarget.dataset.dlForm, e.currentTarget));
+  box.scrollIntoView({block:"center"});
+}
+async function downloadResource(id, btn){
+  if(DEMO){ alert("미리보기에서는 내려받기가 되지 않아요. 실제 홈페이지에서는 바로 저장됩니다."); return; }
+  if(btn) btn.disabled = true;
+  try{
+    const r = await fetch(`${CONFIG.API_URL}?action=resfile&id=${encodeURIComponent(id)}`).then(x => x.json());
+    if(!r.ok) throw new Error(r.message);
+    const bin = atob(r.b64), arr = new Uint8Array(bin.length); for(let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([arr], {type: r.mime})); a.download = r.name; document.body.appendChild(a); a.click(); a.remove();
+  }catch(ex){ alert("내려받지 못했어요. 잠시 후 다시 시도하거나 " + CONFIG.TEL + "로 문의하세요."); }
+  finally{ if(btn) btn.disabled = false; }
+}
+function toB64(file){ return new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(String(r.result).split(",")[1]); r.onerror = () => rej(new Error("파일을 읽지 못했어요.")); r.readAsDataURL(file); }); }
+function showDone(key, d, no){
+  const fm = FORMS[key], s = sessions.find(x => x.id === d.sessionId);
+  const rows = [];
+  if(s) rows.push(["과정", s.title], ["일정", range(s)]);
+  if(d.org) rows.push(["기관", d.org]);
+  if(d.title) rows.push(["작품명", d.title]);
+  if(key === "agree"){ rows.push(["기업명", d.company], ["사업자등록번호", d.bizNo]); }
+  if(d.date) rows.push(["희망 날짜", d.date]);
+  if(d.start) rows.push(["이용 기간", `${d.start} ~ ${d.end}`]);
+  if(key !== "survey" && (d.name || AUTH)) rows.push(["신청자", d.name || AUTH.me.name]);
+  if(key !== "survey" && (d.phone || AUTH)) rows.push(["연락처", d.phone || AUTH.me.phone]);
+  if(no && !DEMO) rows.push(["접수번호", no]);
+  $("#main .panel").innerHTML = `<div class="done"><div class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
+    <h2>${key==="survey"?"설문에 참여해 주셔서 고맙습니다":`${esc(fm.title)}${josa(fm.title)} 접수됐어요`}</h2>
+    <p class="pd" style="margin:0">${key==="survey"?"보내주신 의견은 다음 교육을 준비하는 데 반영합니다.":"처리 결과는 문자로 안내해 드려요. 진행 상태는 신청 확인에서 볼 수 있어요."}${DEMO?" (미리보기라 실제로 저장되지는 않았어요)":""}</p>
+    ${rows.length?`<dl>${rows.map(r => `<dt>${esc(r[0])}</dt><dd>${esc(r[1])}</dd>`).join("")}</dl>`:"<br>"}
+    <div class="acts">${key!=="survey"?`<button class="btn solid" data-go="my-check">신청 확인</button>`:""}<button class="btn" data-go="home">홈으로</button></div></div>`;
+  window.scrollTo(0,0);
+}
+
+/* 신청 확인 · 수료증 발급 (로그인 회원 본인 것만) */
+function viewLookup(mode){
+  const t = mode === "cert" ? ["수료증 발급","참여한 과정이 모두 표시돼요. 수료한 과정은 바로 인쇄하거나 PDF로 저장하고, 메일로 받을 수 있어요."] : ["신청 확인","교육, 견학, 장비 이용, VR 체험, 공모전 신청 내역과 진행 상태예요."];
+  return `<h1 class="pt">${esc(AUTH.me.name)}님의 ${t[0]}</h1><p class="pd">${t[1]}</p><ul class="res" id="lkRes" aria-live="polite"><li>불러오는 중이에요.</li></ul>`;
+}
+const stTone = s => /확정|승인|선발|수료|수상|반납완료|발송완료/.test(s) ? "ok" : /취소|반려|미선발|미수료|미수상/.test(s) ? "no" : "";
+async function bindLookup(mode){
+  const box = $("#lkRes");
+  try{
+    if(mode === "cert"){
+      const res = DEMO ? {ok:true, courses:DEMO_COURSES} : await api("cert", {});
+      if(!res.ok){ box.innerHTML = `<li>${esc(res.message || "조회하지 못했어요.")}</li>`; return; }
+      CERTS = {};
+      box.innerHTML = res.courses.length ? res.courses.map(c => { if(c.cert) CERTS[c.cert.id] = c.cert;
+        return `<li><div>${esc(c.title)}<small>${esc(md(c.start))}${c.end&&c.end!==c.start?` – ${esc(md(c.end))}`:""} · ${c.cert?esc(c.cert.no):esc(c.status)}</small></div>
+        ${c.cert ? `<button class="btn solid" data-cert="${esc(c.cert.id)}">수료증 출력</button>` : `<span class="st ${stTone(c.status)}">${c.status==="미수료"?"미수료":c.status==="수료"?"발급 준비 중":"교육 진행 중"}</span>`}</li>`; }).join("")
+        : `<li>참여한 과정이 아직 없어요. <button class="link" data-go="edu-schedule">교육 일정 보기</button></li>`;
+    } else {
+      const res = DEMO ? {ok:true, items:DEMO_LOOKUP} : await api("lookup", {});
+      box.innerHTML = res.items?.length ? res.items.map(i => `<li><div>${esc(i.title)}<small>${esc(i.type)} · ${esc(i.date)} 신청</small></div><span class="st ${stTone(i.status)}">${esc(i.status)}</span></li>`).join("")
+        : `<li>신청 내역이 없어요. <button class="link" data-go="edu-schedule">교육 일정 보기</button></li>`;
+    }
+  }catch(ex){ if(!/로그인/.test(ex.message)) box.innerHTML = `<li>불러오지 못했어요. 잠시 후 다시 시도하세요.</li>`; }
+  box.addEventListener("click", e => { const b = e.target.closest("[data-cert]"); if(b) openCert(CERTS[b.dataset.cert]); });
+}
+
+/* 응답할 조사 (사후관리) */
+const DEMO_SURVEY = {ok:true, name:"교육 만족도 조사", session:"생성형AI 콘텐츠 제작 기초 3회차", respondent:"이*은", dueAt:"2026-11-13", intro:"교육에 참여해 주셔서 감사합니다. 보내주신 의견은 다음 교육을 개선하는 데 사용됩니다. (약 3분)",
+  scale:["전혀 그렇지 않다","그렇지 않다","보통이다","그렇다","매우 그렇다"],
+  questions:[{id:"q1",type:"scale",section:"교육 내용",text:"교육 내용이 업무(또는 학업)에 필요한 내용이었다.",required:true},{id:"q4",type:"scale",section:"강사",text:"강사는 내용을 이해하기 쉽게 설명했다.",required:true},
+    {id:"q9",type:"scale",section:"종합",text:"교육에 전반적으로 만족한다.",required:true},{id:"q11",type:"choice",section:"기대 효과",text:"이 교육으로 가장 기대하는 변화는 무엇인가요?",options:["업무 효율 향상","새로운 업무 수행","취업·이직 준비","자기계발","기타"]},
+    {id:"q12",type:"text",section:"의견",text:"좋았던 점을 적어주세요."},{id:"q14",type:"multi",section:"의견",text:"앞으로 듣고 싶은 교육 분야를 골라주세요.",options:["생성형AI","360영상","드론","Virtual Studio","영상편집"]}]};
+async function loadMySurveys(){
+  const box = $("#mySv"); if(!box) return;
+  try{
+    const r = DEMO ? {items:[{token:"demo", name:"교육 만족도 조사", session:"생성형AI 콘텐츠 제작 기초 3회차", dueAt:"2026-11-13"}]} : await api("mySurveys", {});
+    if(!r.items || !r.items.length) return;
+    box.innerHTML = `<div class="gate" style="margin:0 0 28px"><span class="gate-ic" aria-hidden="true">${ICON.survey}</span><div style="flex:1"><h2>응답할 조사가 ${r.items.length}건 있어요</h2>
+      <ul class="res" style="border-top:0;margin:0">${r.items.map(i => `<li><div>${esc(i.name)}<small>${esc(i.session)} · ${esc(String(i.dueAt).replace(/-/g,"."))}까지</small></div><button class="btn solid" data-go="answer-${esc(i.token)}">응답하기</button></li>`).join("")}</ul></div></div>`;
+  }catch(e){}
+}
+async function bindAnswer(){
+  const box = $("#ans");
+  let d; try{ d = DEMO || state.token === "demo" ? DEMO_SURVEY : await api("surveyGet", {token: state.token}); }catch(e){ box.innerHTML = `<p class="none">조사를 불러오지 못했어요. 잠시 후 다시 시도하세요.</p>`; return; }
+  if(!d.ok){ box.innerHTML = `<div class="gate"><span class="gate-ic" aria-hidden="true">${ICON.survey}</span><div><h2>조사에 참여할 수 없어요</h2><p>${esc(d.message)}</p><div class="acts"><button class="btn" data-go="home">홈으로</button></div></div></div>`; return; }
+  if(d.done){ box.innerHTML = `<div class="done"><div class="mark" aria-hidden="true">${ICON.survey}</div><h2>이미 응답한 조사예요</h2><p class="pd">${esc(d.name)}에 참여해 주셔서 감사합니다.</p><div class="acts"><button class="btn" data-go="home">홈으로</button></div></div>`; return; }
+  let last = "";
+  box.innerHTML = `<h1 class="pt">${esc(d.name)}</h1><p class="pd">${esc(d.intro)}</p>
+    <div class="me-line">${d.session ? `과정 <b>${esc(d.session)}</b> · ` : ""}응답자 <b>${esc(d.respondent)}</b> · 응답 기한 ${esc(String(d.dueAt).replace(/-/g,"."))}</div>
+    <form id="ansForm" novalidate class="ansf">${d.questions.map((q, i) => { const head = q.section && q.section !== last ? `<h3 class="ans-sec">${esc(q.section)}</h3>` : ""; last = q.section || last;
+      const req = q.required ? "<em>*</em>" : "";
+      const body = q.type === "scale" ? `<div class="likert">${d.scale.map((l, k) => `<label class="lk"><input type="radio" name="${esc(q.id)}" value="${k+1}"><span><b>${k+1}</b><small>${esc(l)}</small></span></label>`).join("")}</div>`
+        : q.type === "choice" ? `<div class="opts">${q.options.map(o => `<label class="opt"><input type="radio" name="${esc(q.id)}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("")}</div>`
+        : q.type === "multi" ? `<div class="opts">${q.options.map(o => `<label class="opt"><input type="checkbox" name="${esc(q.id)}" value="${esc(o)}"><span>${esc(o)}</span></label>`).join("")}</div>`
+        : `<textarea name="${esc(q.id)}" placeholder="자유롭게 적어주세요."></textarea>`;
+      return `${head}<fieldset class="aq" data-q="${esc(q.id)}" data-type="${q.type}" data-req="${q.required?1:0}"><legend class="lb">${i+1}. ${esc(q.text)}${req}</legend>${body}</fieldset>`; }).join("")}
+      <button class="btn solid big" type="submit">응답 제출</button></form><div class="msg" id="ansMsg" role="alert"></div>`;
+  $("#ansForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const out = {}, msg = $("#ansMsg");
+    for(const fs of document.querySelectorAll(".aq")){
+      const id = fs.dataset.q, ty = fs.dataset.type;
+      const v = ty === "multi" ? [...fs.querySelectorAll("input:checked")].map(x => x.value) : ty === "text" ? fs.querySelector("textarea").value.trim() : (fs.querySelector("input:checked") || {}).value;
+      if(fs.dataset.req === "1" && (!v || (Array.isArray(v) && !v.length))){ msg.className = "msg show err"; msg.textContent = `‘${fs.querySelector("legend").textContent.replace(/^\d+\.\s*/,"").replace(/\*$/,"")}’에 응답해 주세요.`; fs.scrollIntoView({block:"center"}); return; }
+      if(v !== undefined) out[id] = ty === "scale" ? Number(v) : v;
+    }
+    const btn = e.target.querySelector("[type=submit]"); btn.disabled = true; btn.textContent = "제출하는 중";
+    try{
+      const r = DEMO || state.token === "demo" ? (await new Promise(x => setTimeout(x, 400)), {ok:true}) : await api("surveyAnswer", {token: state.token, answers: out});
+      if(!r.ok) throw new Error(r.message);
+      box.innerHTML = `<div class="done"><div class="mark" aria-hidden="true"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div><h2>응답해 주셔서 감사합니다</h2><p class="pd">보내주신 의견은 다음 교육과 사업 계획에 반영하겠습니다.${DEMO ? " (미리보기라 저장되지는 않았어요)" : ""}</p><div class="acts"><button class="btn" data-go="home">홈으로</button></div></div>`;
+      window.scrollTo(0,0);
+    }catch(ex){ msg.className = "msg show err"; msg.textContent = ex.message || "제출하지 못했어요. 잠시 후 다시 시도하세요."; btn.disabled = false; btn.textContent = "응답 제출"; }
+  });
+}
+
+/* 자료실 */
+let LIB = null, libCat = "";
+function viewLibrary(){
+  return `<h1 class="pt">자료실</h1><p class="pd">교육 신청에 필요한 협약서 양식과 안내 자료를 내려받을 수 있어요. 작성한 협약서는 ‘협약서 제출’ 탭에서 올려주세요.</p>
+    <div class="chips" id="lc"></div><div id="llist"><p class="none">자료를 불러오는 중이에요.</p></div>`;
+}
+async function bindLibrary(){
+  if(!LIB){ try{ LIB = DEMO ? DEMO_LIB : (await api("library")).items || []; }catch(e){ LIB = DEMO_LIB; } }
+  const cats = [...new Set(LIB.map(x => x.category))];
+  $("#lc").innerHTML = ["",...cats].map(c => `<button class="chip" data-c="${esc(c)}" aria-pressed="${libCat===c}">${c||"전체"}</button>`).join("");
+  const draw = () => { const list = LIB.filter(x => !libCat || x.category === libCat);
+    $("#llist").innerHTML = list.length ? `<table class="btable"><thead><tr><th class="c-no">번호</th><th class="c-cat">분류</th><th>제목</th><th class="c-dt">등록일</th><th class="c-dl">파일</th></tr></thead><tbody>${list.map((x,i) => `<tr class="${x.pinned?"pin":""}">
+      <td class="c-no">${x.pinned ? '<span class="tag">공지</span>' : list.length - i}</td><td class="c-cat">${esc(x.category)}</td>
+      <td><b>${esc(x.title)}</b>${x.desc ? `<small>${esc(x.desc)}</small>` : ""}</td><td class="c-dt">${esc(String(x.date).replace(/-/g,"."))}</td>
+      <td class="c-dl"><button class="dl" data-dl="${esc(x.id)}" aria-label="${esc(x.title)} 내려받기">${ICON.download}<span>${esc(x.fileName.split(".").pop().toUpperCase())}</span></button></td></tr>`).join("")}</tbody></table>`
+      : `<p class="none">등록된 자료가 없어요.</p>`; };
+  $("#lc").addEventListener("click", e => { const b = e.target.closest(".chip"); if(!b) return; libCat = b.dataset.c; $("#lc").querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x === b)); draw(); });
+  $("#llist").addEventListener("click", async e => { const b = e.target.closest("[data-dl]"); if(!b) return; b.disabled = true;
+    try{
+      if(DEMO){ alert("미리보기에서는 내려받기가 되지 않아요. 실제 홈페이지에서는 바로 저장됩니다."); return; }
+      const r = await fetch(`${CONFIG.API_URL}?action=resfile&id=${encodeURIComponent(b.dataset.dl)}`).then(x => x.json());
+      if(!r.ok) throw new Error(r.message);
+      const bin = atob(r.b64), arr = new Uint8Array(bin.length); for(let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([arr], {type: r.mime})); a.download = r.name; document.body.appendChild(a); a.click(); a.remove();
+    }catch(ex){ alert("내려받지 못했어요. 잠시 후 다시 시도하거나 " + CONFIG.TEL + "로 문의하세요."); }
+    finally{ b.disabled = false; } });
+  draw();
+}
+
+/* 회원가입 · 로그인 */
+function viewAuth(){
+  const m = state.mode || "login";
+  return `<div class="auth">${state.reason ? `<div class="reason">${esc(state.reason)}</div>` : ""}
+    <div class="authtabs" role="tablist"><button role="tab" data-mode="login" aria-selected="${m==="login"}">로그인</button><button role="tab" data-mode="signup" aria-selected="${m==="signup"}">회원가입</button></div>
+    ${m === "login" ? `<h1 class="pt">로그인</h1><p class="pd">가입할 때 입력한 정보로 로그인해요.</p>
+      <form class="f" id="authForm" novalidate style="grid-template-columns:1fr">
+        <div><label class="lb" for="aName">이름</label><input id="aName" type="text" autocomplete="name"></div>
+        <div><label class="lb" for="aBirth">주민등록번호 앞 6자리</label><input id="aBirth" type="text" inputmode="numeric" maxlength="6" placeholder="900101" autocomplete="off"></div>
+        <div><label class="lb" for="aPhone">휴대폰</label><input id="aPhone" type="tel" autocomplete="tel" placeholder="010-1234-5678"></div>
+        <div><button class="btn solid big" type="submit" style="width:100%">로그인</button></div></form>`
+    : `<h1 class="pt">회원가입</h1><p class="pd">한 번 가입하면 교육 신청, 신청 확인, 수료증 발급을 바로 할 수 있어요. 교육을 신청할 때는 기업 협약서 제출과 주민등록번호 뒷자리 입력이 추가로 필요해요.</p>
+      <form class="f" id="authForm" novalidate>
+        <div><label class="lb" for="aName">이름<em>*</em></label><input id="aName" type="text" autocomplete="name"></div>
+        <div><label class="lb" for="aBirth">주민등록번호 앞 6자리<em>*</em></label><input id="aBirth" type="text" inputmode="numeric" maxlength="6" placeholder="900101" autocomplete="off"><div class="hint">뒷자리는 받지 않아요.</div></div>
+        <div><label class="lb" for="aPhone">휴대폰<em>*</em></label><input id="aPhone" type="tel" autocomplete="tel" placeholder="010-1234-5678"></div>
+        <div><label class="lb" for="aCompany">소속 기업명</label><input id="aCompany" type="text" autocomplete="organization" placeholder="재직 중인 회사·기관"></div>
+        <div class="full"><label class="lb" for="aEmail">이메일 (선택)</label><input id="aEmail" type="email" autocomplete="email"><div class="hint">수료증을 메일로 받을 주소예요.</div></div>
+        <div class="full"><details class="c" open><summary>개인정보 수집·이용 안내</summary><p>수집 항목: 이름, 주민등록번호 앞 6자리(생년월일), 휴대폰, 소속 기업명, 이메일(선택)<br>이용 목적: 회원 확인, 교육 신청·운영, 수료 관리와 수료증 발급, 사업 성과 보고<br>보유 기간: ${esc(CONFIG.RETENTION)} (탈퇴 요청 시 지체 없이 파기)<br>동의하지 않을 수 있으나, 동의하지 않으면 회원 서비스를 이용할 수 없어요.</p></details></div>
+        <label class="agree full"><input type="checkbox" id="aAgree"> 개인정보 수집·이용에 동의합니다. (필수)</label>
+        <label class="agree full"><input type="checkbox" id="aMkt"> 교육 모집 소식을 문자로 받겠습니다. (선택)</label>
+        <div class="full"><button class="btn solid big" type="submit">가입하기</button></div></form>`}
+    <div class="msg" id="aMsg" role="alert"></div></div>`;
+}
+function bindAuth(){
+  document.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => { state.mode = b.dataset.mode; render(); }));
+  $("#authForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const msg = $("#aMsg"), err = t => { msg.className = "msg show err"; msg.textContent = t; };
+    const name = $("#aName").value.trim(), birth = $("#aBirth").value.replace(/\D/g,""), phone = $("#aPhone").value.trim();
+    if(!name) return err("이름을 입력하세요.");
+    if(birth.length !== 6) return err("주민등록번호 앞 6자리를 숫자로 입력하세요.");
+    if(!/^01\d-?\d{3,4}-?\d{4}$/.test(phone)) return err("휴대폰 번호를 010-1234-5678 형식으로 입력하세요.");
+    const signup = state.mode === "signup";
+    const data = signup ? { name, birth, phone, company: $("#aCompany").value.trim(), email: $("#aEmail").value.trim(), agree: $("#aAgree").checked, marketing: $("#aMkt").checked } : null;
+    if(signup && data.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) return err("이메일 주소를 다시 확인하세요.");
+    if(signup && !data.agree) return err("개인정보 수집·이용에 동의해야 가입할 수 있어요.");
+    const btn = e.target.querySelector("[type=submit]"); btn.disabled = true;
+    try{
+      const r = DEMO ? { ok:true, token:"demo", me:{ name, birth, phone, company: data ? data.company : "(주)예시미디어", email: data ? data.email : "ho***@example.com", kind:"재직자", hasRrn:false, agreementOk:false, agreement:null } }
+        : signup ? await api("signup", { data }) : await api("login", { name, birth, phone });
+      if(!r.ok) return err(r.message || "처리하지 못했어요.");
+      setAuth({ token: r.token, me: r.me });
+      const after = state.after, pick = state.afterPick;
+      go(after || "home", pick);
+    }catch(ex){ err("처리하지 못했어요. 잠시 후 다시 시도하세요."); }
+    finally{ btn.disabled = false; }
+  });
+}
+function viewMe(){
+  const m = AUTH.me;
+  return `<div class="auth"><h1 class="pt">내 정보</h1><p class="pd">이름과 생년월일은 바꿀 수 없어요. 잘못 입력했다면 ${esc(CONFIG.TEL)}로 연락해 주세요.</p>
+    <form class="f" id="meForm" novalidate>
+      <div><label class="lb">이름</label><input type="text" value="${esc(m.name)}" disabled></div>
+      <div><label class="lb">생년월일</label><input type="text" value="${esc(m.birth)}" disabled></div>
+      <div><label class="lb" for="mPhone">휴대폰</label><input id="mPhone" type="tel" value="${esc(m.phone)}"></div>
+      <div><label class="lb" for="mCompany">소속 기업명</label><input id="mCompany" type="text" value="${esc(m.company)}"></div>
+      <div class="full"><label class="lb" for="mEmail">이메일</label><input id="mEmail" type="email" value="${esc(m.email)}"></div>
+      <div class="full me-line" style="margin:0">기업 협약서: <b>${m.agreement ? `${esc(m.agreement.company)} · ${esc(m.agreement.status)}` : "제출 전"}</b> <button class="link" type="button" data-go="lib-agree">협약서 제출</button>${m.stamped ? ` · <button class="link" type="button" data-stamped>센터 날인본 내려받기</button>` : ""}<br>주민등록번호: <b>${m.hasRrn ? "등록됨 (암호화 저장)" : "교육 신청 시 입력"}</b></div>
+      <label class="agree full"><input type="checkbox" id="mMkt" ${m.marketing?"checked":""}> 교육 모집 소식을 문자로 받겠습니다.</label>
+      <div class="full" style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn solid" type="submit">저장</button><button class="btn" type="button" id="meOut">로그아웃</button></div></form>
+    <div class="msg" id="mMsg" role="status"></div></div>`;
+}
+function bindMe(){
+  $("#meOut").addEventListener("click", () => { setAuth(null); go("home"); });
+  $("#meForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const msg = $("#mMsg"), data = { phone: $("#mPhone").value.trim(), company: $("#mCompany").value.trim(), email: $("#mEmail").value.trim(), marketing: $("#mMkt").checked };
+    if(!/^01\d-?\d{3,4}-?\d{4}$/.test(data.phone)){ msg.className = "msg show err"; msg.textContent = "휴대폰 번호를 확인하세요."; return; }
+    try{
+      const r = DEMO ? { ok:true, me: Object.assign({}, AUTH.me, data) } : await api("updateMe", { data });
+      if(!r.ok) throw new Error(r.message);
+      setAuth({ token: AUTH.token, me: r.me }); msg.className = "msg show ok"; msg.textContent = "저장했어요.";
+    }catch(ex){ msg.className = "msg show err"; msg.textContent = ex.message || "저장하지 못했어요."; }
+  });
+}
+
+/* 수료증 보기·인쇄·PDF·메일 */
+let CERTS = {}, CUR_CERT = null;
+function openCert(c){
+  CUR_CERT = c;
+  const m = document.createElement("div"); m.className = "cm"; m.id = "certModal";
+  m.innerHTML = `<div class="cm-box" role="dialog" aria-modal="true" aria-label="수료증">
+    <div class="cm-bar"><b>${esc(c.no)} 수료증</b><span class="sp"></span>
+      <button class="btn solid" id="cPrint">인쇄</button><button class="btn" id="cPdf">PDF 저장</button>
+      ${c.emailMasked?`<button class="btn" id="cMail">메일로 받기</button>`:""}<button class="btn" id="cClose" aria-label="닫기">닫기</button></div>
+    <p class="hint cm-hint">인쇄 창에서 ‘대상’을 <b>PDF로 저장</b>으로 바꾸면 파일로도 받을 수 있어요.${c.emailMasked?` 메일은 신청 때 등록한 주소(${esc(c.emailMasked)})로만 보내드려요.`:""}</p>
+    <div class="cm-view" id="cView"><iframe id="cFrame" title="수료증 미리보기"></iframe></div>
+    <div class="msg" id="cMsg" role="status"></div></div>`;
+  document.body.appendChild(m); document.body.style.overflow = "hidden";
+  const f = $("#cFrame"); f.srcdoc = c.html;
+  const fit = () => { const w = $("#cView").clientWidth, s = Math.min(1, (w - 8) / 800); f.style.transform = `scale(${s})`; $("#cView").style.height = `${1130 * s + 8}px`; };
+  f.addEventListener("load", fit); window.addEventListener("resize", fit); fit();
+  const close = () => { m.remove(); document.body.style.overflow = ""; window.removeEventListener("resize", fit); };
+  $("#cClose").addEventListener("click", close);
+  m.addEventListener("click", e => { if(e.target === m) close(); });
+  document.addEventListener("keydown", function k(e){ if(e.key === "Escape"){ close(); document.removeEventListener("keydown", k); } });
+  $("#cPrint").addEventListener("click", () => { try{ f.contentWindow.focus(); f.contentWindow.print(); } catch(ex){ certMsg("err","이 화면에서는 인쇄를 열 수 없어요. PDF 저장을 이용하세요."); } });
+  $("#cPdf").addEventListener("click", savePdf);
+  $("#cMail")?.addEventListener("click", sendMail);
+}
+function certMsg(type, text){ const el = $("#cMsg"); el.className = `msg show ${type}`; el.textContent = text; }
+function loadScript(src){ return new Promise((res, rej) => { if(document.querySelector(`script[src="${src}"]`)) return res(); const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = rej; document.head.appendChild(s); }); }
+async function savePdf(){
+  const btn = $("#cPdf"); btn.disabled = true; btn.textContent = "만드는 중";
+  try{
+    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+    await loadScript("https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js");
+    const doc = $("#cFrame").contentDocument, page = doc.querySelector(".page");
+    const canvas = await window.html2canvas(page, {scale: 2, backgroundColor: "#ffffff", useCORS: true});
+    const pdf = new window.jspdf.jsPDF({orientation: "portrait", unit: "mm", format: "a4"});
+    pdf.addImage(canvas.toDataURL("image/jpeg", 0.95), "JPEG", 0, 0, 210, 297);
+    pdf.save(`수료증_${AUTH ? AUTH.me.name : ""}_${CUR_CERT.no}.pdf`);
+    certMsg("ok","PDF 파일을 저장했어요. 다운로드 폴더를 확인하세요.");
+  }catch(ex){ certMsg("err","PDF를 만들지 못했어요. 인쇄 버튼을 누른 뒤 ‘PDF로 저장’을 선택해 주세요."); }
+  finally{ btn.disabled = false; btn.textContent = "PDF 저장"; }
+}
+async function sendMail(){
+  const btn = $("#cMail"); btn.disabled = true; btn.textContent = "보내는 중";
+  try{
+    const r = DEMO ? (await new Promise(x => setTimeout(x, 500)), {ok:true, to:CUR_CERT.emailMasked}) : await api("certMail", {certId:CUR_CERT.id});
+    if(r.ok) certMsg("ok", `${r.to}로 수료증 PDF를 보냈어요.${DEMO?" (미리보기라 실제로 발송되지는 않아요)":""}`);
+    else certMsg("err", r.message || "메일을 보내지 못했어요.");
+  }catch(ex){ certMsg("err","메일을 보내지 못했어요. 잠시 후 다시 시도하세요."); }
+  finally{ btn.disabled = false; btn.textContent = "메일로 받기"; }
+}
+
+/* 시작 */
+(async function init(){
+  $("#brand").innerHTML = `<span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="m16 10.5 5-3v9l-5-3"/><path d="M7 10h5M7 14h3"/></svg></span><span class="nm"><small>${esc(CONFIG.ORG)}</small><b>${esc(CONFIG.ORG_SUB)}</b></span>`;
+  $("#utilOrg").textContent = `${CONFIG.ORG} ${CONFIG.ORG_SUB}`;
+  const tel = $("#tel"); tel.textContent = `문의 ${CONFIG.TEL}`; tel.href = `tel:${CONFIG.TEL_LINK}`;
+  $("#foot").innerHTML = `<b>${esc(CONFIG.ORG)} ${esc(CONFIG.ORG_SUB)}</b>주소 ${esc(CONFIG.ADDRESS)}<br>교육 문의 ${esc(CONFIG.TEL)} · 운영시간 ${esc(CONFIG.HOURS)}<div class="copy">Copyright © ${new Date().getFullYear()} ${esc(CONFIG.ORG)}. All rights reserved.</div>`;
+  try{ const r = await api("sessions"); sessions = r.sessions || []; pastSessions = r.past || [];
+    const ITEMS = FORMS.rent.fields.find(f => f.k === "items").opts;
+    if(r.equipment && r.equipment.length) EQUIP = r.equipment.map(e => ({ name:e.name, cat:e.cat, desc:e.desc, available:e.available,
+      item: ITEMS.includes(e.cat) ? e.cat : ITEMS.includes(e.name) ? e.name : "기타" })); }
+  catch(e){ DEMO = true; sessions = DEMO_SESSIONS; pastSessions = DEMO_PAST; }
+  $("#demo").classList.toggle("show", DEMO);
+  if(CONFIG.KAKAO_URL){ const k = $("#fbTalk"); k.href = CONFIG.KAKAO_URL; k.hidden = false; }
+  $("#fbTop").addEventListener("click", () => window.scrollTo({top: 0, behavior: "smooth"}));
+  if(DEMO && AUTH && AUTH.token !== "demo") AUTH = null;
+  renderAcct();
+  if(AUTH && !DEMO){ try{ const r = await api("me", {}); if(r.ok) setAuth({ token: AUTH.token, me: r.me }); }catch(e){} }
+  // 처음 열면 항상 홈 화면 (조사 응답 메일 링크 #answer-… 만 그 화면으로 바로 이동)
+  if("scrollRestoration" in history) history.scrollRestoration = "manual";
+  const first = location.hash.slice(1);
+  if(/^answer-/.test(first)) go(first); else { history.replaceState(null, "", location.pathname + location.search); go("home"); }
+})();
+</script>
+</body>
+</html>
