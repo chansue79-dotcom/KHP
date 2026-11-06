@@ -1376,7 +1376,10 @@ async function sendMail(){
   if(DEMO && AUTH && AUTH.token !== "demo") AUTH = null;
   renderAcct();
   if(AUTH && !DEMO){ try{ const r = await api("me", {}); if(r.ok) setAuth({ token: AUTH.token, me: r.me }); }catch(e){} }
-  go(location.hash.slice(1));
+  // 처음 열면 항상 홈 화면 (조사 응답 메일 링크 #answer-… 만 그 화면으로 바로 이동)
+  if("scrollRestoration" in history) history.scrollRestoration = "manual";
+  const first = location.hash.slice(1);
+  if(/^answer-/.test(first)) go(first); else { history.replaceState(null, "", location.pathname + location.search); go("home"); }
 })();
 </script>
 </body>
