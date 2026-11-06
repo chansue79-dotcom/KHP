@@ -339,6 +339,74 @@ footer b{color:#fff;font-size:16px;font-weight:800;display:block;margin-bottom:8
 footer .copy{margin-top:14px;color:#7F899B;font-size:13px}
 .demo{display:none;background:#1D2433;color:#fff;text-align:center;font-size:13px;padding:7px 12px}
 .demo.show{display:block}
+
+/* ══ 네이비 테마 (2026.11) ══ */
+:root{ --navy:#0B1D3A; --navy-2:#13294B; --primary:#13294B; --on-primary:#FFFFFF; --primary-soft:#E8EEF6; --teal:#1FB5A8; --teal-2:#2FD3C6; --ink:#0F1B2D; --line:#E2E7EF; --fill:#F4F6FA; --fill-2:#E9EEF5; --c1:#13294B; }
+.util{display:none}
+header{border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(11,29,58,.03)}
+.brandrow{height:80px;gap:20px}
+.brand .mark{background:var(--navy)} .brand .nm b{color:var(--navy);white-space:nowrap;font-size:17px} .brand .nm small{white-space:nowrap}
+.hero .wrap,.infoband .wrap{max-width:1200px}
+header .wrap{max-width:1320px}
+.cats{flex:1;justify-content:center}
+.cat{font-size:15.5px;color:var(--ink);padding:0 13px}
+@media (max-width:1260px){.hright .tlink{display:none}}.cat:hover,.catw:focus-within .cat{color:var(--teal)}
+.cat[aria-current="page"]{color:var(--navy);border-bottom-color:var(--teal)}.cat.hl{color:var(--navy)}
+.sub{border-top-color:var(--teal)}
+.hright{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tlink{background:none;border:0;cursor:pointer;font-size:13.5px;color:var(--muted);padding:6px 6px;font-weight:600}.tlink:hover{color:var(--navy)}
+.cta-pill{background:var(--navy);color:#fff;border:0;border-radius:999px;padding:13px 24px;font-weight:800;font-size:14.5px;cursor:pointer;letter-spacing:-.01em;margin-left:6px}
+.cta-pill:hover{background:var(--navy-2)}
+@media (max-width:980px){.hright .tlink{display:none}.cta-pill{padding:10px 16px;font-size:13.5px}}
+@media (max-width:640px){.brandrow{height:64px;gap:8px}.brand{flex:1;min-width:0}.brand .nm{min-width:0;overflow:hidden}.brand .nm b{font-size:14.5px;overflow:hidden;text-overflow:ellipsis;display:block}.brand .mark{width:36px;height:36px}.cta-pill{padding:9px 12px;font-size:12.5px;margin-left:0}}
+@media (max-width:380px){.brand .nm b{font-size:13px}}
+.hero{position:relative;background:linear-gradient(180deg,#081630,#0B1D3A);color:#fff;overflow:hidden}
+.hero-bg{position:absolute;inset:0}.hero-bg svg{width:100%;height:100%;display:block}
+.hero-in{position:relative;padding-top:72px;padding-bottom:64px;max-width:1200px}
+.kicker{color:var(--teal-2);font-weight:800;letter-spacing:.18em;font-size:15px;margin:0 0 18px}
+.hero h1{margin:0 0 20px;font-size:clamp(38px,6vw,68px);line-height:1.12;letter-spacing:-.045em;font-weight:900}
+.hero h1 span{display:block}.hero h1 .w{color:#fff}.hero h1 .c{color:var(--teal-2)}
+.hero .hsub{color:#C8D3E6;font-size:16px;font-weight:600;letter-spacing:.02em;margin:0 0 26px;max-width:46em}
+.hboxes{display:grid;grid-template-columns:repeat(2,minmax(0,330px));gap:10px;margin-bottom:28px}
+.hboxes button{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.55);color:#fff;text-align:left;padding:12px 14px;font-weight:600;font-size:14.5px;cursor:pointer}
+.hboxes button:hover{border-color:var(--teal-2);color:var(--teal-2)}
+.hbtns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.hb{background:rgba(255,255,255,.04);border:1.5px solid rgba(255,255,255,.65);color:#fff;border-radius:4px;padding:13px 20px;font-weight:700;font-size:15px;cursor:pointer}
+.hb i{font-style:normal;margin-left:8px}.hb:hover{background:rgba(255,255,255,.1)}
+.hcta{background:var(--teal);border:1.5px solid var(--teal-2);color:#fff;border-radius:4px;padding:14px 34px;font-weight:800;font-size:16px;cursor:pointer;margin-left:8px;box-shadow:0 0 24px rgba(47,211,198,.25)}
+.hcta i{font-style:normal;margin-left:8px}.hcta:hover{background:#18A196}
+@media (max-width:640px){.hboxes{grid-template-columns:1fr 1fr}.hboxes button{font-size:13px;padding:10px}.hcta{margin-left:0;width:100%}
+  .hbtns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.hb{padding:11px 6px;font-size:13px;white-space:nowrap}.hb i{display:none}.hcta{grid-column:1/-1}.hero-in{padding-top:44px}
+  .ibar{flex-direction:column;align-items:flex-start;gap:6px}.cdrow{margin-top:18px}}
+.infoband{background:var(--navy-2);padding:28px 0 34px}
+.ibar{border:1px solid rgba(255,255,255,.22);border-radius:16px;padding:18px 24px;display:flex;flex-wrap:wrap;justify-content:center;gap:10px 30px;color:#fff;font-size:15px}
+.ibar b{color:#F2C14E;margin-right:8px;font-weight:800}
+.cdrow{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:24px;flex-wrap:wrap}
+.cd-k{margin:0;color:#F2C14E;font-weight:700;font-size:15px}.cd-t{margin:4px 0 0;color:#fff;font-size:20px;font-weight:800;letter-spacing:-.02em}
+.cd{display:flex;gap:12px}.cd div{width:82px;background:#fff;border-radius:12px 12px 10px 10px;text-align:center;padding:10px 0 8px;box-shadow:inset 0 -3px 0 rgba(11,29,58,.12)}
+.cd b{display:block;font-size:34px;font-weight:900;color:var(--navy);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}.cd span{font-size:12px;color:var(--muted);font-weight:600}
+@media (max-width:640px){.cd div{width:64px}.cd b{font-size:26px}}
+.quick{margin-top:0;border-bottom:1px solid var(--line)}
+.qitem .ic{background:var(--primary-soft);color:var(--navy)}.qitem:hover .ic{background:var(--navy);color:#fff}
+.bh{border-bottom-color:var(--navy)}.bh h2{color:var(--navy)}
+.blist .dt b{color:var(--navy)}
+.tag{background:color-mix(in srgb,var(--teal) 14%,transparent);color:#0E7F76}
+.btn.solid{background:var(--navy)}.btn.solid:hover{background:var(--navy-2)}
+.subvis{background:linear-gradient(180deg,#0B1D3A,#13294B);border-bottom:0;color:#fff;position:relative;overflow:hidden}
+.subvis::after{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(95,227,214,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(95,227,214,.06) 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.subvis .wrap{position:relative;z-index:1}
+.subvis h1{color:#fff}.crumb,.crumb button{color:#AEBBD2}.crumb i{color:#6F80A0}.crumb button:hover{color:var(--teal-2)}
+.tab{color:#C8D3E6}.tab:hover{color:#fff}.tab[aria-selected="true"]{background:#fff;color:var(--navy);border-color:transparent}
+h1.pt{border-left-color:var(--teal)}
+.opt input:checked+span{border-color:var(--navy);background:var(--primary-soft);color:var(--navy)}
+input:focus,select:focus,textarea:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(31,181,168,.18)}
+.link{color:#0E7F76}
+footer{background:#081630}
+.floaty{position:fixed;right:18px;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:30;display:flex;flex-direction:column;gap:10px;align-items:flex-end}
+.fb{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:78px;height:78px;border-radius:50%;border:0;cursor:pointer;text-decoration:none;font-weight:800;font-size:11.5px;line-height:1.2;text-align:center;box-shadow:0 6px 18px rgba(11,29,58,.22)}
+.fb svg{width:22px;height:22px}
+.fb-apply{background:var(--navy);color:#fff}.fb-talk{background:#FEE500;color:#191600}.fb-top{width:52px;height:52px;background:#fff;color:var(--navy)}
+@media (max-width:640px){.fb{width:62px;height:62px;font-size:10px}.fb svg{width:18px;height:18px}.fb-top{width:44px;height:44px}}
 </style>
 </head>
 <body>
@@ -349,12 +417,18 @@ footer .copy{margin-top:14px;color:#7F899B;font-size:13px}
     <div class="brandrow">
       <button class="brand" data-go="home" id="brand"></button>
       <nav class="cats" id="cats" aria-label="주요 메뉴"></nav>
+      <div class="hright"><span id="acctTop"></span><button class="cta-pill" data-go="edu-apply">교육 과정 신청</button></div>
     </div>
   </div>
   <nav class="cats navm" id="catsM" aria-label="주요 메뉴(모바일)"></nav>
 </header>
 <main id="main"></main>
 <footer><div class="flinks"><div class="wrap"><button class="strong" data-go="privacy">개인정보처리방침</button><button data-go="lib-files">자료실</button><button data-go="edu-schedule">교육 일정</button><button data-go="my-survey">설문 참여</button></div></div><div class="wrap" id="foot"></div></footer>
+<div class="floaty" aria-label="빠른 메뉴">
+  <button class="fb fb-apply" data-go="edu-apply"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span>신청서<br>작성하기</span></button>
+  <a class="fb fb-talk" id="fbTalk" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 4C6.9 4 3 7.2 3 11.1c0 2.5 1.6 4.6 4 5.9l-.9 3.3c-.1.4.3.7.6.5l3.9-2.6c.5.1.9.1 1.4.1 5.1 0 9-3.2 9-7.2S17.1 4 12 4z"/></svg><span>카카오톡<br>상담문의</span></a>
+  <button class="fb fb-top" id="fbTop" aria-label="맨 위로"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 19V6M6 11l6-6 6 6"/></svg></button>
+</div>
 
 <script>
 /* ════════════════════════════════════════════════════════
@@ -369,6 +443,7 @@ const CONFIG = {
   HOURS: "평일 09:00–18:00",
   ADDRESS: "전북특별자치도 전주시 완산구 선너머1길 50 전주문화방송",
   RETENTION: "사업 종료 후 3년",
+  KAKAO_URL: "",   // 카카오톡 채널 상담 주소 (예: https://pf.kakao.com/_xxxx/chat). 비워두면 버튼이 숨겨져요
   RRN_LAW: "",   // 주민등록번호 수집 근거 법령 (예: 사업 근거 법령의 조항) — 개인정보 담당자 확인 후 입력하세요
   REQUIRE_LOGIN_TO_BROWSE: false   // true로 바꾸면 교육 일정·안내까지 모든 화면을 로그인 후에만 볼 수 있어요
 };
@@ -618,6 +693,9 @@ async function api(action, payload){
   return j;
 }
 function renderAcct(){
+  const top = $("#acctTop");
+  if(top) top.innerHTML = AUTH ? `<button class="tlink" data-go="me">${esc(AUTH.me.name)}님</button><button class="tlink" id="logoutTop">로그아웃</button>` : `<button class="tlink" data-go="auth">로그인</button><button class="tlink" data-go="auth" data-signup="1">회원가입</button>`;
+  $("#logoutTop")?.addEventListener("click", () => { setAuth(null); go("home"); });
   const el = $("#acct"); if(!el) return;
   el.innerHTML = AUTH ? `<button class="who" data-go="me">${esc(AUTH.me.name)}님 내 정보</button><button class="btn" id="logoutBtn">로그아웃</button>`
     : `<button class="btn" data-go="auth">로그인</button><button class="btn" data-go="auth" data-signup="1">회원가입</button>`;
@@ -689,7 +767,8 @@ function renderNav(){
 function render(){
   renderNav();
   const main = $("#main");
-  if(state.cat === "home") return main.innerHTML = viewHome();
+  clearInterval(CD_TIMER);
+  if(state.cat === "home"){ main.innerHTML = viewHome(); startCountdown(); return; }
   const shell = (title, trail, inner, tabsHtml) => `<section class="subvis"><div class="wrap"><div class="crumb"><button data-go="home">홈</button>${trail.map(t => `<i>›</i><span>${esc(t)}</span>`).join("")}</div><h1>${esc(title)}</h1>${tabsHtml || '<div style="height:1px"></div>'}</div></section><div class="wrap"><section class="panel">${inner}</section></div>`;
   if(state.cat === "auth"){ main.innerHTML = shell(state.mode === "signup" ? "회원가입" : "로그인", ["회원 서비스"], viewAuth()); return bindAuth(); }
   if(state.cat === "me"){ main.innerHTML = shell("내 정보", ["회원 서비스"], viewMe()); return bindMe(); }
@@ -720,16 +799,25 @@ function render(){
 const FIELD_DESC = {"생성형AI":"이미지·영상·글 생성 도구로 콘텐츠 제작","360영상":"360 촬영, 스티칭, VR 플랫폼 업로드","드론":"안전 수칙, 기초 비행, 항공 촬영","Virtual Studio":"크로마키·가상 세트 방송형 제작","영상편집":"컷 편집, 자막, 색보정, 숏폼"};
 function viewHome(){
   const open = sessions.filter(s => s.remaining === null || s.remaining > 0).slice(0, 5);
-  const fmtD = iso => iso ? iso.slice(5).replace("-", ".") : "";
-  return `<section class="visual"><div class="wrap">
-      <div><span class="kicker">재직자 · 기업 · 지역 주민을 위한 무료 교육</span>
-        <h1>방송 현장의 장비로<br>미디어 기술을 배웁니다</h1>
-        <p>생성형AI, 360 영상, 드론, 가상스튜디오까지. 전주문화방송 K-하이테크 플랫폼 공동훈련센터가 실습 중심 교육과 장비·시설 공유를 지원합니다.</p>
-        <div class="ctas"><button class="btn solid big" data-go="edu-apply">교육 신청하기</button><button class="btn ghost big" data-go="edu-schedule">교육 일정 보기</button></div></div>
-      <div class="notice-box"><h2>교육 문의</h2><p class="tel-big">${esc(CONFIG.TEL)}</p><ul>
-        <li><b>운영시간</b><span>${esc(CONFIG.HOURS)}</span></li>
-        <li><b>위치</b><span>${esc(CONFIG.ADDRESS.replace("전북특별자치도 ",""))}</span></li>
-        <li><b>교육비</b><span>재직자 과정 무료</span></li></ul></div>
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const next = sessions.filter(s => (s.remaining === null || s.remaining > 0) && (s.deadline || s.start) && String(s.deadline || s.start) >= todayIso).sort((a, b) => String(a.deadline || a.start).localeCompare(String(b.deadline || b.start)))[0];
+  const dot = v => String(v || "").replace(/-/g, ".");
+  const due = next ? (next.deadline || next.start) : "";
+  return `<section class="hero">
+      <div class="hero-bg" aria-hidden="true">${heroArt()}</div>
+      <div class="wrap hero-in">
+        <p class="kicker">현장 장비로 배우는 미디어·AI 실무교육</p>
+        <h1><span class="w">방송 현장의 장비로</span><span class="c">미디어 기술을 배우는</span><span class="c">재직자 교육</span></h1>
+        <p class="hsub">생성형AI, 360 영상, 드론, 가상스튜디오까지 — 전주문화방송 K-하이테크 플랫폼 공동훈련센터의 실습 중심 무료 교육</p>
+        <div class="hboxes">${["생성형AI 콘텐츠 제작","360 영상·VR 프로덕션","드론 항공촬영","가상스튜디오 방송 제작"].map(t => `<button data-go="edu-schedule">${t}</button>`).join("")}</div>
+        <div class="hbtns"><button class="hb" data-go="edu-schedule">교육 일정 보기 <i>↓</i></button><button class="hb" data-go="edu-roadmap">교육 로드맵 <i>↓</i></button><button class="hb" data-go="my-cert">수료증 발급 <i>↓</i></button>
+          <button class="hcta" data-go="edu-apply">교육과정 신청하기 <i>→</i></button></div>
+      </div>
+    </section>
+    <section class="infoband"><div class="wrap">
+      ${next ? `<div class="ibar"><span><b>모집마감</b>${dot(due)}</span><span><b>교육기간</b>${dot(next.start)}${next.end && next.end !== next.start ? "–" + dot(next.end).slice(5) : ""}</span><span><b>교육시간</b>${esc(next.time || "-")}</span><span><b>교육장소</b>${esc(next.place || "-")}</span><span><b>문의처</b>${esc(CONFIG.TEL)}</span></div>
+      <div class="cdrow"><div><p class="cd-k">다음 모집 마감까지</p><p class="cd-t">${esc(next.title)}</p></div><div class="cd" id="countdown" data-due="${esc(due)}">${["일","시간","분","초"].map(u => `<div><b>00</b><span>${u}</span></div>`).join("")}</div></div>`
+      : `<div class="ibar"><span><b>교육 문의</b>${esc(CONFIG.TEL)}</span><span><b>운영시간</b>${esc(CONFIG.HOURS)}</span><span><b>교육장소</b>${esc(CONFIG.ADDRESS.replace("전북특별자치도 ",""))}</span></div>`}
     </div></section>
     <div class="wrap">
       <nav class="quick" aria-label="자주 찾는 메뉴">${QUICK.map(q => `<button class="qitem" data-go="${q.go}"><span class="ic" aria-hidden="true">${ICON[q.icon]}</span><b>${esc(q.name)}</b><span class="d">${esc(q.desc)}</span></button>`).join("")}</nav>
@@ -742,6 +830,29 @@ function viewHome(){
       <section class="fields-h"><div class="bh"><h2>교육 분야</h2><button class="more" data-go="edu-roadmap">로드맵</button></div>
         <div class="fieldgrid">${FIELDS.map(f => `<button class="fcell" style="--tone:var(${FIELD_TONE[f]})" data-go="edu-schedule"><span class="bar"></span><b>${esc(f)}</b><span>${esc(FIELD_DESC[f]||"")}</span></button>`).join("")}</div></section>
     </div>`;
+}
+function heroArt(){
+  const nodes = [[620,120],[700,200],[820,150],[900,260],[760,320],[980,110],[1080,220],[860,400],[1020,360],[1140,300]];
+  const lines = [[0,1],[1,2],[2,5],[1,4],[4,3],[3,6],[5,6],[3,8],[8,9],[6,9],[4,7],[7,8]];
+  const bars = Array.from({length:14},(_,i) => { const h = 30 + ((i*37)%90); return `<rect x="${1040+i*14}" y="${520-h}" width="8" height="${h}" rx="2"/>`; }).join("");
+  return `<svg viewBox="0 0 1200 600" preserveAspectRatio="xMidYMid slice"><defs><pattern id="hg" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#5FE3D6" stroke-opacity=".06"/></pattern>
+    <radialGradient id="hgl" cx="78%" cy="40%" r="45%"><stop offset="0" stop-color="#1FB5A8" stop-opacity=".35"/><stop offset="1" stop-color="#1FB5A8" stop-opacity="0"/></radialGradient></defs>
+    <rect width="1200" height="600" fill="url(#hg)"/><rect width="1200" height="600" fill="url(#hgl)"/>
+    <g stroke="#5FE3D6" stroke-opacity=".35" stroke-width="1.2" fill="none">${lines.map(([a,b]) => `<path d="M${nodes[a][0]} ${nodes[a][1]}H${(nodes[a][0]+nodes[b][0])/2}V${nodes[b][1]}H${nodes[b][0]}"/>`).join("")}</g>
+    <g fill="#5FE3D6">${nodes.map(([x,y],i) => `<circle cx="${x}" cy="${y}" r="${i%3?3:5}" opacity="${i%3?.7:1}"/>`).join("")}</g>
+    <g fill="#5FE3D6" opacity=".25">${bars}</g>
+    <g fill="none" stroke="#5FE3D6" stroke-opacity=".25"><circle cx="930" cy="250" r="120"/><circle cx="930" cy="250" r="80" stroke-dasharray="4 8"/><path d="M640 470h300l30-30h160"/><path d="M700 520h220l24-24h220"/></g></svg>`;
+}
+let CD_TIMER = null;
+function startCountdown(){
+  clearInterval(CD_TIMER);
+  const el = $("#countdown"); if(!el) return;
+  const due = new Date(el.dataset.due + "T23:59:59");
+  const tick = () => { const ms = Math.max(0, due - new Date()), sec = Math.floor(ms / 1000);
+    const v = [Math.floor(sec / 86400), Math.floor(sec % 86400 / 3600), Math.floor(sec % 3600 / 60), sec % 60];
+    el.querySelectorAll("b").forEach((b, i) => { b.textContent = String(v[i]).padStart(2, "0"); });
+    if(!ms) clearInterval(CD_TIMER); };
+  tick(); CD_TIMER = setInterval(tick, 1000);
 }
 function daysAgo(iso){ return Math.floor((Date.now() - Date.parse(iso + "T00:00:00")) / 864e5); }
 function boardRow(s){
@@ -1260,6 +1371,8 @@ async function sendMail(){
       item: ITEMS.includes(e.cat) ? e.cat : ITEMS.includes(e.name) ? e.name : "기타" })); }
   catch(e){ DEMO = true; sessions = DEMO_SESSIONS; pastSessions = DEMO_PAST; }
   $("#demo").classList.toggle("show", DEMO);
+  if(CONFIG.KAKAO_URL){ const k = $("#fbTalk"); k.href = CONFIG.KAKAO_URL; k.hidden = false; }
+  $("#fbTop").addEventListener("click", () => window.scrollTo({top: 0, behavior: "smooth"}));
   if(DEMO && AUTH && AUTH.token !== "demo") AUTH = null;
   renderAcct();
   if(AUTH && !DEMO){ try{ const r = await api("me", {}); if(r.ok) setAuth({ token: AUTH.token, me: r.me }); }catch(e){} }
